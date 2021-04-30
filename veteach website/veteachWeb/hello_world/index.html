@@ -1,0 +1,2193 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .hover-target:hover ~ hover-popup {
+        transition-delay: 2s;
+    }
+</style>
+<style>
+    .mobile_view {
+        display: none;
+
+    }
+
+    .desktop_view {
+        display: block;
+
+    }
+
+    @media only screen and (max-width: 735px) {
+
+
+        .mobile_view {
+            display: block;
+
+        }
+
+        .desktop_view {
+            display: none;
+
+        }
+
+        .MultiCarousel {
+            overflow: hidden !important;
+        }
+    }
+
+    .portfolio-item.chrome span a:hover {
+        background: #fff !important;
+        color: #0e0e0e !important;
+        border-color: #fff !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .mobile_mobile {
+            width: 100% !important;
+            height: 260px !important;
+        }
+
+        .wrapper {
+            display: none;
+        }
+
+        .mobile_mobile_image {
+            height: 100% !important;
+
+            top: 70px !important;
+        }
+
+        .mobile_mobile_image1 {
+            height: 80% !important;
+            margin-left: 46px;
+        }
+
+        .mobile_mobile_image_image {
+            height: 80% !important;
+        }
+
+        .mobile_mobile_image_2 {
+            height: 249px !important;
+        }
+
+        .mobile_mobile_image_3 {
+
+            top: 0px !important;
+
+        }
+
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+</style>
+<style type="text/css">
+    .MultiCarousel {
+        float: left;
+        overflow: hidden;
+        padding: 15px;
+        width: 100%;
+        position: relative;
+    }
+
+    .MultiCarousel .MultiCarousel-inner {
+        transition: 1s ease all;
+        float: left;
+    }
+
+    .MultiCarousel .MultiCarousel-inner .item {
+        float: left;
+    }
+
+    .MultiCarousel .MultiCarousel-inner .item > div {
+        text-align: center;
+        padding: 10px;
+        margin: 10px;
+        background: none;
+        color: #666;
+    }
+
+    .MultiCarousel .leftLst, .MultiCarousel .rightLst {
+        position: absolute;
+        border-radius: 50%;
+        top: calc(44% - 27px);
+        padding: 12px;
+        color: #397fc0;
+        font-size: 19px;
+        background-color: #fff;
+        border: none;
+        box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
+    }
+
+    .MultiCarousel .leftLst {
+        left: 1%;
+    }
+
+    .MultiCarousel .rightLst {
+        right: 1%;
+    }
+
+    .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over {
+        pointer-events: none;
+        background: #ccc;
+        display: none
+    }
+
+    .btn-primary:hover {
+        color: #fff !important;
+        background-color: #40a7ff !important;
+        border-color: #204d74 !important;
+        border: none !important;
+    }
+
+</style>
+<style type="text/css">
+    .rtxt {
+        padding-top: 161px;
+        /*margin-left: -57px;*/
+        font: normal 44px/50px Arial, sans-serif;
+        color: rgb(60, 72, 82);
+    }
+
+    b {
+        float: left;
+        overflow: hidden;
+        position: relative;
+        height: 50px;
+    }
+
+    .textrot {
+        display: inline-block;
+        color: rgb(60, 72, 82);
+        position: relative;
+        white-space: nowrap;
+        top: 0;
+        left: 0;
+        animation: move 10s;
+        animation-iteration-count: infinite;
+        animation-delay: 3s;
+    }
+
+    @keyframes move {
+        0% {
+            top: 0px;
+        }
+        15% {
+            top: 0px;
+        }
+        20% {
+            top: -50px;
+        }
+        35% {
+            top: -50px;
+        }
+        40% {
+            top: -100px;
+        }
+        55% {
+            top: -100px;
+        }
+        60% {
+            top: -150px;
+        }
+        75% {
+            top: -150px;
+        }
+        80% {
+            top: -200px;
+        }
+    }
+
+    .hover_bkgr_fricc {
+        background: rgba(0, 0, 0, .4);
+        cursor: pointer;
+        display: none;
+        height: 100%;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        width: 100%;
+        z-index: 10000;
+    }
+
+    .hover_bkgr_fricc .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    .hover_bkgr_fricc > div {
+        background-color: #fff;
+        box-shadow: 10px 10px 60px #555;
+        display: inline-block;
+        height: auto;
+        max-width: 551px;
+        min-height: 100px;
+        vertical-align: middle;
+        width: 60%;
+        position: relative;
+        border-radius: 8px;
+        padding: 15px 5%;
+    }
+
+    #at_hover a {
+        font-size: 10px !important;
+        font-weight: 100 !important;
+    }
+
+    .popupCloseButton {
+        background-color: #fff;
+        border: 3px solid #999;
+        border-radius: 50px;
+        cursor: pointer;
+        display: inline-block;
+        font-family: arial;
+        font-weight: bold;
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        font-size: 25px;
+        line-height: 30px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+    }
+
+    .popupCloseButton:hover {
+        background-color: #ccc;
+    }
+
+    .trigger_popup_fricc {
+        cursor: pointer;
+        font-size: 20px;
+        margin: 20px;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    .modal-window {
+        position: fixed;
+        background-color: rgb(33 33 33 / 81%);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+
+
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+    .modal-window:target {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .modal-window > div {
+        width: 400px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        padding: 2em;
+        background: #ffffff;
+    }
+
+    .modal-window header {
+        font-weight: bold;
+    }
+
+    .modal-window h1 {
+        font-size: 150%;
+        margin: 0 0 15px;
+    }
+
+    .modal-close {
+        color: #aaa;
+        line-height: 50px;
+        font-size: 80%;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        top: 0;
+        width: 70px;
+        text-decoration: none;
+    }
+
+    .modal-close:hover {
+        color: black;
+    }
+
+    /* Demo Styles */
+    .modal-window div:not(:last-of-type) {
+        margin-bottom: 15px;
+    }
+
+    small {
+        color: #aaa;
+    }
+
+    .btn {
+        background-color: #fff;
+        padding: 1em 1.5em;
+        border-radius: 3px;
+        text-decoration: none;
+    }
+
+    .btn i {
+        padding-right: 0.3em;
+    }
+</style>
+
+
+<!-- Font Awesome -->
+
+
+<style>
+    .carousel--container--22Ab7 {
+        position: relative;
+    }
+
+    @media screen and (min-width: 75.06em) {
+        .course-unit--grid--3KXpZ {
+            grid-auto-columns: calc((100% - (5 - 1) * 1.6rem) / 5);
+        }
+    }
+
+    @media screen and (min-width: 61.31em) {
+        .course-unit--grid--3KXpZ {
+            grid-auto-columns: calc((100% - (4 - 1) * 1.6rem) / 4);
+        }
+    }
+
+    @media screen and (min-width: 43.81em) {
+        .course-unit--grid--3KXpZ {
+            grid-auto-columns: calc((100% - (3 - 1) * 1.6rem) / 3);
+        }
+    }
+
+    @media screen and (min-width: 37.56em) {
+        .course-unit--grid--3KXpZ {
+            grid-auto-columns: calc((100% - (2 - 1) * 1.6rem) / 2);
+        }
+
+    }
+
+    .course-unit--grid--3KXpZ {
+        grid-auto-columns: 65%;
+    }
+
+    .carousel--grid--2dzpP {
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: column;
+        grid-gap: 1.6rem;
+    }
+
+    .carousel--scroll-lock--3AYO9 {
+        overflow-x: hidden;
+    }
+
+    element.style {
+    }
+
+    @media screen and (min-width: 75.06em)
+        .course-unit--grid--3KXpZ {
+            grid-auto-columns: calc((100% - (5 - 1) * 1.6rem) / 5);
+        }
+
+        @media screen and (min-width: 61.31em)
+            .course-unit--grid--3KXpZ {
+                grid-auto-columns: calc((100% - (4 - 1) * 1.6rem) / 4);
+            }
+
+            @media screen and (min-width: 43.81em)
+                .course-unit--grid--3KXpZ {
+                    grid-auto-columns: calc((100% - (3 - 1) * 1.6rem) / 3);
+                }
+
+                @media screen and (min-width: 37.56em)
+                    .course-unit--grid--3KXpZ {
+                        grid-auto-columns: calc((100% - (2 - 1) * 1.6rem) / 2);
+                    }
+
+                    .course-unit--grid--3KXpZ {
+                        grid-auto-columns: 65%;
+                    }
+
+                    .carousel--grid--2dzpP {
+                        display: grid;
+                        grid-auto-columns: max-content;
+                        grid-auto-flow: column;
+                        grid-gap: 1.6rem;
+                    }
+
+                    .carousel--scroll-lock--3AYO9 {
+                        overflow-x: hidden;
+                    }
+
+                    .carousel--scroll-port--2O41b {
+                        scrollbar-width: none;
+                        -ms-overflow-style: none;
+                        /*display: flex;*/
+                        overflow: auto;
+                        overflow-y: hidden;
+                        scroll-snap-type: x mandatory;
+                        scroll-snap-stop: always;
+                        -ms-touch-action: manipulation;
+                        touch-action: manipulation;
+                        -webkit-overflow-scrolling: touch;
+                    }
+
+                    .carousel--grid--2dzpP {
+                        display: grid;
+                        grid-auto-columns: max-content;
+                        grid-auto-flow: column;
+                        grid-gap: 1.6rem;
+                    }
+
+                    .carousel--scroll-item--3Wciz {
+                        scroll-snap-align: start;
+                    }
+
+                    .popper--popper--19faV {
+                        position: relative;
+                    }
+
+                    .course-card--medium--iRtVR {
+                        flex-direction: column;
+                        max-width: 27.5rem;
+                        min-width: 18.3rem;
+                    }
+
+                    .course-card--container--3w8Zm {
+                        /* display: flex;*/
+                        align-items: flex-start;
+                    }
+
+                    .course-card--medium--iRtVR .course-card--image-wrapper--Sxd90 {
+                        padding-bottom: 56.25%;
+                        position: relative;
+                        width: 100%;
+                    }
+
+                    .course-card--image-wrapper--Sxd90 {
+                        background-color: #1e1e1c;
+                        border-radius: 4px;
+                        /*border: 1px solid #dcdacb;*/
+                        overflow: hidden;
+                    }
+
+                    .tabs--tabs-container--3KpSm .tabs--tab-content--adAng.tabs--active--2rPuV {
+                        padding-top: 1.6rem;
+                        max-width: none;
+                        max-height: none;
+                        overflow: visible;
+                        visibility: visible;
+                    }
+
+                    .course-card--medium--iRtVR .course-card--course-image--2sjYP {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    .course-card--course-image--2sjYP {
+                        border-radius: 3px;
+                        display: block;
+                        transition: opacity linear 100ms;
+                    }
+
+                    .course-card--medium--iRtVR .course-card--main-content--3xEIw {
+                        width: 100%;
+                    }
+
+                    .course-card--main-content--3xEIw {
+                        color: #3c3b37;
+                        white-space: nowrap;
+                        flex: 1;
+                        min-width: 1px;
+                        position: relative;
+                    }
+
+                    .course-card--medium--iRtVR .course-card--course-title--2f7tE {
+                        margin-top: .8rem;
+                    }
+
+                    .course-card--main-content--3xEIw > *:not(:last-child) {
+                        margin-bottom: .4rem;
+                        text-align: left;
+                    }
+
+                    .course-card--course-title--2f7tE {
+                        display: block !important;
+                        display: -webkit-box !important;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: normal;
+                    }
+
+                    .udlite-heading-md {
+                        font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+                        font-weight: 700;
+                        line-height: 1.2;
+                        min-height: 8vh;
+                        padding-top: 16px;
+                        letter-spacing: -.02rem;
+                        font-size: 1.6rem;
+                    }
+
+                    .course-card--main-content--3xEIw > *:not(:last-child) {
+                        margin-bottom: .4rem;
+
+                    }
+
+                    .course-card--instructor-list--lIA4f {
+                        color: #73726c;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .udlite-text-xs {
+                        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+                        font-weight: 400;
+                        line-height: 1.4;
+                        font-size: 1.2rem;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                    }
+
+                    .course-card--main-content--3xEIw > *:not(:last-child) {
+                        margin-bottom: .4rem;
+                    }
+
+                    .star-rating--star-wrapper--2eczq {
+                        display: inline-flex;
+                        align-items: center;
+                    }
+
+                    * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .udlite-sr-only {
+                        position: absolute !important;
+                        height: 1px;
+                        width: 1px;
+                        overflow: hidden;
+                        clip: rect(1px, 1px, 1px, 1px);
+                    }
+
+                    .star-rating--rating-number--3lVe8 {
+                        margin-right: .4rem;
+                        color: #be5a0e;
+                    }
+
+                    .udlite-heading-sm {
+                        font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+                        font-weight: 700;
+                        line-height: 1.2;
+                        letter-spacing: -.02rem;
+                        font-size: 1.4rem;
+                    }
+
+                    .star-rating--star-wrapper--2eczq > svg {
+                        display: block;
+                        width: 7rem;
+                        height: 1.6rem;
+                    }
+
+                    .course-card--main-content--3xEIw {
+                        color: #3c3b37;
+                        white-space: nowrap;
+                        flex: 1;
+                        text-align: left;
+                        min-width: 1px;
+                        position: relative;
+                    }
+
+                    .course-card--row--1OMjg {
+                        /*display: flex;*/
+                        align-items: center;
+                        flex-wrap: wrap;
+                    }
+
+                    .star-rating--star-filled--3D4Ee {
+                        fill: #eb8a2f;
+                    }
+
+                    .star-rating--star-bordered--2QFon {
+                        stroke: #eb8a2f;
+                    }
+
+                    .course-card--reviews-text--12UpL {
+                        color: #73726c;
+                        margin-left: .4rem;
+                    }
+
+                    .udlite-text-xs {
+                        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+                        font-weight: 400;
+                        line-height: 1.4;
+                        font-size: 1.2rem;
+                    }
+
+                    .course-card--main-content--3xEIw > *:not(:last-child) {
+                        margin-bottom: .4rem;
+                    }
+
+                    .price-text--container--Ws-fP {
+                        align-items: center;
+                        color: #3c3b37;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        height: 29px;
+                    }
+
+                    .price-text--price-part--Tu6MH:last-child {
+                        margin-right: 0;
+                    }
+
+                    .price-text--price-part--Tu6MH {
+                        line-height: 1;
+                        padding: .4rem 0;
+                        margin-right: .8rem;
+                        white-space: nowrap;
+                    }
+
+                    .udlite-heading-md {
+                        font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+                        font-weight: 700;
+                        line-height: 1.2;
+                        letter-spacing: -.02rem;
+                        font-size: 1.6rem;
+                    }
+
+                    .udlite-sr-only {
+                        position: absolute !important;
+                        height: 1px;
+                        width: 1px;
+                        overflow: hidden;
+                        clip: rect(1px, 1px, 1px, 1px);
+                    }
+
+                    .price-text--price-part--Tu6MH {
+                        line-height: 1;
+                        padding: .4rem 0;
+                        margin-right: .8rem;
+                        white-space: nowrap;
+                    }
+
+                    .udlite-badge-bestseller {
+                        background-color: #ffe799;
+                        color: #593d00;
+                    }
+
+                    .udlite-badge {
+                        border-radius: 4px;
+                        display: inline-block;
+                        padding: .4rem .8rem;
+                        white-space: nowrap;
+                    }
+
+                    .udlite-heading-xs {
+                        font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+                        font-weight: 700;
+                        line-height: 1.2;
+                        letter-spacing: -.02rem;
+                        font-size: 1.2rem;
+                    }
+
+                    .course-details-quick-view-box--popover-wrapper--3jFIa {
+                        left: 812.688px;
+                        top: 949.476px;
+                    }
+
+                    *:focus, a:focus, input:focus, button:focus {
+                        outline: none;
+                    }
+
+                    .course-details-quick-view-box--popover-wrapper--3jFIa > div {
+                        width: 34rem;
+                    }
+
+                    .popover--popover--right--arrow--3VnO9 {
+                        margin-left: 2rem;
+                    }
+
+                    .popover--popover--padding--3kLcw {
+                        padding: 2.4rem;
+                    }
+
+                    .popover--popover--t3rNO {
+                        position: relative;
+                        width: 32rem;
+                        background-color: #fff;
+                        border: 1px solid #dcdacb;
+                        border-radius: 4px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 4px 12px rgba(0, 0, 0, .08);
+                        color: #3c3b37;
+                    }
+
+                    .popover--inner--373-v {
+                        position: relative;
+                        z-index: 1;
+                    }
+
+                    .popover--arrow--2k1aW {
+                        position: absolute;
+                    }
+
+                    .popper--popper-content--2KQmm {
+                        display: none;
+                        position: absolute;
+                        z-index: 1000;
+                    }
+
+                    .course-details-quick-view-box--popover-wrapper--3jFIa {
+                        opacity: 0;
+                        animation: course-details-quick-view-box--pop-in--3MHjJ 100ms cubic-bezier(.2, 0, .38, .9) 400ms forwards;
+                    }
+
+                    .checked_star {
+                        color: #eb8a2f;
+                    }
+
+
+                    .bs-example {
+                        margin-top: 10%;
+                    }
+
+                    .bs-example2 {
+                        margin-top: 1.5em;
+                        font-weight: bold;
+                        font-size: 1.25em;
+                        color: #FFF;
+                        text-shadow: 1.25px 1px #25282a;
+                    }
+
+                    /* NONE OF THE FOLLOWING CSS IS NEEDED */
+                    .nate {
+                        margin: .5em auto;
+                        text-align: center;
+                        color: #FFF;
+                    }
+
+                    .twitter {
+                        margin: 2em auto 0px auto;
+                        font-family: Arial;
+                        font-size: small;
+                        font-weight: bold;
+                        color: #f5911d;
+                        text-align: center;
+                        padding: 0;
+                        left: 0px;
+                        top: 0px;
+                        overflow: visible;
+                    }
+
+                    /* SIGNATURE CODE */
+                    .credits {
+                        text-align: center;
+                        font-family: 'Crushed';
+                        font-size: 1.5vw;
+                        color: #FFF;
+                    }
+
+                    .stars {
+                        color: #f43a2f;
+                        padding: 0 .5vw 0 .5vw;
+                        font-size: 1.6vw;
+                    }
+
+
+                    .hover-container {
+                        position: relative;
+                    }
+
+                    .hover-target {
+                        position: relative;
+                        font-size: 2rem;
+                    }
+
+                    .hover-popup {
+                        position: absolute;
+                        display: none;
+                        top: 39%;
+                        width: 100% !important;
+                        right: 0;
+                        width: 320px;
+                        margin: auto;
+                        background-color: #fff;
+                        border-radius: 3px;
+                        padding: 1.5em;
+                        z-index: 42;
+                        transform-origin: 50% 50%;
+
+                        transition: 0.2s;
+                        box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.2);
+                        opacity: 0;
+                        transition: 2s linear 1s;
+                    }
+
+                    .hover-target:hover + .hover-popup,
+                    .hover-popup:hover {
+                        display: inline;
+                        width: 320px;
+                        opacity: 1;
+                        transition: 2s linear 1s;
+                    }
+
+
+                    .hover-popup span {
+                        color: #f6892a;
+                        font-weight: 700;
+                    }
+
+                    .hover-popup::before {
+                        content: '';
+                        position: absolute;
+                        border-top: 6px solid transparent;
+                        border-bottom: 10px solid transparent;
+                        border-right: 10px solid #fff;
+                        left: 106px;
+                        top: -12px;
+                        transform: rotate(
+                                87deg
+                        );
+                    }
+
+                    .hover-popup::after {
+                        /* This is merely here to expand the hoverable area, as a buffer between the "Hover me" text and the popup. */
+                        content: '';
+                        position: absolute;
+                        top: -1rem;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        z-index: -1;
+                    }
+
+                    .download_btn_syl {
+                        padding: 0px;
+                        border-radius: 7px;
+                        width: 100%;
+                        line-height: normal;
+                        margin-top: 30px;
+                        border-radius: 7px !important;
+                    }
+
+                    .image_toggle_home {
+                        height: 60px;
+                    }
+</style>
+
+<!--p class="returnToProfile"><a href="https://codepen.io/ptamaro" target="_parent">Return to profile</a></p-->
+
+<link rel="stylesheet" href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/fstdropdown.css">
+<div class="top_wrapper">
+
+
+    <style type="text/css">
+        .branch_title {
+            width: unset !important;
+            padding: 0px;
+            display: inline-block !important;
+        }
+
+        .start_content {
+            display: block;
+        }
+
+        .start_content_mobile {
+            display: none;
+        }
+
+        .branch_items {
+            width: unset !important;
+            display: inline-block !important;
+            padding: 0px;
+            padding-left: 20px;
+        }
+
+        .main_layer {
+            margin-top: 60px;
+        }
+
+        @media screen and (max-width: 780px) {
+            .start_learning_btn {
+                width: 100% !important;
+            }
+
+            .main_layer {
+                margin-top: 0px;
+            }
+
+            .start_content {
+                display: none;
+            }
+
+            .start_content_mobile {
+                display: block;
+            }
+
+            .branch_title {
+                width: 100%;
+                padding: 0px;
+                display: inline-block;
+            }
+
+            .branch_items {
+                width: 100%;
+                display: inline-block;
+                padding: 0px;
+
+                padding-left: 0px;
+            }
+        }
+
+        }
+    </style>
+
+    <div class="col-md-12 main_layer" style="z-index: 99999;">
+        <div class="row">
+            <div class="col-md-5" style="z-index: 20;">
+                <div class="col-md-12">
+                    <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/images/btech_image.png"
+                         style="opacity: 0.6;width: 92vh;">
+
+                </div>
+                <div class="col-md-12">
+                    <h1 style="font-weight: 700;margin: auto;padding: 20px;font-size:1.2em;    padding-left: 3px;">
+                        India’s Smart Learning Platform&hellip;
+                    </h1>
+                </div>
+                <div class="col-md-12" style="padding: 20px;">
+                    <div class="" style="font: normal 28px/50px Arial, sans-serif;">
+                        <b>
+                            <div class="textrot">
+                                Live Classes<br/>
+                                Previous Papers<br/>
+                                Mentor To Student<br/>
+                                All Courses Videos
+                            </div>
+                        </b>
+                    </div>
+                </div>
+                <div class="start_content">
+                    <div class="col-md-12" style="padding: 20px;margin: auto;">
+                        <div>
+                            <button class="openbtn btn-bt rounded custom_start_btn start_learning_btn"
+                                    style="font-size: 10px;float: none;padding: 12px;" onclick="changeCourse(2)">Change
+                                Course
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="padding: 20px;">
+                        <div style=" z-index: 21;
+    font-size: 15px;
+    line-height: 25px;
+    font-weight: bold;
+    color: #435c77;
+    letter-spacing: 0.5px;
+    font-family: Karla;
+    text-shadow: rgb(0 0 0 / 8%) 6px 16px 24px;">
+                            <div class="col-md-6 col-sm-12 col-xs-12 branch_title" style="padding: 0px;">AI Base B.Tech Tuitions
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 branch_items"
+                                 style="text-align: center; padding: 0px;">
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> ECE</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> CSE</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> EEE</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> CIVIL</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> MECH</a>
+                                <br>
+
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> IOT</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> AI & DS</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> IT</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> AI</a>
+                                <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> AI & ML</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-7" style="z-index: 99999999;margin-top: 84px;">
+                <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/images/main_home.png">
+            </div>
+
+
+            <div class="col-md-4 start_content_mobile">
+                <div class="col-md-12" style="padding: 16px;margin: auto;">
+                    <div>
+                        <button class="openbtn btn-bt rounded custom_start_btn start_learning_btn"
+                                style="font-size: 10px;float: none;padding: 12px;" onclick="changeCourse(2)">Change
+                            Course
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="text-align: center;">
+                    <div style="    z-index: 21;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #435c77;
+    letter-spacing: 0.5px;
+    font-family: Karla;
+    text-shadow: rgb(0 0 0 / 8%) 6px 16px 24px;">
+
+                        <div class="col-md-6 col-sm-12 col-xs-12 branch_title" style="width: 100%!important;">
+                            AI Base B.Tech Tuitions
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 branch_items"
+                             style="text-align: center;line-height: 26px;margin-bottom: 20px;width: 100%!important;">
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> ECE</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> CSE</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> EEE</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> CIVIL</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> MECH</a>
+                            <br>
+
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> IOT</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> AI & DS</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> IT</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> AI</a>
+                            <a href="#" style="color: #ff7f3c;pointer-events: none;" class="sizcourse"> AI & ML</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <style>
+        .textline1 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            font-size: 13px;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            width: 90%;
+            margin: auto;
+            /*min-height: 41px;*/
+        }
+    </style>
+
+
+    <section class="composer_content" style="background-color:#ffffff;">
+        <div id="fws_5f8fd178a46e2"
+             class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style  templates  normal "
+             style="background-color: #f5f5f5; ">
+
+
+            <div class="section_clear">
+                <div class="wpb_column column_container with_padding wpb_column vc_column_container vc_col-sm-12">
+                    <div class="vc_column-inner  " style="padding:" data-animation="none" data-delay="">
+                        <div class="wpb_wrapper" id="bottom">
+                            <h2 class="vc_custom_heading mainhead1" style="margin-bottom: 0px;">Your Semester
+                                Subjects</h2>
+
+
+                            <br><br>
+
+                            <link href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/custom.css?v=2"
+                                  rel="stylesheet">
+
+                            <!-- Font Awesome -->
+
+                            <style>
+                                .discovery-card {
+                                    min-width: 270px;
+                                    max-width: 270px;
+                                    width: 270px;
+                                    height: 300px;
+                                    position: relative;
+                                    background-color: #fff;
+                                    box-shadow: none;
+                                    padding: 0;
+                                    border: none;
+                                }
+
+                                .scrollable-mobile-discovery-card-list .scrollable-discovery-card-spacing {
+                                    margin-right: 8px;
+                                }
+
+                                .discovery-card .d-card-wrapper {
+                                    height: 300px;
+                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .3);
+                                    border-color: #bfc9ca;
+                                    border-width: 1px;
+                                    border-radius: 3px;
+                                }
+
+                                .flex-column {
+                                    flex-direction: column !important;
+                                }
+
+                                .discovery-card .discovery-card-link {
+                                    text-decoration: none;
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    left: 0;
+                                }
+
+                                .d-flex {
+                                    display: flex !important;
+                                }
+
+                                .discovery-card .d-card-hero {
+                                    height: 103px;
+                                    background-color: #e9ecef;
+                                    overflow: hidden;
+                                    border-radius: 3px 3px 0 0;
+                                    border-bottom: 1px solid #f2faf7;
+                                }
+
+                                .discovery-card .partner-logo-wrapper {
+                                    height: 36px;
+                                    padding: 7px;
+                                    width: 50%;
+                                    position: absolute;
+                                    top: 83px;
+                                    left: 20px;
+                                    background: #fff;
+                                    font-weight: bold;
+                                    border-radius: 3px;
+                                    box-shadow: 1px 1px 2px 0 hsla(0, 0%, 66.7%, .5);
+                                }
+
+                                .discovery-card .d-card-body {
+                                    padding: 29px 20px 25px;
+                                    height: 60%;
+                                }
+
+                                .discovery-card .name-heading {
+                                    height: auto;
+                                    line-height: 1.15;
+                                    color: #454545;
+                                    font-family: Inter, Helvetica Neue, Arial, sans-serif;
+                                    font-size: 1.25rem;
+                                    font-weight: bold;
+                                }
+
+                                .discovery-card .provider {
+                                    line-height: .86;
+                                    color: #707070;
+                                    margin-bottom: 20px;
+                                    font-family: Inter, Helvetica Neue, Arial, sans-serif;
+                                    font-size: .875rem;
+                                    font-weight: 400;
+                                }
+
+                                .sr-only {
+                                    border: 0;
+                                    clip: rect(0, 0, 0, 0);
+                                    height: 1px;
+                                    margin: -1px;
+                                    overflow: hidden;
+                                    padding: 0;
+                                    position: absolute;
+                                    width: 1px;
+                                }
+
+                                .discovery-card .d-card-footer {
+                                    padding: 0 20px;
+                                }
+
+                                .discovery-card .card-type {
+                                    height: 20px;
+                                    line-height: 1.67;
+                                    letter-spacing: .2px;
+                                    color: #707070;
+                                    position: absolute;
+                                    bottom: 10px;
+                                    font-family: Inter, Helvetica Neue, Arial, sans-serif;
+                                    font-size: .75rem;
+                                    font-weight: 400;
+                                }
+
+                                .discovery-card .d-card-wrapper {
+                                    height: 300px;
+                                    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .3);
+                                    border-color: #bfc9ca;
+                                    border-width: 1px;
+                                    border-radius: 3px;
+                                }
+
+                                .discovery-card-link:hover .d-card-wrapper {
+                                    box-shadow: 0 2px 4px 2px #707070;
+                                }
+
+                                #exampleSlider .MS-content {
+                                    margin: 21px 5%;
+                                    overflow: unset;
+                                    white-space: nowrap;
+                                }
+
+                                #exampleSlider .MS-content .item {
+
+                                    width: 20%;
+                                    overflow: unset;
+                                }
+
+                                #exampleSlider .MS-controls button {
+                                    position: absolute;
+                                    padding: 12px;
+                                    width: 45px;
+                                    top: 76px;
+                                    border-radius: 40px;
+                                    background-color: #fff;
+                                    border: none;
+                                    box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
+                                }
+                            </style>
+                            <style type="text/css">
+
+                                .loading {
+                                    display: block;
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    z-index: 100;
+                                    width: 100vw;
+                                    min-height: 200px;
+                                    height: 200px;
+                                    background-color: white;
+                                    background-image: url("https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/loader.gif");
+                                    background-repeat: no-repeat;
+                                    background-position: center;
+                                }
+
+                            </style>
+
+
+                            <style type="text/css">
+                                .subject-close {
+                                    cursor: pointer;
+                                    position: relative;
+                                    right: -5px;
+                                    top: 5px;
+                                    margin: 3px;
+                                    width: 20px;
+                                    height: 20px;
+                                    float: right;
+                                }
+
+                                .clear {
+                                    clear: both;
+                                }
+
+                                .subject-close::before,
+                                .subject-close::after {
+                                    content: "";
+                                    height: 2px;
+                                    display: block;
+                                    background: #d6d6d6;
+                                }
+
+                                .subject-close::before {
+                                    margin-top: 10px;
+                                    -webkit-transform: rotate(45deg);
+                                    -moz-transform: rotate(45deg);
+                                    -o-transform: rotate(45deg);
+                                    transform: rotate(45deg);
+                                }
+
+                                .subject-close::after {
+                                    margin-top: -2px;
+                                    -webkit-transform: rotate(-45deg);
+                                    -moz-transform: rotate(-45deg);
+                                    -o-transform: rotate(-45deg);
+                                    transform: rotate(-45deg);
+                                }
+
+                                .subject-close:hover:after, .subject-close:hover:before {
+                                    background: #FF8CB4;
+                                }
+
+                                .subject-wrapper {
+                                    display: flex;
+                                    z-index: 999999999999999999;
+                                    width: 100%;
+                                    height: 100%;
+                                    position: fixed;
+                                    visibility: hidden;
+                                    top: 0;
+                                    left: 0;
+                                    backdrop-filter: blur(4px);
+                                    background: rgb(25 18 12 / 39%);
+                                    opacity: 0;
+                                    filter: alpha(opacity=0);
+                                    -webkit-transition: all 0.3s ease-in-out;
+                                    -moz-transition: all 0.3s ease-in-out;
+                                    -o-transition: all 0.3s ease-in-out;
+                                    transition: all 0.3s ease-in-out;
+                                    display: none;
+                                }
+
+                                .subject-wrapper.open {
+                                    visibility: visible;
+                                    opacity: 1;
+                                    filter: alpha(opacity=1);
+                                    display: inline-flex;
+                                }
+
+                                .subjectmodal {
+                                    padding-left: 15px;
+                                    padding-right: 15px;
+                                    display: inline-block;
+                                    /*height: 72%;*/
+                                    width: 32%;
+                                    border-radius: 4px;
+                                    position: relative;
+                                    margin: auto;
+                                    background: #e8e8e8;
+                                    background: -webkit-linear-gradient(bottom, #e8e8e8, #fff);
+                                    background: -o-linear-gradient(bottom, #e8e8e8, #fff);
+                                    background: linear-gradient(to top, #e8e8e8, #fff);
+                                    box-shadow: 0px 16px 16px -6px rgba(47, 46, 38, 0.5);
+                                    opacity: 0;
+                                    filter: alpha(opacity=0);
+                                    -webkit-transition: all 0.3s ease-in-out;
+                                    -moz-transition: all 0.3s ease-in-out;
+                                    -o-transition: all 0.3s ease-in-out;
+                                    transition: all 0.3s ease-in-out;
+                                    -ms-transform: scale(0.7);
+                                    /* IE 9 */
+                                    -webkit-transform: scale(0.7);
+                                    /* Safari */
+                                    transform: scale(0.7);
+                                }
+
+                                .subject-wrapper.open .subjectmodal {
+                                    opacity: 1;
+                                    filter: alpha(opacity=100);
+                                    -ms-transform: scale(1);
+                                    /* IE 9 */
+                                    -webkit-transform: scale(1);
+                                    /* Safari */
+                                    transform: scale(1);
+                                }
+
+                                .content {
+                                    text-align: center;
+                                }
+
+                                @media screen and (max-width: 425px) {
+                                    .subjectmodal {
+                                        width: 100%;
+                                        height: 70%;
+                                        padding: 0;
+                                    }
+
+                                    .subject-close {
+                                        right: 5px;
+                                    }
+                                }
+
+
+                                .wwwhover-popup {
+                                    border: 0;
+                                    padding-right: 0px;
+                                }
+                            </style>
+
+
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h4 id="selectedSem1"
+                                        style="text-shadow: 0 0 2px #000;font-size: 25px;border-left:#00b0f0 10px solid;padding: 10px;background-color:rgba(0,176,240,0.1);">
+
+
+                                        2nd SEM 1 YEAR
+
+
+                                    </h4>
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="loading"></div>
+
+
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="MultiCarousel" data-items="1,3,5,5" data-slide="1"
+                                                 id="MultiCarousel" data-interval="1000"
+                                                 style="width: 100%;z-index: +999999999">
+                                                <div class="MultiCarousel-inner" id="homepage_subjects"
+                                                     style="width: 1000px">
+
+                                                    <div id="homepage_subjects_mobile"></div>
+
+
+                                                </div>
+                                                <button class="btn btn-primary leftLst"
+                                                        style="height: 54px;width: 50px;"><i class="fa fa-angle-left"
+                                                                                             aria-hidden="true" style="    font-size: 25px;
+"></i></button>
+                                                <button class="btn btn-primary rightLst"><i class="fa fa-angle-right"
+                                                                                            aria-hidden="true" style="    font-size: 31px;
+margin-left: 9px;"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h4 id="selectedSem2"
+                                        style="text-shadow: 0 0 2px #000;font-size: 25px;border-left:#00b0f0 10px solid;padding: 10px;background-color:rgba(0,176,240,0.1);">
+
+
+                                        2nd SEM 1 YEAR
+
+
+                                    </h4>
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="MultiCarousel" data-items="1,3,5,5" data-slide="1"
+                                                 id="MultiCarousel" data-interval="1000">
+                                                <div class="MultiCarousel-inner" id="homepage_subjects1">
+
+                                                    <div id="homepage_subjects_mobile1"></div>
+
+
+                                                </div>
+                                                <button class="btn btn-primary leftLst"
+                                                        style="height: 54px;width: 50px;"><i class="fa fa-angle-left"
+                                                                                             aria-hidden="true" style="    font-size: 25px;
+"></i></button>
+                                                <button class="btn btn-primary rightLst"><i class="fa fa-angle-right"
+                                                                                            aria-hidden="true" style="    font-size: 25px;
+margin-left: 9px;"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <script type="text/javascript">
+
+                                        function subjectPopup(clicked_id) {
+                                            var element = document.getElementById("_" + clicked_id);
+                                            element.classList.add("open");
+                                        }
+
+                                        function subjectPopupClose(clicked_id) {
+                                            var element = document.getElementById(clicked_id.substring(1));
+                                            element.classList.remove("open");
+                                        }
+
+
+                                    </script>
+
+
+                                    <script type="text/javascript">
+                                        // $(document).ready(function () {
+                                        var itemsMainDiv = ('.MultiCarousel');
+                                        var itemsDiv = ('.MultiCarousel-inner');
+                                        var itemWidth = "";
+
+                                        $('.leftLst, .rightLst').click(function () {
+                                            var condition = $(this).hasClass("leftLst");
+                                            if (condition)
+                                                click(0, this);
+                                            else
+                                                click(1, this)
+                                        });
+
+                                        // ResCarouselSize();
+
+
+                                        $(window).resize(function () {
+                                            ResCarouselSize();
+                                        });
+
+                                        //this function define the size of the items
+                                        function ResCarouselSize() {
+                                            var incno = 0;
+                                            var dataItems = ("data-items");
+                                            var itemClass = ('.item');
+                                            var id = 0;
+                                            var btnParentSb = '';
+                                            var itemsSplit = '';
+                                            var sampwidth = $(itemsMainDiv).width();
+                                            var bodyWidth = $('body').width();
+                                            $(itemsDiv).each(function () {
+                                                id = id + 1;
+                                                var itemNumbers = $(this).find(itemClass).length;
+                                                btnParentSb = $(this).parent().attr(dataItems);
+                                                itemsSplit = btnParentSb.split(',');
+                                                $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+                                                if (bodyWidth >= 1200) {
+                                                    incno = itemsSplit[3];
+                                                    itemWidth = sampwidth / incno;
+                                                } else if (bodyWidth >= 992) {
+                                                    incno = itemsSplit[2];
+                                                    itemWidth = sampwidth / incno;
+                                                } else if (bodyWidth >= 768) {
+                                                    incno = itemsSplit[3];
+                                                    itemWidth = sampwidth / incno;
+                                                } else {
+                                                    incno = itemsSplit[0];
+                                                    itemWidth = sampwidth / incno;
+                                                }
+
+
+                                                // limit = 248;
+                                                // if(limit <0){
+                                                //     limit = limit * -1;
+                                                // }
+
+                                                $(this).css({
+                                                    'transform': 'translateX(0px)',
+                                                    'width': itemWidth * itemNumbers
+                                                });
+                                                $(this).find(itemClass).each(function () {
+                                                    $(this).outerWidth(itemWidth);
+                                                });
+
+                                                $(".leftLst").addClass("over");
+                                                $(".rightLst").removeClass("over");
+
+                                            });
+                                        }
+
+
+                                        //this function used to move the items
+                                        function ResCarousel(e, el, s) {
+                                            var leftBtn = ('.leftLst');
+                                            var rightBtn = ('.rightLst');
+                                            var translateXval = '';
+                                            var divStyle = $(el + ' ' + itemsDiv).css('transform');
+                                            var values = divStyle.match(/-?[\d\.]+/g);
+                                            var xds = Math.abs(values[4]);
+                                            if (e == 0) {
+                                                translateXval = parseInt(xds) - parseInt(itemWidth * s);
+                                                $(el + ' ' + rightBtn).removeClass("over");
+
+                                                if (translateXval <= itemWidth / 2) {
+                                                    translateXval = 0;
+                                                    $(el + ' ' + leftBtn).addClass("over");
+                                                }
+                                            } else if (e == 1) {
+                                                var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+                                                translateXval = parseInt(xds) + parseInt(itemWidth * s);
+                                                $(el + ' ' + leftBtn).removeClass("over");
+
+                                                if (translateXval >= itemsCondition - itemWidth / 2) {
+                                                    translateXval = itemsCondition;
+                                                    $(el + ' ' + rightBtn).addClass("over");
+                                                }
+                                            }
+                                            $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+                                        }
+
+                                        //It is used to get some elements from btn
+                                        function click(ell, ee) {
+                                            var Parent = "#" + $(ee).parent().attr("id");
+                                            var slide = $(Parent).attr("data-slide");
+                                            ResCarousel(ell, Parent, slide);
+                                        }
+
+                                        // });
+                                    </script>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <style>
+        .filterDiv243 {
+            float: left;
+
+            color: #ffffff;
+            width: 100%;
+            line-height: 100px;
+            text-align: center;
+            margin: 2px;
+            display: none;
+        }
+
+        .showelements {
+            display: block;
+        }
+
+
+        /* Style the buttons */
+        .btn243 {
+            border: none;
+            outline: none;
+            padding: 23px 0px;
+            background-color: #ffffff;
+            cursor: pointer;
+            width: 31.05%;
+            transition: 0.3s;
+        }
+
+        .btn243:hover {
+            border-bottom: 5px solid rgba(33, 150, 243, 1);
+
+            border-radius: 2px;
+
+
+        }
+
+        .btn243.active243 {
+            border-bottom: 5px solid rgba(33, 150, 243, 1);
+            color: black;
+            -ms-transform: scale(1.2);
+            -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+            box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+        }
+
+        #myBtnContainer243 {
+            width: 80%;
+            text-align: center;
+            background: white;
+            box-shadow: 11px -2px 10px #bababa;
+            box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+            /* box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%); */
+            border-radius: 5px;
+        }
+
+        .mentor_join_button {
+            right: 0;
+            outline: none;
+            font-family: unset;
+            font-weight: 600;
+            z-index: 999999999;
+            width: 35%;
+            font-size: 12px !important;
+            background-color: unset;
+            color: #00aeb5;
+            padding: 9px;
+            border: 3px solid #00aeb5 !important;
+            border-radius: 27px;
+            text-transform: uppercase;
+            height: unset !important;
+            margin: auto;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<div class="col-md-12" style="margin-top:10px;text-align: center;">
+    <center>
+        <div id="myBtnContainer243">
+
+            <button class="btn243 " onclick="filterSelection243('cars')">
+                <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/mentorp.png"
+                     class="image_toggle_home"><br>
+                MentorShip
+            </button>
+            <button class="btn243 active243" onclick="filterSelection243('animals')">
+                <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/qstnp.png"
+                     class="image_toggle_home"><br>
+                Question Papers
+            </button>
+            <button class="btn243" onclick="filterSelection243('fruits')">
+                <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/syllabusp.png"
+                     class="image_toggle_home"><br>
+                Syllabus
+            </button>
+
+        </div>
+
+        <div class="" style="text-align: center;margin-top: 20px;">
+            <div class="filterDiv243 cars">
+
+                <div id="fws_5f8fd17994ced"
+                     class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style    normal "
+                     style="  padding-bottom: 0px ; ">
+
+
+                    <div class="col-md-12">
+
+                        <div class="container-fluid" style="background: white;
+    border-top: 1px solid rgb(242, 242, 242);">
+
+                            <div class="row">
+                                <div class="col-md-6 mobile_mobile"
+                                     style="background-image: url(https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/images/bg/1.png);background-size: 70%; height: 400px; background-repeat: no-repeat;">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-8 mobile_mobile_image" style="height: 80%;top: 63px;">
+                                        <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/images/bg/3.png"
+                                             alt="mentorship" class="mobile_mobile_image1" style="height:100%;">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mobile_mobile" style="background-image: url(https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/images/bg/2.png);background-size: 80%;float: left;height: 400px;background-position:bottom right;
+    background-repeat: no-repeat;">
+
+                                    <div class="col-md-8 mobile_mobile_image_3"
+                                         style="height: 80%;top: 80px;text-align: center;">
+                                        <h2 style="line-height: 1.5;font-weight: 600;color: black;text-transform: capitalize;text-align: center;
+    font-size: 27px;">Try Our very Own <br>
+                                            <span style="font-weight: 800;">Mentorship Program</span>
+                                        </h2>
+                                        <a href="?url=coming_soon" style="text-align:center;outline : none;border:0px;">
+                                            <a href="?url=coming_soon" class="openbtn btn-bt mentor_join_button"
+                                               style="padding: 16px 46px !important;">Join Now</a></a>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br><br>
+            </div>
+            <div class="filterDiv243 fruits">
+
+
+                <!--<div id="section3" class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style    normal "  >-->
+
+                <!--   <div  style="position: absolute;top: 0;"></div>-->
+                <!--   <div class="container  dark" id="section2">-->
+
+
+                <!--      <div class="section_clear"  >-->
+
+                <!--         <div class="col-md-12 "  >-->
+
+                <!-- <div class="wpb_wrapper">-->
+                <!--               <h2 class="vc_custom_heading mainhead1" style="margin-bottom:0;" >Syllabus </h2>-->
+                <!--               <div  class="vc_custom_heading mainhead2" style="margin-bottom:20px!important;">Download All Syllabus </div>-->
+                <!--            </div>-->
+                <!--<form class="form-horizontal" action="" method="POST" enctype="multipart/form-data" i>-->
+
+                <!--         <div class="col-sm-4 col-xs-4" style="-->
+                <!--    margin: 0px;-->
+                <!--    color: #000;-->
+                <!--    opacity: 0.7;-->
+                <!--    height: 55px;">-->
+
+                <!--         </div>-->
+
+
+                <!--         <div class="col-sm-4 col-xs-12" style="-->
+                <!--    margin: 0px;-->
+                <!--    color: #000;-->
+                <!--    opacity: 0.7;-->
+                <!--    height: 55px;">-->
+                <!--             <h4 style="display: inline-block;margin-bottom: 20px;" id="select_university"></h4> - -->
+                <!--            <h4 style="display: inline-block;margin-bottom: 20px;" id="select_regulation"></h4> - -->
+                <!--             <h4 style="display: inline-block;margin-bottom: 20px;" id="select_branch"></h4>-->
+                <!--       </div>-->
+
+                <!--       <div class="col-sm-4 col-xs-4" style="-->
+                <!--    margin: 0px;-->
+                <!--    color: #000;-->
+                <!--    opacity: 0.7;-->
+                <!--    height: 55px;">-->
+
+                <!--      </div>-->
+
+
+                <!--<div class="col-md-4"></div>-->
+                <!--      <div class="col-sm-4">-->
+                <!--         <a href="#" class="openbtn btn-bt rounded download_btn_syl" id="download_syllabus" target="_blank">Download</a>-->
+                <!--      </div>-->
+                <!--</form>-->
+
+
+                <!--   </div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <!--<br><br>-->
+
+                <div id="section3"
+                     class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style    normal "
+                     style="margin-bottom: 90px;">
+
+                    <div style="position: absolute;top: 0;"></div>
+                    <div class="container  dark" id="section2">
+
+
+                        <div class="section_clear">
+
+                            <div class="col-md-12 ">
+
+                                <div class="wpb_wrapper">
+                                    <h2 class="vc_custom_heading mainhead1" style="margin-bottom:0;">Syllabus </h2>
+                                    <div class="vc_custom_heading mainhead2" style="margin-bottom:20px!important;">
+                                        Download All Syllabus
+                                    </div>
+                                </div>
+                                <form class="form-horizontal" onsubmit="fetchSyllabusFile();return false;" action="">
+
+                                    <div class="col-sm-4" style="
+    margin: 0px;
+    height: 55px;">
+
+                                        <select name="university_id" class="form-control select2"
+                                                id="university_syllabus" required>
+
+                                            <option value="">Select University</option>
+                                            <option value="6">JNTUK</option>
+                                            <option value="7">JNTUA</option>
+                                            <option value="8">JNTUH</option>
+
+
+                                        </select>
+                                    </div>
+
+
+                                    <div class="col-sm-4" style="
+    margin: 0px;
+    height: 55px;">
+                                        <select name="regulation" class="form-control select2" id="regulation_syllabus"
+                                                required>
+                                            <option value="">Select regulation</option>
+                                            <option value="R16">R16</option>
+                                            <option value="R19">R19</option>
+
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-4" style="
+    margin: 0px;
+    height: 55px;">
+
+
+                                        <select name="branch_id" class="form-control " id="branch_syllabus" required>
+
+                                            <option value="">Select Branch</option>
+
+                                            <option value="1">ECE</option>
+                                            <option value="2">CSE</option>
+                                            <option value="3">EEE</option>
+                                            <option value="4">CIVIL</option>
+                                            <option value="5">MECH</option>
+                                            <option value="6">IOT</option>
+                                            <option value="7">AI & DS</option>
+                                            <option value="8">IT</option>
+                                            <option value="9">AI</option>
+                                            <option value="10">AI & ML</option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <div class="col-md-4"></div>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="openbtn btn-bt rounded download_btn_syl"
+                                                name="download_syllabus">Download
+                                        </button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="filterDiv243 animals" style="line-height: unset">
+
+
+                <div id="fws_5f8fd1799ba31"
+                     class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style    normal ">
+
+                    <div style="position: absolute;top: 0;"></div>
+                    <div class="container  dark">
+
+                        <div class="wpb_column column_container with_padding wpb_column vc_column_container vc_col-sm-12">
+                            <div class="vc_column-inner  " data-animation="none" data-delay="">
+                                <div class="wpb_wrapper">
+                                    <h2 class="vc_custom_heading mainhead1" style="margin-bottom:0;">Btech Previous
+                                        Papers</h2>
+                                    <div class="vc_custom_heading mainhead2" style="margin-bottom:20px!important;">Free
+                                        Question Papers for all Branches- Regular/supplementary
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section_clear">
+
+
+                            <div id="section4"
+                                 class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style    normal "
+                                 style="margin-bottom: 90px;">
+
+
+                                <div class="container  dark" id="section2_4">
+
+
+                                    <div class="section_clear">
+
+                                        <div class="col-md-12 ">
+
+                                            <form class="form-horizontal" onsubmit="displayQuestionPapers();return false;"
+                                                  action="">
+
+                                                <div class="col-sm-4" style="
+    margin: 0px;
+    height: 55px;">
+
+                                                    <select name="university_id" class="form-control select2"
+                                                            id="university_qp" required>
+
+                                                        <option value="">Select University</option>
+                                                        <option value="6">JNTUK</option>
+                                                        <option value="7">JNTUA</option>
+                                                        <option value="8">JNTUH</option>
+
+
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-sm-4" style="
+    margin: 0px;
+    height: 55px;">
+                                                    <select name="regulation" class="form-control select2"
+                                                            id="regulation_qp" required>
+                                                        <option value="">Select regulation</option>
+                                                        <option value="R16">R16</option>
+                                                        <option value="R19">R19</option>
+
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-sm-4" style="
+    margin: 0px;
+    height: 55px;">
+
+
+                                                    <select name="branch_id" class="form-control " id="branch_qp"
+                                                            required>
+
+                                                        <option value="">Select Branch</option>
+
+                                                        <option value="1">ECE</option>
+                                                        <option value="2">CSE</option>
+                                                        <option value="3">EEE</option>
+                                                        <option value="4">CIVIL</option>
+                                                        <option value="5">MECH</option>
+                                                        <option value="6">IOT</option>
+                                                        <option value="7">AI & DS</option>
+                                                        <option value="8">IT</option>
+                                                        <option value="9">AI</option>
+                                                        <option value="10">AI & ML</option>
+
+                                                    </select>
+
+                                                </div>
+
+
+                                                <div class="col-md-4"></div>
+                                                <div class="col-sm-3">
+                                                    <button type="submit"
+                                                            class="openbtn btn-bt rounded download_btn_syl"
+                                                            name="download_qp" style="  color: #ffffff;
+    background: #00b0f0;
+    border-color: #00b0f0;
+    font-size: 16px;
+    font-weight: 600;
+    width: 60%;
+    text-align: center;
+    padding: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0px;
+    float: unset;">Submit
+                                                    </button>
+                                                </div>
+                                            </form>
+
+
+                                            <div class="col-md-12 " id="iframediv"  style="margin-top: 10px;padding: 0px;">
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+            </div>
+
+        </div>
+
+</div>
+
+
+    <span id="subject_popup"></span>
+    <script>
+        filterSelection243("animals")
+
+        function filterSelection243(c) {
+            var x, i;
+            x = document.getElementsByClassName("filterDiv243");
+            if (c == "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                w3RemoveClass(x[i], "showelements");
+                if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "showelements");
+            }
+        }
+
+        function w3AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) {
+                    element.className += " " + arr2[i];
+                }
+            }
+        }
+
+        function w3RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                    arr1.splice(arr1.indexOf(arr2[i]), 1);
+                }
+            }
+            element.className = arr1.join(" ");
+        }
+
+        // Add active class to the current button (highlight it)
+        var btnContainer = document.getElementById("myBtnContainer243");
+        var btns = btnContainer.getElementsByClassName("btn243");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+                var current = document.getElementsByClassName("active243");
+                current[0].className = current[0].className.replace(" active243", "");
+                this.className += " active243";
+            });
+        }
+    </script>
+
+
+    <script>
+        // $(window).load(function () {
+        // $(".trigger_popup_fricc").click(function(){
+        //    $('.hover_bkgr_fricc').show();
+        // });
+        // $('.hover_bkgr_fricc').click(function(){
+        //     $('.hover_bkgr_fricc').hide();
+        // });
+        // $('.popupCloseButton').click(function(){
+        //     $('.hover_bkgr_fricc').hide();
+        // });
+        // });
+    </script>
+
+    <style>
+        .st-btn {
+            border: none !important;
+        }
+
+        .st-btn > img {
+            display: inline-block;
+            width: 32px !important;
+            height: auto !important;
+            position: relative;
+            top: -3px !important;
+            left: 7px !important;
+            vertical-align: top;
+        }
+    </style>
+    <script>
+        //     $(document).ready(function() {
+        //    $('[data-toggle="popover"]').popover({
+        //       placement: 'top',
+        //       trigger: 'hover'
+        //    });
+        // });
+    </script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+
+    <script>
+         function fetchSyllabusFile() {
+        var university_syllabus = document.getElementById("university_syllabus");
+        var regulation_syllabus = document.getElementById("regulation_syllabus");
+        var branch_syllabus = document.getElementById("branch_syllabus");
+
+        window.open("https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/syllabus/" + university_syllabus.options[university_syllabus.selectedIndex].text + "_" + branch_syllabus.options[branch_syllabus.selectedIndex].text + "_" + regulation_syllabus.value + ".pdf", '_blank');
+
+    }
+
+    function displayQuestionPapers() {
+        var university_qp = document.getElementById("university_qp");
+        var regulation_qp = document.getElementById("regulation_qp");
+        var branch_qp = document.getElementById("branch_qp");
+
+        var iframediv = document.getElementById("iframediv");
+        var url_branch = branch_qp.options[branch_qp.selectedIndex].text;
+        var url_regulation = regulation_qp.options[regulation_qp.selectedIndex].text;
+        var url_university = university_qp.options[university_qp.selectedIndex].text;
+        var url_json_name = url_university+"_"+url_regulation+"_"+url_branch+".json";
+        iframediv.innerHTML = "<iframe src=\"https://veteach.in/?url=question_paper&url_branch="+url_branch+"&url_regulation="+url_regulation+"&url_university="+url_university+"&url_json_name="+url_json_name+"\" width=\"100%\" style=\"width:100%;height:500px;border:none;outline:none;overflow:hidden;\"></iframe>";
+    }
+    </script>

@@ -1,0 +1,62 @@
+
+	<div class="item">
+		<a href="courses/video_view.php?video_id={{video_id}}&subject_id={{subject_id}}">
+			<div class="discovery-card verified col col-xl-3 mb-4 scrollable-discovery-card-spacing" role="group" aria-label="CS50's Introduction to Computer Science">
+				<a class="discovery-card-link" tracking="[object Object]" href="courses/video_view.php?video_id={{video_id}}&subject_id={{subject_id}}">
+					<div class="d-flex flex-column d-card-wrapper">
+						<div class="d-card-hero"> <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/{{subject_photo}}" alt="" style="height:100%"> </div>
+						<div class="partner-logo-wrapper">
+							<h6 style="font-weight: 800;padding-bottom: 8px;display:inline;color: #f68522;">{{subject_discounted_price}}</h6> <strike><h7 style="font-weight: bold;font-size:10px;padding-bottom: 8px;display:inline;">{{subject_total_price}}</h7></strike> </div>
+						<div class="d-card-body">
+							<style>
+							.checked_star {
+								color: orange;
+							}
+							</style>
+								<h7 style="color: #be5a0e;font-weight:600;font-size: 17px;">
+									{{star_avg_rating}}
+								</h7>&nbsp;
+                            <span class="checked_star fa fa-star"></span>
+                            <span class="checked_star fa fa-star"></span>
+                            <span class="checked_star fa fa-star"></span>
+                            <span class="checked_star fa fa-star"></span>
+                            <span class="checked_star fa fa-star"></span>&nbsp;
+								<h7 style="color: #73726c;">
+									({{total_ratings}})
+								</h7>
+								<h3 class="name-heading" style=" margin-top:0px; ">
+                              <span width="230" style="white-space:pre-wrap!important; overflow: hidden;
+                                                   font-size: 18px;    text-transform: capitalize;
+
+   text-overflow: ellipsis;
+
+   display: -webkit-box;    margin: 10px;
+  line-height:1.5;
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;"><span><span>{{subject_name}}</span></span>
+                              <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span></h3>
+								<div class="provider"><span class="sr-only">Schools and Partners: </span> <span width="220"><span><span><p style="white-space: pre-wrap!important;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    font-family: Arial,sans-serif;
+    text-transform: capitalize;
+    font-weight: bold;
+    line-height: 20px;
+    width: 100%;
+    padding: 0px;
+    margin: auto;
+    margin-bottom: 10px;
+    font-size: 12px;
+    -webkit-line-clamp: 3!important;
+    -webkit-box-orient: vertical!important;">{{subject_desc}}</p></span></span> <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span>
+								</div>
+						</div>
+						<div class="d-card-footer">
+							<div class="card-type"> </div>
+						</div>
+					</div>
+				</a>
+			</div>
+	</div>

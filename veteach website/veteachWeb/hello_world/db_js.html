@@ -1,0 +1,929 @@
+<script type="text/javascript">
+    var db = openDatabase("itemDB","1.0","itemDB",65535);
+    var url ='https://n9yz799guk.execute-api.ap-south-1.amazonaws.com/Prod/hello?url=app_api';
+
+    function sendRequest($data,$cmd,$extraData1,$extraData2){
+        console.log("sendRequest-1111111111111111");
+        $.ajax({
+            url: url,
+            type: 'POST',
+            crossDomain: true,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify($data),
+            success: function(result) {
+
+                switch($cmd){
+                    case 100:
+                        console.log(getCookie("version")+"extra from db");
+
+                         console.log(result.version+"from response");
+                        if (getCookie("version") !=  result.version) {//result.version //extradata = db version in cookie
+                            console.log("result.version");
+                            createVersion(result.version);
+                        }else{
+                            console.log("else --- result.version");
+                            addSubject(1,1,0);
+                        }
+                    break;
+                    case 101:
+                        // console.log(result.user_id+$extraData1[0]+$extraData1[1]+$extraData1[2]+"");
+                        insertUserDetails(result.user_id,$extraData1[0],$extraData1[1],$extraData1[2],"");
+                        break;
+                    case 103:
+                        if ($extraData1 == 1) {
+                            insertSubjects(result,1);
+                        }else{
+                            insertSubjects(result,2);
+                        }
+                    break;
+                    case 105:
+                        console.log(result);
+                        insertVideo(result);
+                    break;
+                    // case 105:
+                    // 	insertVideo(result)
+                    // break;
+                    }
+            },
+
+            error: function(xhr, textStatus, error) {
+                console.log(xhr.responseText);
+                console.log(xhr.statusText);
+                console.log(textStatus);
+                console.log(error);
+            },
+    // beforeSend: setHeader
+        });
+    }
+
+
+
+    function insertUserDetails(user_id,email,user_name,profile_pic,phone){
+      db.transaction(function(transaction){
+        var sql = "INSERT INTO users(user_id,email,user_name,profile_pic,phone) VALUES(?,?,?,?,?)";
+        transaction.executeSql(sql,[user_id,email,user_name,profile_pic,phone],function(){
+            userData();
+        },function(transaction,error){
+            alert(error.message);
+          });
+      });
+    }
+
+    function userData(){
+    	// console.log("userData-222222222222222222");
+    	let user_id1 = 0;
+        db.transaction(function(transaction){
+          var sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,user_id VARCHAR(100) NULL,email VARCHAR(255) NULL,user_name VARCHAR(255) NULL,profile_pic TEXT NULL,phone VARCHAR(100) NULL)";
+          transaction.executeSql(sql,undefined,function(transaction){
+            // console.log("2222");
+            db.transaction(function(transaction){
+              var sql1 = "SELECT * FROM users";
+              // transaction.executeSql(sql1,undefined,function(transaction,result){
+              transaction.executeSql(sql1,undefined,function(transaction,result){
+                      if(result.rows.length){
+
+                          var row = result.rows.item(0);
+                          user_id1 = row.user_id;
+                          actionForUserData(true);
+
+                      }else{
+                          actionForUserData(false);
+                      }
+                  },function(transaction,err){
+                      actionForUserData(false);
+                  });
+              // }
+            });
+          },function(transaction,err){
+              actionForUserData(false);
+          });
+        });
+
+        actionForUserData(false);
+    }
+
+    function actionForUserData($isLoggedIn){
+    	console.log("actionForUserData-333333333333333333333--");
+
+    	if(!$isLoggedIn){//not logged in
+    		document.getElementById('usernotloggedin').style.display = 'block';
+    		document.getElementById('userloggedin').style.display = 'none';
+
+    	}else{
+    		document.getElementById('userloggedin').style.display = 'block';
+    		document.getElementById('usernotloggedin').style.display = 'none';
+    	}
+    }
+
+    //delete function
+   	$(function(){
+        $("#remove").click(function(){
+            db.transaction(function(transaction){
+                var sql = "DROP TABLE subject";
+                transaction.executeSql(sql,undefined,function(){
+                    alert("table deleted successfully");
+                },function(){
+                    alert("error");
+                });
+            });
+        });
+    });
+
+    function insertSubjects($result,$subCmd){
+    	// console.log("insertSubjects-44444444444444444");
+        var result = $result;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+        db.transaction(function(transaction){
+            var sql = "CREATE TABLE IF NOT EXISTS subject (branch_id VARCHAR(10) NOT NULL,complete_notes TEXT NOT NULL,date TEXT NOT NULL,discounted_price INTEGER NOT NULL,flag INTEGER NOT NULL,num_of_unit INTEGER NOT NULL,price INTEGER NOT NULL,priority INTEGER NOT NULL,regulation INTEGER NOT NULL,semester_id INTEGER NOT NULL,year_id INTEGER NULL,specialization INTEGER NOT NULL,subject_description TEXT NOT NULL,subject_id VARCHAR(255) NOT NULL,subject_name VARCHAR(255) NOT NULL,subject_photo VARCHAR(255) NOT NULL,tags TEXT NOT NULL,avg_rating VARCHAR(100) NOT NULL,rating_count VARCHAR(100) NOT NULL,single_line_content TEXT NOT NULL,subject_points VARCHAR(100) NOT NULL,new_subject_photo TEXT NOT NULL,subject_time VARCHAR(100) NOT NULL,unit1 TEXT NOT NULL,unit1_name TEXT NOT NULL,unit2 TEXT NOT NULL,unit2_name TEXT NOT NULL,unit3 TEXT NOT NULL,unit3_name TEXT NOT NULL,unit4 TEXT NOT NULL,unit4_name TEXT NOT NULL,unit5 TEXT NOT NULL,unit5_name TEXT NOT NULL,unit6 TEXT NOT NULL,unit6_name TEXT NOT NULL,unit7 TEXT NOT NULL,unit7_name TEXT NOT NULL,unit8 TEXT NOT NULL,unit8_name TEXT NOT NULL,unit9 TEXT NOT NULL,unit9_name TEXT NOT NULL,unit10 TEXT NOT NULL,unit10_name TEXT NOT NULL,university_id INT NOT NULL)";
+            transaction.executeSql(sql,undefined,function(){
+                db.transaction(function (transaction) {
+                data = result.data
+                var data_length = data.length
+                for (i=0;i<data_length;i++) {
+                    var branch_id = data[i].branch_id;//decode json
+                    var complete_notes = data[i].complete_notes;//decode json
+                    var date = data[i].date;//decode json
+                    var discounted_price = data[i].discounted_price;//decode json
+                    var flag = data[i].flag;//decode json
+                    var num_of_unit = data[i].num_of_unit;//decode json
+                    var price = data[i].price;//decode json
+                    var priority = data[i].priority;//decode json
+                    var regulation = data[i].regulation;//decode json
+                    var semester_id = data[i].semester_id;//decode json
+                    var specialization = data[i].specialization;//decode json
+                    var subject_description = data[i].subject_description;//decode json
+                    var subject_id = data[i].subject_id;//decode json
+                    var subject_name = data[i].subject_name;//decode json
+                    var subject_photo = data[i].subject_photo;//decode json
+                    var tags = data[i].tags;//decode json
+                    var avg_rating = data[i].avg_rating;//decode json
+                    var new_subject_photo = data[i].new_subject_photo;//decode json
+                    var rating_count = data[i].rating_count;//decode json
+                    var single_line_content = data[i].single_line_content;//decode json
+                    var subject_points = data[i].subject_points;//decode json
+                    var subject_time = data[i].subject_time;//decode json
+                    var unit1 = data[i].unit1;//decode json
+                    var unit1_name = data[i].unit1_name;//decode json
+                    var unit2 = data[i].unit2;//decode json
+                    var unit2_name = data[i].unit2_name;//decode json
+                    var unit3 = data[i].unit3;//decode json
+                    var unit3_name = data[i].unit3_name;//decode json
+                    var unit4 = data[i].unit4;//decode json
+                    var unit4_name = data[i].unit4_name;//decode json
+                    var unit5 = data[i].unit5;//decode json
+                    var unit5_name = data[i].unit5_name;//decode json
+                    var unit6 = data[i].unit6;//decode json
+                    var unit6_name = data[i].unit6_name;//decode json
+                    var unit7 = data[i].unit7;//decode json
+                    var unit7_name = data[i].unit7_name;//decode json
+                    var unit8 = data[i].unit8;//decode json
+                    var unit8_name = data[i].unit8_name;//decode json
+                    var unit9 = data[i].unit9;//decode json
+                    var unit9_name = data[i].unit9_name;//decode json
+                    var unit10 = data[i].unit10;//decode json
+                    var unit10_name = data[i].unit10_name;//decode json
+                    var university_id = data[i].university_id;//decode json
+                   	var year_id=getCookie("semester_id");
+
+                        var sql = "INSERT INTO subject(branch_id,complete_notes,date,discounted_price,flag,num_of_unit,price,priority,regulation,semester_id,year_id,specialization,subject_description,subject_id,subject_name,subject_photo,tags,avg_rating,new_subject_photo,rating_count,single_line_content,subject_points,subject_time,unit1,unit1_name,unit2,unit2_name,unit3,unit3_name,unit4,unit4_name,unit5,unit5_name,unit6,unit6_name,unit7,unit7_name,unit8,unit8_name,unit9,unit9_name,unit10,unit10_name,university_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        transaction.executeSql(sql, [branch_id, complete_notes, date, discounted_price, flag, num_of_unit, price, priority, regulation,$subCmd,year_id, specialization, subject_description, subject_id, subject_name, subject_photo, tags, avg_rating, new_subject_photo, rating_count, single_line_content, subject_points, subject_time, unit1, unit1_name, unit2, unit2_name, unit3, unit3_name, unit4, unit4_name, unit5, unit5_name, unit6, unit6_name, unit7, unit7_name, unit8, unit8_name, unit9, unit9_name, unit10, unit10_name, university_id], function () {
+                            // console.log("condition----"+$subCmd+"------"+j);
+                            j++;
+                            if ($subCmd == 1 && j == (data_length)) {
+                                // // alert("adding in if condition");
+                                // deleteSubjects();
+                                addSubject(1,0,0);
+                                j=0;
+                                fetchSubject(2);//get subjects
+                                // console.log("adding in if condition");
+
+                            } else if($subCmd == 2 && j == (data_length)) {
+                                // insert_version(result);
+                                // console.log("adding in else condition");
+                                addSubject(2,0,0);
+                                // deleteSubjects();
+                            }
+                        }, function () {
+                            alert("error");
+                        });
+                        }
+                    });
+            },function(){});
+        });
+    }
+
+    function addSubject($subsem,$cmdFrom,$subject_id){
+    	// console.log("addSubjecttohomepage-5555555555555555");
+    	var year_id=getCookie("semester_id");
+    	var branch_id=getCookie("branch_id");
+    	var queryText = "";
+        var div_to_append = "";
+        let dataForSearch = "";
+    	if(year_id == 1){//delete later
+    		branch_id = 0;
+    	}
+
+    	if($subject_id != 0){
+    	    queryText = "WHERE subject_id = '"+$subject_id+"'";
+        }else if($cmdFrom == 10){
+    	    queryText = "";
+        }else if($subsem == 1){
+        	div_to_append = document.getElementById("homepage_subjects");
+            queryText = "WHERE semester_id = '1' AND year_id = '"+year_id+"' AND branch_id = '"+branch_id+"' ORDER BY flag DESC";
+        }else{
+            div_to_append = document.getElementById("homepage_subjects1");
+            queryText = "WHERE semester_id = '2' AND year_id = '"+year_id+"' AND branch_id = '"+branch_id+"' ORDER BY flag DESC";
+        }
+				db.transaction(function(transaction){
+					var sql = "SELECT * FROM subject "+queryText;
+					console.log("sql query:"+sql);
+					transaction.executeSql(sql,undefined,function(transaction,result){
+						if(result.rows.length){
+							for (var i = 0; i < result.rows.length; i++) {
+								var row = result.rows.item(i);
+								var branch_id = row.branch_id;//decode json
+								var complete_notes = row.complete_notes;//decode json
+								var date = row.date;//decode json
+								var discounted_price = row.discounted_price;//decode json
+								var flag = row.flag;//decode json
+								var num_of_unit = row.num_of_unit;//decode json
+								var price = row.price;//decode json
+								var priority = row.priority;//decode json
+								var regulation = row.regulation;//decode json
+								var semester_id = row.semester_id;//decode json
+								var specialization = row.specialization;//decode json
+								var subject_description = row.subject_description;//decode json
+								var subject_id = row.subject_id;//decode json
+								var subject_name = row.subject_name;//decode json
+								var subject_photo = row.subject_photo;//decode json
+								var tags = row.tags;//decode json
+								var avg_rating = row.avg_rating;//decode json
+								var new_subject_photo = row.new_subject_photo;//decode json
+								var rating_count = row.rating_count;//decode json
+								var single_line_content = row.single_line_content;//decode json
+								var subject_points = row.subject_points;//decode json
+								var subject_time = row.subject_time;//decode json
+								var unit1 = row.unit1;//decode json
+								var unit1_name = row.unit1_name;//decode json
+								var unit2 = row.unit2;//decode json
+								var unit2_name = row.unit2_name;//decode json
+								var unit3 = row.unit3;//decode json
+								var unit3_name = row.unit3_name;//decode json
+								var unit4 = row.unit4;//decode json
+								var unit4_name = row.unit4_name;//decode json
+								var unit5 = row.unit5;//decode json
+								var unit5_name = row.unit5_name;//decode json
+								var unit6 = row.unit6;//decode json
+								var unit6_name = row.unit6_name;//decode json
+								var unit7 = row.unit7;//decode json
+								var unit7_name = row.unit7_name;//decode json
+								var unit8 = row.unit8;//decode json
+								var unit8_name = row.unit8_name;//decode json
+								var unit9 = row.unit9;//decode json
+								var unit9_name = row.unit9_name;//decode json
+								var unit10 = row.unit10;//decode json
+								var unit10_name = row.unit10_name;//decode json
+								var university_id = row.university_id;//decode json
+                                var university_name = "JNTUK";
+
+                                if($subject_id !=0){
+                                    var top_buynow_button = document.getElementById("top_buynow_button");
+                                    var syllabus_units = document.getElementById("syllabus_units");
+                                    var subject_details_title_down = document.getElementById("subject_details_title_down");
+                                    var notes_pdf = document.getElementById("notes_pdf");
+                                    top_buynow_button.innerHTML = "<div style=\"background: #4593e3;\" class=\"col-md-12\"><form method=\"POST\" action=\"\" style=\"margin:;text-align:right; ;\" ><input type=\"hidden\" class=\"form-control\" name=\"university_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"semester_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"branch_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"subject_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"regulation\" value=\" \" > <h1 style=\"font-family: 'Inconsolata', monospace; font-weight: 900; font-size: 18px; margin: 0; display: inline-block; max-width: 74%; color: #ffffff; text-shadow: 0 0 2px #000;vertical-align:middle;\">Purchase Complete "+subject_name+" Course For Just &#x20B9;"+discounted_price+" <strike style=\"font-size:0.7em;\">"+price+"</strike></h1> <button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"margin: 21px; background: #216fbd; box-shadow: none; font-family: 'Inconsolata', monospace; font-weight: 900;\" name=\"add_to_cart\" >Buy Now: &#x20B9;"+discounted_price+"</button> </form> </div>";
+                                    // for (k= 0;k<10;k++)
+                                    var unit_heaading = [];
+                                    var unit_boody = [];
+
+                                    unit_heaading[0] = unit1_name;
+                                    unit_boody[0] = unit1;
+
+                                    unit_heaading[1] = unit2_name;
+                                    unit_boody[1] = unit2;
+
+                                    unit_heaading[2] = unit3_name;
+                                    unit_boody[2] = unit3;
+
+                                    unit_heaading[3] = unit4_name;
+                                    unit_boody[3] = unit4;
+
+                                    unit_heaading[4] = unit5_name;
+                                    unit_boody[4] = unit5;
+
+                                    unit_heaading[5] = unit6_name;
+                                    unit_boody[5] = unit6;
+
+                                    unit_heaading[6] = unit7_name;
+                                    unit_boody[6] = unit7;
+
+                                    unit_heaading[7] = unit8_name;
+                                    unit_boody[7] = unit8;
+
+                                    unit_heaading[8] = unit9_name;
+                                    unit_boody[8] = unit9;
+
+                                    unit_heaading[9] = unit10_name;
+                                    unit_boody[9] = unit10;
+
+                                    for (j=0;j<10;j++){
+                                        if(unit_boody[j]){
+                                            var unit_heading = unit_heaading[j];
+                                            var unit_body = unit_boody[j];
+                                            // console.log(unit_heaading[j]+"---"+unit_boody[j]);
+                                            syllabus_units.innerHTML +=
+                                            "<a href=\"#\" class=\"togglefaq\" style=\"text-decoration:none\"><b>" +
+                                            "UNIT-"+(j+1)+": "+unit_heading+
+                                            "</b> <i class=\"fa fa-angle-down pull-right\" style=\"font-size:26px\"></i> </a> <div class=\"faqanswer\" style=\"width: 107%;margin-left: -14px;\"> <p>"+
+                                            unit_body+
+                                            " </p> </div> "
+                                        }
+                                    }
+
+                                    subject_details_title_down.innerHTML = "<p dir=\"auto\" itemprop=\"description\"> "+university_name+"&nbsp; &gt;&gt; &nbsp; "+regulation+" &nbsp; &gt;&gt; &nbsp; "+branch_id+" &nbsp; &gt;&gt; &nbsp; Semester-"+semester_id+" &nbsp; &gt;&gt; &nbsp; "+subject_name+" </p>";
+                                    notes_pdf.innerHTML = "<form method=\"POST\" action=\"\" style=\"text-align:center; ;\" > <!--<input type=\"submit1\" name=\"add_to_cart\" style=\"padding: 11px; font-size: 11px;color: #9c9595;border: 1px solid #d0c6c6;\" class=\"btn btn-success\" value=\"Add to Cart\" />--> <input type=\"hidden\" class=\"form-control\" name=\"university_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"semester_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"branch_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"subject_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"regulation\" value=\"\" > <h1 style=\"font-family: Retina,Arial,Helvetica,sans-serif;font-size: 14px;line-height: 25px;font-weight: 700;color: rgb(83 82 82 / 80%);\">To Get Complete Notes and video Lessons Purchase complete "+subject_name+" Course For Just &#x20B9;"+discounted_price+" <strike style=\"font-size:0.7em;\">"+price+"</strike></h1> <button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"margin: 9px;background: #216fbd;box-shadow: none;padding: 9px; width: 65%;color: white;font-size: 11px;border: 0px;font-family: Retina,Arial,Helvetica,sans-serif;font-weight: 800;\" name=\"add_to_cart\" onclick=\"myloginFunction()\">Buy Now: &#x20B9;"+discounted_price+"</button> </form>";
+                                    addVideoTopics();
+                                }else if($cmdFrom == 10){
+
+                                    dataForSearch += '{\"responseData\": {\"results\" : [{\"url\": \"nv pettoko\",\"titleNoFormatting\": \"'+subject_name+'\",\"content\": \"'+subject_description+'\"},]}}';
+                                }else{
+                                    var link = "";
+                                    if(flag != 2){
+                                        discounted_price = "Coming Soon";
+                                        link = "?url=coming_soon";
+
+                                    }else{
+                                        link = "?url=video_view&subject_id="+subject_id;
+                                    }
+                                    div_to_append.innerHTML += "<div class=\"item hover-container\" style=\"padding-bottom: 40px;\"> <div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"> <div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div> <div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"> <a id=\" u626-popper-trigger--30\" tabindex=\"0\" aria-expanded=\"false\" href=\""+link+"\" class=\"hover-target udlite-custom-focus-visible browse-course-card--link--3KIkQ\" style=\"display: block;text-decoration: none;\"> <div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"> <img alt=\"\" width=\"240\" height=\"135\" class=\"course-card--course-image--2sjYP browse-course-card--image--35hYN\" src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/"+subject_photo+"\"> </div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\"> <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">"+subject_name+"</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">"+subject_description+"</div> <div class=\"course-card--row--1OMjg\"> <span class=\"star-rating--star-wrapper--2eczq\"> <span class=\"udlite-sr-only\">Rating: 4.5 out of 5</span><span class=\"udlite-heading-sm star-rating--rating-number--3lVe8\" aria-hidden=\"true\" data-purpose=\"rating-number\">4.5</span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star-0\"></span> </span> <span aria-label=\"139919 reviews\" class=\"udlite-text-xs course-card--reviews-text--12UpL\">(139,919)</span> </div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> <div class=\"price-text--price-part--Tu6MH course-card--discount-price--3TaBk udlite-heading-md\" data-purpose=\"course-price-text\"><span class=\"udlite-sr-only\">Current price</span><span><span>"+discounted_price+"</span></span></div> </div> <div class=\"udlite-badge udlite-heading-xs udlite-badge-bestseller \">Bestseller</div> </div> </div> </a> </div> </div> </div> </div> </div> <aside class=\"hover-popup\"> <div class=\"course-popover-content\"> <div class=\"course-title\"> <a href=\"#\" tabindex=\"0\">"+subject_name+"</a> </div> <div class=\"last-updated\">Last updater "+date+"</div> <div class=\"course-meta\" style=\"color: #f6892a;\"> <span class=\"\"><i class=\"fa fa-play-circle\" aria-hidden=\"true\"></i> 10 Lessons </span> <span class=\"\"><i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> 11:33:48 Hours </span> <span class=\"\"><i class=\"fa fa-closed-captioning\" aria-hidden=\"true\"></i></span> </div> <div class=\"course-subtitle\">"+subject_description+"</div> <div class=\"what-will-learn\"> <ul> <li style=\"display: block!important; display: -webkit-box!important; -webkit-line-clamp: 3; -moz-line-clamp: 3; -ms-line-clamp: 3; -o-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; -moz-box-orient: vertical; -ms-box-orient: vertical; -o-box-orient: vertical; box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; visibility: visible; font-size: 15px; line-height: 1.53; letter-spacing: -.2px; color: #686f7a; padding-top: 10px;\"><i class=\"fa fa-check\" aria-hidden=\"true\" style=\"color: #828282; padding-right: 10px; font-size: 14px; font-weight: 100;\"></i>"+subject_description+"</li> </ul> </div> <div class=\"popover-btns\" style=\"padding-right: 0px;\"> <button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\" id=\"21\" onclick=\"handleCartItems(this)\" tabindex=\"0\" style=\"color: #fff; background-color: #f6892a; border-color: #f6892a; padding: 11px 12px; font-size: 15px; width: 70%; border-radius: 2px; line-height: 1.35135; font-weight: 600;\"> Buy Now </button> <button style=\"right: 38px;\" type=\"button\" class=\"wishlist-btn \" title=\"Add to Cart\" onclick=\"handleWishList(this)\" id=\"21\" tabindex=\"0\"><i class=\"fa fa-shopping-cart\"></i></button><button style=\"right: 0px;\" type=\"button\" class=\"wishlist-btn \" title=\"Add to wishlist\" onclick=\"handleWishList(this)\" id=\"21\" tabindex=\"0\"><i class=\"fa fa-heart\"></i></button><br><br> <button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\" id=\"21\" onclick=\"handleCartItems(this)\" tabindex=\"0\" style=\"color: #fff; background-color: #f6892a; border-color: #f6892a; padding: 11px 12px; font-size: 15px; border-radius: 2px; line-height: 1.35135; font-weight: 600;\"> Buy Complete Semester </button></div></div></aside></div>";
+                                    if($cmdFrom == 1 && i == result.rows.length-1){
+                                        addSubject(2,0,0);
+                                    }
+                                }
+							}
+						}else{
+							console.log("no data found");
+						}
+					},function(transaction,err){
+						alert(err.message);
+					});
+				});
+    	        if($cmdFrom == 10){
+                    // alert(dataForSearch);
+                }
+		}
+
+    function fetchSubject($subsem){
+        // console.log("fetchSubject-666666666666666666");
+        var branch_id=getCookie("branch_id");
+        var year_id=getCookie("semester_id");
+        if(branch_id == null || year_id == null){
+            // showpopup()
+            return;
+        }
+        var subsem = 1;
+        if($subsem == 2){
+            subsem = 2;
+            updateVersionToDb();
+        }
+
+        var data = {
+            cmd: 103,
+            branch_id:branch_id,//insert branch id
+            year_id:year_id,//insert year id
+            sub_sem_id:subsem,//sub sem id = 1 means 1st sem 2 = 2nd sem
+            university_name :"JNTUK"
+        }
+
+        sendRequest(data,103,subsem,0);//get subjects
+    }
+
+    function onSignIn(googleUser) {
+        console.log("*****************2");
+        // alert("ds2");
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        // console.log('Full Name: ' + profile.getName());
+        // console.log('Given Name: ' + profile.getGivenName());
+        // console.log('Family Name: ' + profile.getFamilyName());
+        // console.log("Image URL: " + profile.getImageUrl());
+        // console.log("Email: " + profile.getEmail());
+        // alert("ID: " + profile.getId())
+        // alert('Full Name: ' + profile.getName())
+        // alert('Given Name: ' + profile.getGivenName())
+        // alert("Image URL: " + profile.getImageUrl())
+        closeLogin();
+        data = {
+            cmd:101,
+            email:profile.getEmail(),
+            fcm_token:"",
+            phone:"",
+            name:profile.getName()
+        }
+        send_data = []
+        send_data[0] = profile.getEmail();
+        send_data[1] = profile.getName();
+        send_data[2] = profile.getImageUrl();
+        sendRequest(data,101,send_data,0);
+    }
+
+    function commonFunctions() {
+        console.log("commonFunctions-777777777777777777");
+        let url_str = window.location.href;
+        let window_url = new URL(url_str);
+        let search_params = window_url.searchParams;
+        var url_page = search_params.get('url');
+
+
+
+        if(url_page == "video_view"){
+            console.log("video_viewwwwwwwwwwwwwwwww");
+            addFirstVideo();
+
+        }else if(url_page == "checkout"){
+            cartDetails();
+        }else{
+            console.log("indexxxxxx");
+            createInitTables();
+            var data = {
+                cmd:100
+            }
+
+            userData();//show/hide login button in menu
+            // console.log(data+getVersion()+"");
+            var branch_id=getCookie("branch_id");
+            var year_id=getCookie("semester_id");
+            if(year_id){
+                sendRequest(data,100,getVersion(),0);
+            }
+        }
+    }
+
+    function getVersion(){
+            // console.log("getVersion-8888888888888888888888");
+            var id = 1;
+            db.transaction(function(transaction){
+                var sql = "SELECT * FROM db_version WHERE id ='1' ";
+                transaction.executeSql(sql,undefined,function(transaction,result){
+                    if(result.rows.length){
+
+                        var row = result.rows;
+                        var version = row.version;
+
+                        return version;
+
+                    }else{
+                        return 0;
+                    }
+                },function(transaction,err){
+                    return 0;
+                });
+            });
+        // return 7;
+
+    }
+
+    function updateVersionToDb(){
+        // console.log("updateVersionToDb-9999999999999999999999999999");
+        //insert from cookie
+        var version =getCookie("version");
+
+        db.transaction(function(transaction){
+            var sql = "CREATE TABLE  db_version (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,version VARCHAR(200) NULL)";
+
+
+            transaction.executeSql(sql,undefined,function(){
+
+                db.transaction(function(transaction){
+                    version = 0;
+
+                    var sql = "INSERT INTO db_version(version) VALUES(?)";
+                    transaction.executeSql(sql,[version],function(){
+
+                    },function(transaction,error){
+                        alert(error.message);
+                    });
+                });
+
+
+             },function(){
+
+                db.transaction(function(transaction){
+                    var sql = "UPDATE db_version SET version = ? WHERE id = 1";
+                    transaction.executeSql(sql,[version]);
+                });
+            });
+
+    });
+}
+
+    function createVersion(result){
+    	// console.log("createVersion-911111111111111111111111");
+        var version = result;
+        document.cookie = "version" + "=" + version + ";path=/";
+        // console.log(getCookie("version")+"###############")
+
+        fetchSubject(1);
+    }
+
+    function createInitTables(){
+        db.transaction(function(transaction) {
+            var sql = "CREATE TABLE IF NOT EXISTS subject (branch_id VARCHAR(10) NOT NULL,complete_notes TEXT NOT NULL,date TEXT NOT NULL,discounted_price INTEGER NOT NULL,flag INTEGER NOT NULL,num_of_unit INTEGER NOT NULL,price INTEGER NOT NULL,priority INTEGER NOT NULL,regulation INTEGER NOT NULL,semester_id INTEGER NOT NULL,year_id INTEGER NULL,specialization INTEGER NOT NULL,subject_description TEXT NOT NULL,subject_id VARCHAR(255) NOT NULL,subject_name VARCHAR(255) NOT NULL,subject_photo VARCHAR(255) NOT NULL,tags TEXT NOT NULL,avg_rating VARCHAR(100) NOT NULL,rating_count VARCHAR(100) NOT NULL,single_line_content TEXT NOT NULL,subject_points VARCHAR(100) NOT NULL,new_subject_photo TEXT NOT NULL,subject_time VARCHAR(100) NOT NULL,unit1 TEXT NOT NULL,unit1_name TEXT NOT NULL,unit2 TEXT NOT NULL,unit2_name TEXT NOT NULL,unit3 TEXT NOT NULL,unit3_name TEXT NOT NULL,unit4 TEXT NOT NULL,unit4_name TEXT NOT NULL,unit5 TEXT NOT NULL,unit5_name TEXT NOT NULL,unit6 TEXT NOT NULL,unit6_name TEXT NOT NULL,unit7 TEXT NOT NULL,unit7_name TEXT NOT NULL,unit8 TEXT NOT NULL,unit8_name TEXT NOT NULL,unit9 TEXT NOT NULL,unit9_name TEXT NOT NULL,unit10 TEXT NOT NULL,unit10_name TEXT NOT NULL,university_id INT NOT NULL)";
+            transaction.executeSql(sql, undefined, function () {
+            });
+        });
+    }
+
+    function fetchVideos($subject_id){
+        console.log($subject_id+"subject_id");//undefined
+        var data = {
+            cmd:105,
+            subject_id:$subject_id,
+        }
+        // console.log($subject_id);
+        sendRequest(data,105,0,0)
+    }
+
+    function insertVideo($result){
+        console.log($result);
+        var result = $result;
+        db.transaction(function(transaction){
+            var sql = "CREATE TABLE IF NOT EXISTS video (datentime VARCHAR(200) NOT NULL,full_video TEXT NOT NULL,part_num INTEGER NOT NULL,subject_id VARCHAR(100) NOT NULL,tags TEXT NOT NULL,trail_video TEXT NOT NULL,unit_num INTEGER NOT NULL,video_active INTEGER NOT NULL,video_description TEXT NOT NULL,video_file TEXT NOT NULL,video_id VARCHAR(100) NOT NULL,video_name VARCHAR(255) NOT NULL,video_photo VARCHAR(255) NOT NULL,video_priority INTEGER NULL,view_count INTEGER NOT NULL)";
+            transaction.executeSql(sql,undefined,function(){
+                db.transaction(function (transaction) {
+                data = result.data
+
+                    var data_length = data.length
+                    var j = 0;
+                    for (i=0;i<data_length;i++) {
+                        var datentime = data[i].datentime;//decode json
+                        var full_video = data[i].full_video;//decode json
+                        var part_num = data[i].part_num;//decode json
+                        var subject_id = data[i].subject_id;//decode json
+                        var tags = data[i].tags;//decode json
+                        var trail_video = data[i].trail_video;//decode json
+                        var unit_num = data[i].unit_num;//decode json
+                        var video_active = data[i].video_active;//decode json
+                        var video_description = data[i].video_description;//decode json
+                        var video_file = data[i].video_file;//decode json
+                        var video_id = data[i].video_id;//decode json
+                        var video_name = data[i].video_name;//decode json
+                        var video_photo = data[i].video_photo;//decode json
+                        var view_count = data[i].view_count;//decode json
+                        // var video_priority = data[0].video_priority;//decode json
+
+                        var sql = "INSERT INTO video(datentime,full_video,part_num,subject_id,tags,trail_video,unit_num,video_active,video_description,video_file,video_id,video_name,video_photo,view_count) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        transaction.executeSql(sql, [datentime, full_video, part_num, subject_id, tags, trail_video, unit_num, video_active, video_description, video_file, video_id, video_name, video_photo, view_count], function () {
+                            // alert("success");
+                            // addVideoTopics();
+                            j++;
+                            console.log(j+"-----"+(data_length)+"---data_length");
+                            if(j == (data_length)){
+                                addFirstVideo();
+                            }
+                        }, function (transaction, err) {
+                            console.log(err.message+"error in insert video");
+                        });
+                    }
+                });
+            });
+        });
+    }
+
+    function addVideoTopics(){
+        db.transaction(function(transaction){
+                // url = window.location.href;
+                // var subject_id = url.substring(url.lastIndexOf('subject_id=') + 1);
+                // var unit_id = url.substring(url.lastIndexOf('unit_id=') + 1);
+
+
+                let url_str = window.location.href;
+                let window_url = new URL(url_str);
+                let search_params = window_url.searchParams;
+                let subject_id = search_params.get('subject_id');
+                let unit_id = search_params.get('unit_id');
+
+                console.log("add video topics");
+
+                var div_to_append = document.getElementById("unit_wise_videos");
+                if(unit_id == null){
+                    var queryText = "WHERE subject_id = '"+subject_id+"' ";
+                }else{
+                    var queryText = "WHERE subject_id = '"+subject_id+"' AND unit = '"+unit_id+"' ";
+                }
+
+            var sql = "SELECT * FROM video "+queryText;
+            transaction.executeSql(sql,undefined,function(transaction,result){
+                if(result.rows.length){
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        var datentime = row.datentime;//decode json
+                        var full_video = row.full_video;//decode json
+                        var part_num = row.part_num;//decode json
+                        var subject_id = row.subject_id;//decode json
+                        var tags = row.tags;//decode json
+                        var trail_video = row.trail_video;//decode json
+                        var unit_num = row.unit_num;//decode json
+                        var video_active = row.video_active;//decode json
+                        var video_description = row.video_description;//decode json
+                        var video_file = row.video_file;//decode json
+                        var video_id = row.video_id;//decode json
+                        var video_name = row.video_name;//decode json
+                        var video_photo = row.video_photo;//decode json
+                        var view_count = row.video_priority;//decode json
+                        div_to_append.innerHTML += "<div class=\"video-wrapper top-video-wrapper pt_video_side_vids pt_pt_mn_wtch_rltvids\" data-sidebar-video=\"4\"> <div class=\"video-thumb\"> <a href=\"?url=video_view&video_id="+video_id+"&subject_id="+subject_id+"\" data-load=\"?link1=watch&id=loMH8tyCJFJpt3O\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\" alt=\""+video_name+"\"> <div class=\"play_hover_btn\" > <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-play-circle\"> <circle cx=\"12\" cy=\"12\" r=\"10\"></circle> <polygon points=\"10 8 16 12 10 16 10 8\"></polygon> </svg> </div></a> </div> <div class=\"video-title\" style=\"text-align:center;\"> <a style=\"font-size:13px;\" href=\"video_view.php?video_id="+video_id+"&unit_id="+unit_id+"\" data-load=\"?link1=watch&id=loMH8tyCJFJpt3O\" >"+video_name+"</a> </div> <div class=\"vid_pub_info\" style=\"display:none;\"> <a href=\"video_view.php?video_id="+video_id+"&unit_id="+unit_id+"\" data-load=\"?link1=timeline&id=deendoughouz\"><span class=\"video-publisher\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\"alt=\""+video_name+"\">..</span></a> <span class=\"bold\">|</span> <span class=\"video-views\">"+view_count+" Views</span> </div> <div class=\"clear\"></div> </div>";
+                        // addVideoFirstView();
+                    }
+                }else{
+
+                }
+            },function(transaction,err){
+                fetchVideos(subject_id);
+                console.log("not founddddddddddddd");
+            });
+        });
+    }
+
+    function addFirstVideo(){
+        db.transaction(function(transaction){
+            // var url_str = window.location.href;
+            // var video_id = url_str.substring(url_str.lastIndexOf('video_id=') + 1);
+            console.log("add first video");
+            let url_str = window.location.href;
+            let window_url = new URL(url_str);
+            let search_params = window_url.searchParams;
+            let subject_id_1 = search_params.get('subject_id');
+            let video_id = search_params.get('video_id');
+            var video_main_details = document.getElementById("video_main_details");
+            var iframe_video = document.getElementById("iframe_video");
+            var pdf_file = document.getElementById("pdf_file");
+            var queryText = "WHERE video_id = '"+video_id+"'";
+
+            if(video_id == null){
+                queryText = "WHERE unit_num = '1' AND part_num = '1' LIMIT 1";
+            }
+
+            var sql = "SELECT * FROM video "+queryText;
+            transaction.executeSql(sql,undefined,function(transaction,result){
+                console.log("add first video_row count"+result.rows.length)
+                if(result.rows.length){
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        var datentime = row.datentime;//decode json
+
+                        var part_num = row.part_num;//decode json
+                        var subject_id = row.subject_id;//decode json
+                        var tags = row.tags;//decode json
+                        var trail_video_raw = row.trail_video;//decode json
+                        var trail_video = trail_video_raw.substr(trail_video_raw.length-9);
+                        var full_video_raw = row.full_video;//decode json
+                        var full_video = trail_video_raw.substr(full_video_raw.length-9);
+                        var unit_num = row.unit_num;//decode json
+                        var video_active = row.video_active;//decode json
+                        var video_description = row.video_description;//decode json
+                        var video_file = row.video_file;//decode json
+                        var video_id = row.video_id;//decode json
+                        var video_name = row.video_name;//decode json
+                        var video_photo = row.video_photo;//decode json
+                        var view_count = row.video_priority;//decode json
+
+                        video_main_details.innerHTML = "<div class=\"video-title pt_video_info\"> <input type=\"hidden\" value=\"35943\" id=\"video-id\"> <div class=\"video-big-title\"> <h1 itemprop=\"title\" style=\"text-transform:capitalize;\">"+video_name+" </h1> </div> <div class=\"video-views\"> <span id=\"video-views-count\">"+view_count+" </span> Views </div> <div class=\"video-views\"> <a href=\"https://web.whatsapp.com/send?text=https://veteach.in/courses/video_view.php?video_id="+video_id+"\" target=\"_blank\" style=\"position: unset;text-decoration:none;\" class=\"desktopwhatsapp\"><i class=\"fa fa-whatsapp\" aria-hidden=\"true\" style=\"font-size: 24px;color: #00b0f0;\"></i>&nbsp;Share&nbsp; </a> <a href= \"whatsapp://send?text=https://veteach.in/courses/video_view.php?video_id="+video_id+"\" data-action=\"share/whatsapp/share\" target=\"_blank\" style=\"position: unset;text-decoration:none;\" class=\"mobilewhatsapp\"><i class=\"fa fa-whatsapp\" aria-hidden=\"true\" style=\"font-size: 24px;color: #00b0f0;\"></i>&nbsp;Share&nbsp;</a> </div> <div class=\"video-views\"> <form id=\"fupForm\" name=\"form1\" method=\"post\" style=\"display: inline;vertical-align: top;\"> <input type=\"hidden\" class=\"form-control\" id=\"user_id\" name=\"user_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" id=\"video_id\" name=\"video_id\" value= > <i onclick=\"myFunctionHeart(this)\" class=\"safa fa \" name=\"save\" id=\"butsave\" style=\"font-size: 27px; cursor: pointer; user-select: none; color: #00b0f0;\"></i></form> <div id=\"success\"></div> </div> <div class=\"publisher-element pull-left pt_mn_wtch_pub\" style=\"display:none;\"> <div class=\"publisher-avatar pull-left hide-in-mobile-720\" style=\"display:none;\"> <a href=\"#\"></a> </div> <div class=\"publisher-name\" >  </div> <div class=\"clear\"></div> </div> <div class=\"clear\"></div> <div class=\"video-published\"> Published on "+datentime+" </div> <div class=\"watch-video-description\" id=\"subject_details_title_down\"> <!--<span class=\"post-views-label\">Rating</span>--> </div> <div> <style> .checked_star { color: orange; } </style> <h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">545</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> &nbsp; <h7 style=\"color: #73726c;\">4545</h7> <span style=\"color:green;\">Thank Your for your Review!</span> <a href=\"javascript:myRating();\">Review Now</a> </div> <div class=\"watch-video-show-more desc pt_mn_wtch_rdmre\">Note: For Better view of the pdf file Adjust it With Below Options & if you see a blank pdf file please click on auto adjust or adjust height/width</div> <hr> <span id=\"pdf_file\"></span> <hr> <div class=\"player-video\" style=\"margin: auto !important; float:unset;text-align:center;\"> <div style=\"padding-top: 28px;\" id=\"notes_pdf\"> </div> </div> </div>";
+
+                        iframe_video.innerHTML = "<div class=\"video-player pt_video_player \" id=\"post_live_video_35943\"><div class='embed-container' ><iframe src=\"https://player.vimeo.com/video/"+full_video+"\" frameborder=\"0\" webkitallowfullscreen=\"\" mozallowfullscreen=\"\" allowfullscreen=\"\" width=\"100%\"></iframe></div><div class=\"icons hidden\"><span class=\"expend-player\"><i class=\"fa fa-expand fa-fw\"></i></span></div></div>";
+
+                        // pdf_file.innerHTML += "<div class=\"pdf-container\" data-href=\"https://veteach.in/assets/uploads/video_file/"+video_file+"\"></div>";
+                        // console.log("add subject calling here");
+                        addSubject(0,0,subject_id);
+                    }
+                }else{
+                    console.log("video_view_add_first_video_1")
+                    fetchVideos(subject_id_1)
+                }
+            },function(transaction,err){
+                 console.log("video_view_add_first_video_1"+err.message)
+                fetchVideos(subject_id_1)
+            });
+        });
+    }
+
+
+//     function addVideoDetails(){
+//         db.transaction(function(transaction){
+//
+//             let url_str = window.location.href;
+//             let window_url = new URL(url_str);
+//             let search_params = window_url.searchParams;
+//             let subject_id = search_params.get('subject_id');
+//             let video_id = search_params.get('video_id');
+//
+//             var div_to_append = document.getElementById("video_details2");
+//             var queryText = "WHERE video_id = '"+video_id+"'";
+//
+//             var sql = "SELECT * FROM video "+queryText;
+//             transaction.executeSql(sql,undefined,function(transaction,result){
+//                 if(result.rows.length){
+//                     for (var i = 0; i < result.rows.length; i++) {
+//                         var row = result.rows.item(i);
+//                         var datentime = row.datentime;//decode json
+//                         var full_video = row.full_video;//decode json
+//                         var part_num = row.part_num;//decode json
+//                         var subject_id = row.subject_id;//decode json
+//                         var tags = row.tags;//decode json
+//                         var trail_video = row.trail_video;//decode json
+//                         var unit_num = row.unit_num;//decode json
+//                         var video_active = row.video_active;//decode json
+//                         var video_description = row.video_description;//decode json
+//                         var video_file = row.video_file;//decode json
+//                         var video_id = row.video_id;//decode json
+//                         var video_name = row.video_name;//decode json
+//                         var video_photo = row.video_photo;//decode json
+//                         var view_count = row.video_priority;//decode json
+//                         div_to_append.innerHTML += "<div class=\"content pt_shadow\"> <div class=\"video-title pt_video_info\"> <input type=\"hidden\" value=\"35943\" id=\"video-id\"> <div class=\"video-big-title\"> <h1 itemprop=\"title\" style=\"text-transform:capitalize;;\">"+video_name+" </h1> </div> <div class=\"video-views\"> <span id=\"video-views-count\">"+view_count+" </span> Views </div> <div class=\"video-views\"> <a href=\"https://web.whatsapp.com/send?text=https://veteach.in/courses/video_view.php?video_id="+video_id+" \" target=\"_blank\" style=\"position: unset;text-decoration:none;\" class=\"desktopwhatsapp\"><i class=\"fa fa-whatsapp\" aria-hidden=\"true\" style=\"font-size: 24px;color: #00b0f0;\"></i>&nbsp;Share&nbsp; </a> <a href= \"whatsapp://send?text=https://veteach.in/courses/video_view.php?video_id="+video_id+"\" data-action=\"share/whatsapp/share\" target=\"_blank\" style=\"position: unset;text-decoration:none;\" class=\"mobilewhatsapp\"><i class=\"fa fa-whatsapp\" aria-hidden=\"true\" style=\"font-size: 24px;color: #00b0f0;\"></i>&nbsp;Share&nbsp;</a> </div> <div class=\"video-views\"> <form id=\"fupForm\" name=\"form1\" method=\"post\" style=\"display: inline;vertical-align: top;\"> <input type=\"hidden\" class=\"form-control\" id=\"user_id\" name=\"user_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" id=\"video_id\" name=\"video_id\" value=\"\" > <i onclick=\"myFunctionHeart(this)\" class=\"safa fa \" name=\"save\" id=\"butsave\" style=\"font-size: 27px; cursor: pointer; user-select: none; color: #00b0f0;\"></i></form> <div id=\"success\"></div> </div> <div class=\"publisher-element pull-left pt_mn_wtch_pub\" style=\"display:none;\"> <div class=\"publisher-avatar pull-left hide-in-mobile-720\" style=\"display:none;\"> <a href=\"#\"><img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+professor_photo+"\" alt=\"\"></a> </div> <div class=\"publisher-name\" > <a href=\"#\" data-load=\"?link1=timeline&id=mixtoon\">"+professor_name+"</a> </div> <div class=\"clear\"></div> </div> <div class=\"clear\"></div> <div class=\"video-published\"> Published on "+published+" </div> <div class=\"watch-video-description\"> <!--<span class=\"post-views-label\">Rating</span>--> <p dir=\"auto\" itemprop=\"description\"> "+university_name+"&nbsp; &gt;&gt; &nbsp; "+regulation+" &nbsp; &gt;&gt; &nbsp; "+branch_name+" &nbsp; &gt;&gt; &nbsp; "+semester_name+" &nbsp; &gt;&gt; &nbsp; "+subject_name+" </p> </div> <div> <style> .checked_star { color: orange; } </style> <h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">455</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span>&nbsp; <h7 style=\"color: #73726c;\">556</h7> <span style=\"color:green;\">Thank Your for your Review!</span> <a href=\"javascript:myRating();\">Review Now</a></div> <div class=\"watch-video-show-more desc pt_mn_wtch_rdmre\">Note: For Better view of the pdf file Adjust it With Below Options & if you see a blank pdf file please click on auto adjust or adjust height/width</div> <hr> <div class='pdf-container' data-href='https://veteach.in/assets/uploads/video_file/"+video_file+"'></div> <hr> <div class=\"player-video\" style=\"margin: auto !important; float:unset;text-align:center;\"> <div style=\"padding-top: 28px;\"> <form method=\"POST\" action=\"\" style=\"text-align:center; ;\" > <!--<input type=\"submit1\" name=\"add_to_cart\" style=\"padding: 11px; font-size: 11px;color: #9c9595;border: 1px solid #d0c6c6;\" class=\"btn btn-success\" value=\"Add to Cart\" />--> <input type=\"hidden\" class=\"form-control\" name=\"university_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"semester_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"branch_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"subject_id\" value=\"\" > <input type=\"hidden\" class=\"form-control\" name=\"regulation\" value=\"\" > <h1 style=\"font-family: Retina,Arial,Helvetica,sans-serif;font-size: 14px;line-height: 25px;font-weight: 700;color: rgb(83 82 82 / 80%);\">To Get Complete Notes and video Lessons Purchase complete "+subject_name+" Course For Just &#x20B9;"+discounted_price+" <strike style=\"font-size:0.7em;\">"+price+"</strike></h1> <button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"margin: 9px;background: #216fbd;box-shadow: none;padding: 9px; width: 65%;color: white;font-size: 11px;border: 0px;font-family: Retina,Arial,Helvetica,sans-serif;font-weight: 800;\" name=\"add_to_cart\" onclick=\"myloginFunction()\">Buy Now: &#x20B9;"+discounted_price+"</button> </form> </div> </div> </div> </div>";
+//                     }
+//                 }else{
+//                     alert("no data found");
+//                 }
+//             },function(transaction,err){
+//                 alert(err.message);
+//             });
+//         });
+//     }
+//
+//
+//     function videoDetails1(){
+//
+//         db.transaction(function(transaction){
+//             url = window.location.href;
+//             //GET Video_id
+//             var div_to_append = document.getElementById("video_details2");
+//             var queryText = "WHERE video_id = '"+subject_id+"'";
+//
+//             var sql = "SELECT * FROM video "+queryText;
+//             transaction.executeSql(sql,undefined,function(transaction,result){
+//                 if(result.rows.length){
+//                     for (var i = 0; i < result.rows.length; i++) {
+//                         var row = result.rows.item(i);
+//                         var datentime = row.datentime;//decode json
+//                         var full_video = row.full_video;//decode json
+//                         var part_num = row.part_num;//decode json
+//                         var subject_id = row.subject_id;//decode json
+//                         var tags = row.tags;//decode json
+//                         var trail_video = row.trail_video;//decode json
+//                         var unit_num = row.unit_num;//decode json
+//                         var video_active = row.video_active;//decode json
+//                         var video_description = row.video_description;//decode json
+//                         var video_file = row.video_file;//decode json
+//                         var video_id = row.video_id;//decode json
+//                         var video_name = row.video_name;//decode json
+//                         var video_photo = row.video_photo;//decode json
+//                         var view_count = row.video_priority;//decode json
+//
+//                        }
+//                 }else{
+//                     alert("no data found");
+//                 }
+//             },function(transaction,err){
+//                 alert(err.message);
+//             });
+//         });
+//     }
+//
+//     function video_details_2(){
+// 	//GET Subject_id
+// 	var div_to_append = document.getElementById("video_subject_location");
+// 	var div_to_append1 = document.getElementById("subject_video_notes");
+// 	var queryText = "WHERE subject_id = '"+subject_id+"'";
+//
+// 	db.transaction(function(transaction){
+// 		  var sql = "SELECT * FROM subject"+queryText;
+// 		  transaction.executeSql(sql,undefined,function(transaction,result){
+// 		    if(result.rows.length){
+//
+// 		        var row = result.rows;
+// 		  		var branch_id = row.branch_id;//decode json
+// 				var complete_notes = row.complete_notes;//decode json
+// 				var date = row.date;//decode json
+// 				var discounted_price = row.discounted_price;//decode json
+// 				var flag = row.flag;//decode json
+// 				var num_of_unit = row.num_of_unit;//decode json
+// 				var price = row.price;//decode json
+// 				var priority = row.priority;//decode json
+// 				var regulation = row.regulation;//decode json
+// 				var semester_id = row.semester_id;//decode json
+// 				var specialization = row.specialization;//decode json
+// 				var subject_description = row.subject_description;//decode json
+// 				var subject_id = row.subject_id;//decode json
+// 				var subject_name = row.subject_name;//decode json
+// 				var subject_photo = row.subject_photo;//decode json
+// 				var tags = row.tags;//decode json
+// 				var avg_rating = row.avg_rating;//decode json
+// 				var new_subject_photo = row.new_subject_photo;//decode json
+// 				var rating_count = row.rating_count;//decode json
+// 				var single_line_content = row.single_line_content;//decode json
+// 				var subject_points = row.subject_points;//decode json
+// 				var subject_time = row.subject_time;//decode json
+// 				var unit1 = row.unit1;//decode json
+// 				var unit1_name = row.unit1_name;//decode json
+// 				var unit2 = row.unit2;//decode json
+// 				var unit2_name = row.unit2_name;//decode json
+// 				var unit3 = row.unit3;//decode json
+// 				var unit3_name = row.unit3_name;//decode json
+// 				var unit4 = row.unit4;//decode json
+// 				var unit4_name = row.unit4_name;//decode json
+// 				var unit5 = row.unit5;//decode json
+// 				var unit5_name = row.unit5_name;//decode json
+// 				var unit6 = row.unit6;//decode json
+// 				var unit6_name = row.unit6_name;//decode json
+// 				var unit7 = row.unit7;//decode json
+// 				var unit7_name = row.unit7_name;//decode json
+// 				var unit8 = row.unit8;//decode json
+// 				var unit8_name = row.unit8_name;//decode json
+// 				var unit9 = row.unit9;//decode json
+// 				var unit9_name = row.unit9_name;//decode json
+// 				var unit10 = row.unit10;//decode json
+// 				var unit10_name = row.unit10_name;//decode json
+// 				var university_id = row.university_id;//decode json
+//
+//
+//
+//
+// 		    }else{
+// 		      alert("no data found");
+// 		    }
+// 		  },function(transaction,err){
+// 		    alert(err.message);
+// 		  });
+//     });
+// }
+
+
+    function cartDetails(){
+
+	db.transaction(function(transaction){
+		    url = window.location.href;
+		    //Get user_id
+		    var div_to_append = document.getElementById("cart_item_list");
+            var queryText = "WHERE user_id = '"+user_id+"'";
+	   		var sql = "SELECT * FROM cart "+queryText;
+		transaction.executeSql(sql,undefined,function(transaction,result){
+			if(result.rows.length){
+				for (var i = 0; i < result.rows.length; i++) {
+					var row = result.rows.item(i);
+					var cart_id = row.cart_id;//decode json
+					var user_id = row.user_id;//decode json
+					var university_id = row.university_id;//decode json
+					var regulation = row.regulation;//decode json
+					var semester_id = row.semester_id;//decode json
+					var branch_id = row.branch_id;//decode json
+					var subject_id = row.subject_id;//decode json
+					var datentime = row.datentime;//decode json
+
+					div_to_append.innerHTML += "<div class=\"col-md-12 col-sm-12 col-xs-12 mobile_mode1\"> <div class=\"container\" style=\"margin-top: 10px;border-radius: 10px;background-color: #fff;-webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);color: #454545;\"> <div class=\"col-md-12 \" style=\"border-bottom: 2px solid #f0f0f0;\"> <div class=\"row\"> <div class=\"col-md-6 col-xs-8 col-sm-8\" > <p style=\"font-size: 11px;word-spacing: 5px;\"> <div class=\"mobile_mode4\" style=\"font-size: 27px;color: #a0a0a0b3;display:inline;\"><b>"+university_name+"</b></div> <b class=\"mobile_mode3\"> | "+regulation+" | "+branch_name+" | "+semester_name+"</b></p> </div> <div class=\"col-md-2 col-xs-4 col-sm-4 pull-right mobil_mode5\" style=\"padding: 20px;\"> <form action=\"\" method=\"post\"> <input type=\"hidden\" name=\"cart_id\" value=\"\" > <button class=\"btn\" type=\"submit\" name=\"remove_from_cart\" style=\" font-weight: 600;\" > <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"color: #d25151;font-size:20px;\"></i>Remove </button> </form> </div> </div> </div> <div class=\"col-md-3\" style=\" padding: 17px;width: 50%; \"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+subject_photo+"\" style=\"border-radius: 15px;\" alt=\"video-classes\"> </div> <div class=\"col-md-5\" style=\"margin: auto;padding-top: 22px;font-size: 19px;\"> <p><b>"+subject_name+"</b></p> <p><span style=\"font-weight: bold;\">&#x20b9; "+discounted_price+"&nbsp;&nbsp;</span><strike style=\"font-size: 16px;color: #9c9b9b;\">&#x20b9; "+price+"</strike><span style=\" font-size: 14px; color: #00b0f0; font-weight: 700;\">&nbsp;"+percent+"%</span></p><h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">485</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span>&nbsp; <h7 style=\"color: #73726c;\">7854</h7><p style=\" display:none; font-size: 11px; font-weight: 990;\">BY-"+professor_name+"</p> </div> <div class=\"col-md-4\" style=\"padding: 31px;\"> <!--<p style=\" font-size: 11px;--> <!-- font-weight: 990;\">42- Videos</p>--> <!--<p style=\" font-size: 11px;--> <!-- font-weight: 990;\">Watch time 15 hours </p>--> <!--<p style=\" font-size: 11px;--> <!-- font-weight: 990;\">Explaination with Notes Download </p>--> </div> <div class=\"col-md-12\" style=\"border-top: 2px solid #f0f0f0; height: 30px;\"> <div class=\"row\"> <div class=\"col-md-4\" style=\"text-align:center;\" > <p>Total Orders-2182</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Downloads-23</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Likes-233</p> </div> </div> </div> </div> </div>";
+
+				}
+			}else{
+				alert("cart no data found");
+			}
+		},function(transaction,err){
+			alert(err.message);
+		});
+	});
+}
+
+    function userBasket($user_id,$subject_id,$flag){
+        db.transaction(function(transaction){
+            var sql = "CREATE TABLE IF NOT EXISTS user_basket (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,user_id VARCHAR(200) NULL,subject_id VARCHAR(200) NULL,flag VARCHAR(200) NULL)";
+            transaction.executeSql(sql,undefined,function(){
+                db.transaction(function (transaction) {
+                    var user_id = $user_id;//decode json
+                    var subject_id = $subject_id;//decode json
+                    var flag = $flag;//decode json
+
+                    var sql = "INSERT INTO user_basket(user_id,subject_id,flag) VALUES(?,?,?)";
+                    transaction.executeSql(sql, [user_id, subject_id, flag], function () {
+
+                    }, function (transaction, err) {
+                        console.log(err.message);
+                    });
+                });
+            });
+        });
+    }
+
+
+
+    function wishlist() {
+        var divname = "wishlist_items";
+        var wishlistdiv = "<div class=\"col-md-3 hover-container desktop_view\" style=\"padding-bottom: 40px;\"><div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"><div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div><div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"> <a id=\"u626-popper-trigger--30\" tabindex=\"0\" aria-expanded=\"false\" href=\""+link+"\" class=\"hover-target udlite-custom-focus-visible browse-course-card--link--3KIkQ\" style=\"display: block;text-decoration: none;\"> <div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"><img alt=\"\" width=\"240\" height=\"135\" class=\"course-card--course-image--2sjYP browse-course-card--image--35hYN\" src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/"+subject_photo+"\"></div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\" > <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">"+subject_name+"</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">"+subject_description+"</div> <div class=\"course-card--row--1OMjg\"> <span class=\"star-rating--star-wrapper--2eczq\"> <span class=\"udlite-sr-only\">Rating: 4.5 out of 5</span><span class=\"udlite-heading-sm star-rating--rating-number--3lVe8\" aria-hidden=\"true\" data-purpose=\"rating-number\">4.5</span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> </span> <span aria-label=\"139919 reviews\" class=\"udlite-text-xs course-card--reviews-text--12UpL\">(919)</span> </div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> <div class=\"price-text--price-part--Tu6MH course-card--discount-price--3TaBk udlite-heading-md\" data-purpose=\"course-price-text\"><span class=\"udlite-sr-only\">Current price</span><span><span>"+discounted_price+"</span></span></div> </div> <div class=\"udlite-badge udlite-heading-xs udlite-badge-bestseller \">Bestseller</div> </div> </div> </a> </div></div></div></div></div> <aside class=\"hover-popup animate__fadeIn\"> <div class=\"course-popover-content\"><div class=\"course-title\"> <a href=\"#\" tabindex=\"0\">"+subject_name+"</a> </div> <div class=\"last-updated\">Last updated "+date+"</div> <div class=\"course-meta\" style=\"color: #f6892a;\"> <span class=\"\"><i class=\"fa fa-play-circle\" aria-hidden=\"true\"></i> 10 Lessons </span> <span class=\"\"><i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> 11:03:48 Hours </span> </div> <div class=\"course-subtitle\">"+subject_description+"</div> <div class=\"what-will-learn\"> <ul> <li style=\"display: block!important; display: -webkit-box!important; -webkit-line-clamp: 3; -moz-line-clamp: 3; -ms-line-clamp: 3; -o-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; -moz-box-orient: vertical; -ms-box-orient: vertical; -o-box-orient: vertical; box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; visibility: visible; font-size: 15px; line-height: 1.53; letter-spacing: -.2px; color: #686f7a; padding-top: 10px;\"><i class=\"fa fa-check\" aria-hidden=\"true\" style=\"color: #828282; padding-right: 10px; font-size: 14px; font-weight: 100;\"></i>"+subject_description+"</li></ul> </div> <style type=\"text/css\"> .added{ color: blue!important; } </style> <div class=\"popover-btns\" style=\"padding-right: 0px;\"><button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\" id=\"21\" onclick=\"UserBasket(this)\" tabindex=\"0\" style=\"color: #fff; background-color: #f6892a; border-color: #f6892a; padding: 11px 12px; font-size: 15px; width: 70%; border-radius: 2px; line-height: 1.35135; font-weight: 600;\"> Buy Now </button><form method=\"POST\" action=\"\" style=\"text-align:center;margin: 0 0 0px;\" > <input type=\"hidden\" class=\"form-control\" id=\"addOrDelete\" name=\"addOrDelete\" value=\"33\" > <input type=\"hidden\" class=\"form-control\" id=\"subject_id\" name=\"subject_id\" value=\"423\" > <input type=\"hidden\" class=\"form-control\" id=\"flag\" name=\"flag\" value=\"343\" ><button style=\"right: 38px;\" type=\"button\" class=\"wishlist-btn \" title=\"Add to Cart\" id=\"21\" tabindex=\"0\"><i class=\"fa fa-shopping-cart\" onclick=\"UserBasket(this)\"></i></button> </form><form method=\"POST\" action=\"\" style=\"text-align:center;margin: 0 0 0px;\" > <input type=\"hidden\" class=\"form-control\" id=\"addOrDelete\" name=\"addOrDelete\" value=\"333\" > <input type=\"hidden\" class=\"form-control\" id=\"subject_id\" name=\"subject_id\" value=\"423\" > <input type=\"hidden\" class=\"form-control\" id=\"flag\" name=\"flag\" value=\"343\" > <button style=\"right: 0px;\" type=\"button\" class=\"wishlist-btn \" title=\"Add to wishlist\" id=\"21\" tabindex=\"0\"><i class=\"fa fa-heart\" onclick=\"UserBasket(this)\"></i></button> </form> <br> <button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\" id=\"21\" tabindex=\"0\" style=\"color: #fff; background-color: #f6892a; border-color: #f6892a; padding: 11px 12px; font-size: 15px; border-radius: 2px; line-height: 1.35135; font-weight: 600;\"> Buy Complete Semester </button> </div> </div></aside></div>"
+
+    }
+
+
+
+</script>

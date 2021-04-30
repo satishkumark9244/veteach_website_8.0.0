@@ -1,0 +1,877 @@
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@800&display=swap" rel="stylesheet">
+
+
+
+ <script type="text/javascript">
+
+if (screen.width < 699) {
+    let url_str = window.location.href;
+    let window_url = new URL(url_str);
+    let search_params = window_url.searchParams;
+    let subject_id_url = search_params.get('subject_id');
+    let video_id_url = search_params.get('video_id');
+    let unit_id_url = search_params.get('unit_id');
+    let semester_id = search_params.get('semester_id');
+    var video_send_url = "";
+    if(video_id_url != null){
+        video_id_url += "&video_id="+video_id_url;
+    }
+    if(unit_id_url !=null){
+        video_id_url += "&unit_id="+unit_id_url;
+    }
+    var category = search_params.get('category');
+    if(category == "model_paper"){
+        addModelVideos(video_id);
+    }else if(category == "top_lessons"){
+        addTopLessonsVideos(video_id);
+    }else{
+        document.location = "?url=mobile_video_view&subject_id="+subject_id_url+"&semester_id="+semester_id+video_send_url;
+    }
+}
+
+</script>
+
+<style>
+    body{
+        padding-top: 0px!important;
+    }
+    #main-container{
+        padding-top: 77px !important;
+    }
+</style>
+<style>
+.modal-window > div {
+    width: 60%;
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 0 6px black;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    padding: 2em;
+    background: #ffffff;
+}
+#pdf-autofit-height{
+    padding: 5px;
+    border: 2px solid #dbdbdb;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+    text-decoration: underline;
+}
+
+#pdf-autofit-width{
+    padding: 5px;
+   border: 2px solid #dbdbdb;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+    text-decoration: underline;
+}
+
+#pdf-autofit{
+    padding: 5px;
+    border: 2px solid #dbdbdb;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+    text-decoration: underline;
+
+}
+#pdf-prev{
+       padding: 5px;
+   border: 2px solid #dbdbdb;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+        text-decoration: underline;
+}
+
+.pdf-pager{
+  font-size: 10px;
+    font-weight: bold;
+}
+#pdf-next{
+       padding: 5px;
+    border: 2px solid #dbdbdb;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+        text-decoration: underline;
+
+}
+.buttonpdf {
+    display: block;
+    position: relative;
+    float: left;
+    width: 120px;
+    padding: 0;
+    margin: 10px 20px 10px 0;
+    font-weight: 600;
+    text-align: center;
+    line-height: 50px;
+    color: #FFF;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.buttonpdf:hover {background-color: #3e8e41}
+
+.buttonpdf:active {
+  background: #5DC8CD;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.pdf-container
+{
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height:800px;
+  top: 20px;
+  bottom: 20px;
+
+  background-color: #fff;
+  /*border: solid 1px #111111;*/
+  overflow: hidden;
+}
+
+.pdf-toolbar
+{
+  background-color: #fff;
+  position: relative;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+
+  line-height: 40px;
+
+
+}
+
+.pdf-container .pdf-canvas {
+  position: absolute;
+  margin-top: 40px;
+  top: 0;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+.pdf-container canvas {
+  position: relative;
+  display: inline-block;
+}
+@media only screen and (max-width: 600px) {
+
+
+  .mobilewhatsapp{
+    display:inline;
+}
+.desktopwhatsapp{
+    display:none;
+}
+}
+  .mobilewhatsapp{
+
+     display:none;
+}
+.desktopwhatsapp{
+     display:inline;
+
+}
+   .shareaholic-share-buttons-container.shareaholic-round {
+   background-color: inherit;
+   background-image: none;
+   display: inline!important;
+   width: 43px !important;
+   }
+   .shareaholic-canvas {
+   clear: both;
+   display: inline!important;
+   width: 43px !important;
+   -webkit-transition: none;
+   -moz-transition: none;
+   transition: none;
+   }
+   .videos-list .pt_video_side_vids .video-thumb a {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0px;
+   }
+   .embed-container {
+   position: relative;
+   min-height: 505px;
+   margin-bottom: 20px;
+   height: 0;
+   overflow: hidden;
+   max-width: 100%;
+   }
+   .embed-container iframe, .embed-container object, .embed-container embed {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   }
+   .faqanswer {
+   display: none;
+   background: #303030;
+   color:white;
+   padding: 12px 20px 0 30px;
+   font-family: 'Lora', serif;
+   }
+   .faqanswer p {
+   font-size: 16px;
+   line-height: 25px;
+   font-family: 'Lora', serif;
+   }
+   a.active {
+   font-weight: bold;
+   }
+   .togglefaq {
+   width: 108%;
+   background-color: white;
+   text-decoration: none;
+   padding: 20px;
+   text-decoration: none;
+   color: #333;
+   font-size: 16px;
+   padding: 20px 33px;
+   line-height: 20px;
+   font-weight: bold;
+   display: block;
+   font-family: 'Rubik', sans-serif;
+   border: 1px solid #d0d0d0;/*rows="4" cols="50"*/
+   margin-bottom: -1px;
+   margin-left: -18px;
+   }
+   .icon-plus {
+   color: #5ec4cd;
+   margin-right: 20px;
+   font-size: 20px;
+   float:left;
+   }
+   .icon-minus {
+   color: #5ec4cd;
+   margin-right: 20px;
+   font-size: 20px;
+   float:left;
+   }
+   p {
+   margin: 0;
+   padding-bottom: 20px;
+   }
+</style>
+<style>
+   .light .btn-bt.rounded, .fullscreen-blog-article .content.background--dark .btn-bt {
+   color: #ffffff;
+   background: #00b0f0;
+   border-color: #00b0f0;
+   }
+   .btn-bt.align-center {
+   left: 53%;
+   margin-left: 500px;
+   }
+   @media (min-width: 768px){
+   .footermain1 {
+   color: white;
+   background-color: #626262;
+   /* padding: 20px; */
+   background: -moz-linear-gradient(45deg, #000 0%, #626262 100%);
+   background: -webkit-linear-gradient(45deg, #000 0%, #626262 100%);
+   background: linear-gradient(45deg, #000 0%, #626262 100%);
+   }
+   .footerheadline1 {
+   color: white;
+   font-size: 22px;
+   line-height: 45px;
+   text-align: center;
+   font-family: Montserrat;
+   font-weight: 700;
+   font-style: normal;
+   }
+   .footerheadline2 {
+   font-size: 13px;
+   color: #efefef;
+   line-height: 24px;
+   text-align: center;
+   font-family: Montserrat;
+   font-weight: 400;
+   font-style: normal;
+   }
+   }
+   .imgmak {
+   position: relative;
+   width:100%;
+   }
+   .image {
+   opacity: 1;
+   display: block;
+   width: 100%;
+   height: auto;
+   transition: .5s ease;
+   backface-visibility: hidden;
+   }
+   .middle {
+   transition: .5s ease;
+   opacity: 0;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   -ms-transform: translate(-50%, -50%);
+   text-align: center;
+   }
+   .imgmak:hover .image {
+   opacity: 0.3;
+   }
+   .imgmak:hover .middle {
+   opacity: 1;
+   }
+   .text {
+   background-color: #4CAF50;
+   color: white;
+   font-size: 16px;
+   padding: 16px 32px;
+   }
+</style>
+<div id="myRatingpage" class="modal-window" style="display:none;">
+   <div>
+      <a href="#" title="Close" class="modal-close" style="color:black;" onclick="closeRating()">Close</a>
+     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+<style>
+@import url(http://fonts.googleapis.com/css?family=Roboto:500,100,300,700,400);
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: roboto;
+}
+
+
+.cont {
+  width: 93%;
+  /*max-width: 350px;*/
+  text-align: center;
+  margin: 4% auto;
+  padding: 30px 0;
+
+  color: #EEE;
+  border-radius: 5px;
+
+  overflow: hidden;
+}
+
+hr {
+  margin: 20px;
+  border: none;
+  border-bottom: thin solid rgba(255,255,255,.1);
+}
+
+div.title { font-size: 2em; }
+
+h1 span {
+  font-weight: 300;
+  color: #Fd4;
+}
+
+div.stars {
+  width: 270px;
+  display: inline-block;
+}
+
+input.star { display: none; }
+
+label.star {
+  float: right;
+  padding: 10px;
+  font-size: 36px;
+  color: #444;
+  transition: all .2s;
+}
+
+input.star:checked ~ label.star:before {
+  content: '\f005';
+  color: #FD4;
+  transition: all .25s;
+}
+.modal-close {
+    color: #aaa;
+    line-height: 50px;
+    font-size: 15px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 103px;
+    text-decoration: none;
+}
+input.star-5:checked ~ label.star:before {
+  color: #FE7;
+  text-shadow: 0 0 20px #952;
+}
+
+input.star-1:checked ~ label.star:before { color: #F62; }
+
+label.star:hover { transform: rotate(-15deg) scale(1.3); }
+
+label.star:before {
+  content: '\f006';
+  font-family: FontAwesome;
+}
+input.star-5:checked ~ label.star:before {
+    color: #ffdf00;
+    text-shadow: 0 0 6px #414141;
+}
+</style>
+<link href="http://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
+
+
+<div class="cont">
+      <div class="title">
+    <h1 style="font-weight: 500;
+    color: #000000;
+    font-family: cursive;
+    font-size: 37px;
+    text-transform: capitalize;
+    font-style: normal;">Subject Rating</h1>
+  </div>
+  <form action="" method="post">
+  <div class="stars">
+
+      <input class="star star-5" id="star-5-2" type="radio" value="5" name="star"/>
+      <label class="star star-5" for="star-5-2"></label>
+      <input class="star star-4" id="star-4-2" type="radio" value="4" name="star"/>
+      <label class="star star-4" for="star-4-2"></label>
+      <input class="star star-3" id="star-3-2" type="radio" value="3" name="star"/>
+      <label class="star star-3" for="star-3-2"></label>
+      <input class="star star-2" id="star-2-2" type="radio" value="2" name="star"/>
+      <label class="star star-2" for="star-2-2"></label>
+      <input class="star star-1" id="star-1-2" type="radio" value="1" name="star"/>
+      <label class="star star-1" for="star-1-2"></label>
+
+  </div>
+   <input type="hidden" name="subject_id" value="" >
+  <textarea class="form-control" name="comment" rows="8" cols="120" placeholder="Enter your Comments Here..."></textarea>
+  <br>
+  <button type="text" name="add_rating" value="submit" class="btn btn-success" style="background-color: #5cb85c;"> Submit</button>
+  </form>
+</div>
+
+   </div>
+</div>
+<div id="main-container" class="container-fluid watch-container    main-content" >
+   <div class="ads-placment" id="header_ad_"></div>
+   <div class="announcement-renderer">
+   </div>
+   <div id="container_content">
+      <div class="top-video video-player-page">
+         <div class="row">
+            <div id="background" class="hidden"></div>
+
+
+                                <div class="col-md-8 player-video" >
+
+
+                              <div class="col-md-12 player-video" style="margin: auto !important; float:unset;text-align:right;" id="top_buynow_button">
+
+
+
+                    </div>
+
+
+
+            <div class="col-md-12" id="iframe_video">
+
+               <div class="clear"></div>
+            </div>
+
+
+               </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <style>
+               .btn121 {
+               border: none;
+               outline: none;
+               padding: 12px 16px;
+               background-color: #00aeef;
+               border-radius: 6px 6px 0 0;
+               color: #fff;
+               cursor: pointer;
+               width: 49%;
+               /*margin-left: -22px;*/
+               }
+               .btn121.active1:after {
+               position: absolute;
+               left: 0;
+               top: auto;
+               margin: 0 auto;
+               width: 0;
+               height: 0;
+               background: 0 0;
+               border-style: solid;
+               border-color: #fff transparent;
+               display: block;
+               }
+               .active1 {
+               background-color:#0084bd;
+               text-decoration: none;
+               color: white;
+               }
+               .btn:focus{
+               background-color: #24505c;
+               text-decoration: none;
+               color: white;
+               }
+            </style>
+            <style>
+.filterDiv243 {
+  float: left;
+
+  color: #ffffff;
+  width: 100%;
+  line-height: 100px;
+  text-align: center;
+  margin: 2px;
+  display: none;
+}
+
+.showelements {
+  display: block;
+}
+
+
+
+/* Style the buttons */
+.btn243 {
+   border: none;
+    outline: none;
+    padding: 23px 0px;
+    background-color: #ffffff;
+    cursor: pointer;
+    width: 49%;
+    transition: 0.2s;
+}
+
+.btn243:hover {
+  border-bottom: 5px solid rgba(33,150,243,1);
+
+    border-radius: 2px;
+
+
+
+}
+
+.btn243.active243 {
+border-bottom: 5px solid rgba(33,150,243,1);
+ color: black;
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    transform: scale(1.0);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+</style>
+
+
+            <script language="javascript" type="text/javascript">
+function doReload(catid){
+  document.location = 'video_view.php?video_id=';
+
+}
+</script>
+
+            <div class="col-md-4 col-sm-12 col-xs-12 no-padding-left pull-right ">
+               <div id="myBtnContainer243">
+                  <button class="btn243 active243" id="topic_div"  onclick="filterSelection243('topics')"> Topics</button>
+                  <button class="btn243 " id="syllabus_div"  onclick="filterSelection243('syllabus')"> Syllabus</button>
+               </div>
+               <div class="filterDiv243 topics">
+                  <div class="content pt_shadow">
+                     <div class="ads-placment"></div>
+                     <div class="next-video">
+                        <div class="next-text pull-left pt_mn_wtch_nxttxt">
+                           <h4>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                 <path fill="currentColor" d="M16,18H18V6H16M6,18L14.5,12L6,6V18Z" />
+                              </svg>
+                              Up next
+                           </h4>
+                        </div>
+                        <div class="pt_mn_wtch_switch pull-right">
+                        <form action="" method="GET" name="unit_id">
+                            <input type="hidden" name="subject_id"id="subject_id"  value="">
+                            <input type="hidden" name="video_id" id="video_id" value="">
+                            <input type="hidden" name="semester_id" id="semester_id" value="">
+                            <input type="hidden" name="url" id="video_view" value="video_view">
+                             <select name="unit_id" id="unit_id" class="form-control" onchange="this.form.submit()" >
+                              <option value="0">ALL</option>
+                              <option value="1">UNIT-1</option>
+                              <option value="2">UNIT-2</option>
+                              <option value="3">UNIT-3</option>
+                              <option value="4">UNIT-4</option>
+                              <option value="5">UNIT-5</option>
+                        
+                             </select>
+                        </form>
+                            
+                            <script>
+                                $('document').ready(function(){
+                                    let url_str = window.location.href;
+                                    let window_url = new URL(url_str);
+                                    let search_params = window_url.searchParams;
+                                    let subject_id_url = search_params.get('subject_id');
+                                    let video_id_url = search_params.get('video_id');
+                                    let unit_id_url = search_params.get('unit_id');
+                                    let semester_id = search_params.get('semester_id');
+                                     document.getElementById("subject_id").value = subject_id_url;
+
+                                    document.getElementById("semester_id").value = semester_id;
+                                    if(!(unit_id_url == null || unit_id_url == "null" || unit_id_url == "")){
+                                        // $("#unit_id").val(unit_id_url).change();
+                                        $("#unit_id").val(unit_id_url);
+                                    }
+
+                                    if(video_id_url != null){
+                                        document.getElementById("video_id").value = video_id_url;
+                                    }
+                                });
+
+                            </script>
+                            
+
+
+
+
+                        </div>
+                        <div class="clear"></div>
+                     </div>
+
+                     <div class="videos-list related-videos pt_mn_wtch_rlts_prnt" id="unit_wise_videos">
+
+                     </div>
+                  </div>
+               </div>
+               <div class="filterDiv243 syllabus">
+                  <div class="col-md-4" style="width: 100%;" id="syllabus_units">
+
+
+
+
+
+
+                  </div>
+               </div>
+
+            </div>
+
+
+
+         <script>
+filterSelection243("topics")
+function filterSelection243(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv243");
+  if (c == "all") c = "";
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "showelements");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "showelements");
+  }
+}
+
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+  }
+}
+
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer243");
+var btns = btnContainer.getElementsByClassName("btn243");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function(){
+    var current = document.getElementsByClassName("active243");
+    current[0].className = current[0].className.replace("active243", "");
+    this.className += " active243";
+  });
+}
+</script>
+
+
+
+
+            <div class="col-md-8  col-sm-12 col-xs-12 ">
+               <div class="content pt_shadow" id="video_main_details">
+
+               </div>
+               <div class="ads-placment"></div>
+            </div>
+
+
+
+
+
+
+
+            <div class="clear"></div>
+         </div>
+      </div>
+      <style>
+         .mejs__offscreen {
+         clip: initial !important;
+         clip-path: inherit !important;
+         -webkit-clip-path: inherit !important;
+         opacity: 0;
+         }
+      </style>
+   </div>
+</div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/courses/pdfviewer.js"></script>
+
+  <script type="text/javascript">
+    function pdfDisplay(){
+      $(".pdf-container").pdfviewer({
+        scale: 2,
+        onDocumentLoaded: function() {
+          var num = $(this).data('pdfviewer').pages();
+          $(this).data('pdfviewer').autoFitScaleByWidth();
+          //alert('onDocumentLoaded:'+num);
+
+        },
+              onPrevPage: function() {
+                //alert('onPrevPage');
+                return true;
+              },
+              onNextPage: function() {
+                //alert('onNextPage');
+                return true;
+              },
+              onBeforeRenderPage: function(num) {
+                //alert('onBeforeRenderPage');
+                  return true;
+              },
+              onRenderedPage: function(num) {
+                //alert('onRenderedPage');
+              }
+      });
+}
+
+
+  </script>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(".units").change(function(){
+        var selValue = $(this).val();
+        alert(selValue);
+    });
+</script>
+
+  <script>
+function myRating() {
+
+  document.getElementById("myRatingpage").style.display = "block";
+}
+function closeRating(){
+    document.getElementById('myRatingpage').style.display='none'
+}
+</script>
+<script>
+   //faq toggle stuff
+   // $('.togglefaq').click(function(e) {
+   //     alert('yyyyyyyyyyyaaaaaaaaa');
+   //     e.preventDefault();
+   //     var notthis = $('.active').not(this);
+   //     notthis.find('.icon-minus').addClass('fa fa-angle-down').removeClass('fa fa-angle-up');
+   //     notthis.toggleClass('active').next('.faqanswer').slideToggle(200);
+   //     $(this).toggleClass('active').next().slideToggle("fast");
+   //     $(this).children('i').toggleClass('fa fa-angle-down fa fa-angle-up');
+   // });
+
+
+   function syllabusDropdown($this){
+       var notthis = $('.active').not($this);
+       notthis.find('.icon-minus').addClass('fa fa-angle-down').removeClass('fa fa-angle-up');
+       notthis.toggleClass('active').next('.faqanswer').slideToggle(200);
+       $($this).toggleClass('active').next().slideToggle("fast");
+       $($this).children('i').toggleClass('fa fa-angle-down fa fa-angle-up');
+   }
+
+</script>
+</div>
+<input type="hidden" id="main-url" value="https://playtubescript.com%2Fwatch%2FOiz4ejqbfymIpYS">
+<div class="ads-placment" id="footer_ad_"></div>
+</div>
+<script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/courses/js/script.js"></script>
+<script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/courses/js/bootstrap.min.js"></script>
+<script src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/courses/js/bootstrap-toggle.min.js"></script>
+<script src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/courses/js/footer.js"></script>
+
+

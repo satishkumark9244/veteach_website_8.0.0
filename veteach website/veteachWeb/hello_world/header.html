@@ -1,0 +1,2364 @@
+
+  <!-- End Facebook Pixel Code -->
+  <!-- include_once 'includes/page_meta.php';
+  include_once 'includes/links.php'; -->
+  <style>
+      button{
+          outline: none!important;
+      }
+     .abcRioButton.abcRioButtonBlue{
+        margin: auto!important;
+
+      }
+
+     .btn-bt.rounded1 {
+     color: #ffffff;
+     background: #f2f2f2;
+     border-color: #f2f2f2;
+     }
+
+     .dropbtn {
+     color: #00b0f0;
+     padding: 4px;
+     font-size: 21px;
+     border: none;
+     cursor: pointer;
+     }
+     .dropdown {
+     position: relative;
+     display: inline-block;
+     }
+     .dropdown-content {
+     display: none;
+     position: absolute;
+     background-color: #f1f1f1;
+     min-width: 160px;
+     overflow: auto;
+     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+     z-index: 1;
+     }
+     .dropdown-content a {
+     color: black;
+     font-size: 13px;
+     text-decoration: none;
+     display: block;
+     }
+     /*.dropdown a:hover {background-color: #ddd;}*/
+     .show {display: block;}
+     #notificationContainer {
+     background-color: #fff;
+    overflow: visible;
+    position: fixed;
+    border-radius: 15px;
+    top: 9%;
+    min-height: 40%;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+    right: 7%;
+    width: 26%;
+    z-index: -1;
+     }
+     #notificationContainer:before {
+     content:'';
+     display: block;
+     position: absolute;
+     width: 0;
+     height: 0;
+     color: transparent;
+     border: 10px solid black;
+     border-color: transparent transparent white;
+     margin-top: -20px;
+     right: 52px;
+     }
+     #notificationTitle {
+     font-weight: bold;
+     padding: 8px;
+     font-size: 13px;
+     background-color: #ffffff;
+     position: absolute;
+     z-index: 1000;
+     width: 96%;
+     border-bottom: 1px solid #dddddd;
+     }
+     #notificationsBody {
+     padding: 33px 0px 0px 0px !important;
+     }
+     #notificationFooter {
+     text-align: center;
+     font-weight: bold;
+     padding: 7px;
+     font-size: 12px;
+     border-top: 1px solid #dddddd;
+     }
+     #notification_count {
+     padding: 3px 7px 3px 7px;
+     background: #cc0000;
+     color: #ffffff;
+     font-weight: bold;
+     margin-left: 7px;
+     border-radius: 9px;
+     -moz-border-radius: 9px;
+     -webkit-border-radius: 9px;
+     position: absolute;
+     margin-top: -11px;
+     font-size: 11px;
+     }
+     .notifications ul {
+     list-style-type: none;
+     display: inline-block;
+     padding-left: 12px;
+     }
+     .notifications ul li {
+     display: block;
+     padding: 4px;
+     margin: 4px;
+     font-weight: bold;
+     /*width: 325px;*/
+     }
+     .badge {
+     position: absolute;
+     top: -4px;
+     right: 0px;
+     padding: 1px 6px;
+     border-radius: 50%;
+     /*background-color: red;*/
+     color: white;
+     }
+     .search-header input {
+      height: 35px;
+      padding-left: 35px;
+      color: #444;
+      width: 600px !important;
+      transition: all 0.3s;
+      border: 0;
+      font-weight: 600;
+      background-color: rgba(0, 0, 0, 0.07);
+      border-radius: 2em;
+  }
+  .search-header svg.feather {
+      position: absolute;
+      top: 13px;
+      cursor: pointer;
+      left: 0px;
+      color: #637076;
+      margin: 8px;
+      }
+      svg.feather {
+      vertical-align: middle;
+      margin-top: -4px;
+      width: 19px;
+      height: 19px;
+  }
+  @media (max-width: 992px){
+  .navbar-form {
+      display: none;
+  }
+  .search-wrapper{
+    display: block;
+  }
+  }
+  @media (min-width: 992px){
+
+  .search-wrapper{
+    display: none;
+  }
+  }
+  ::selection {
+     background: #212129;
+  }
+
+  .search-wrapper {
+     position: absolute;
+      transform: translate(45%, -53%);
+      top: 53%;
+      right: 45%;
+      background-color: #eeeeee!important;
+  }
+  .search-wrapper.active {}
+
+  .search-wrapper .input-holder {
+      height: 70px;
+      width:70px;
+      overflow: hidden;
+      background: rgba(255,255,255,0);
+      border-radius:6px;
+      position: relative;
+      transition: all 0.3s ease-in-out;
+  }
+  .search-wrapper.active .input-holder {
+      width:360px;
+  /*    border-radius: 50px;
+      background: rgba(0,0,0,0.5);*/
+      transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+  }
+  .search-wrapper .input-holder .search-input {
+      width:100%;
+      height: 50px;
+      padding:0px 70px 0 47px;
+      opacity: 0;
+      position: absolute;
+      top:0px;
+      left:0px;
+      background: transparent;
+      box-sizing: border-box;
+      border:none;
+      outline:none;
+      font-family:"Open Sans", Arial, Verdana;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 20px;
+      color:#FFF;
+      transform: translate(0, 60px);
+      transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+      transition-delay: 0.3s;
+  }
+  .search-wrapper.active .input-holder .search-input {
+      opacity: 1;
+      color: black;
+      font-weight: 600;
+      transform: translate(0, 10px);
+  }
+  .search-wrapper .input-holder .search-icon {
+      width:70px;
+      height:67px;
+      border:none;
+      background: #FFF;
+      padding:0px;
+      outline:none;
+      position: relative;
+      z-index: 2;
+      float:right;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+  }
+  .search-wrapper.active .input-holder .search-icon {
+      width: 50px;
+      height:50px;
+      background: #f0f0f0;
+      margin: 10px;
+      border-radius: 30px;
+  }
+  .search-wrapper .input-holder .search-icon span {
+      width:22px;
+      height:22px;
+      display: inline-block;
+      vertical-align: middle;
+      position:relative;
+      transform: rotate(45deg);
+      transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+  }
+  .search-wrapper.active .input-holder .search-icon span {
+      transform: rotate(-45deg);
+  }
+  .search-wrapper .input-holder .search-icon span::before, .search-wrapper .input-holder .search-icon span::after {
+      position: absolute;
+      content:'';
+  }
+  .search-wrapper .input-holder .search-icon span::before {
+          width: 3px;
+      height: 11px;
+      left: 9px;
+      top: 15px;
+      border-radius: 2px;
+      background: #696969;
+  }
+  .search-wrapper .input-holder .search-icon span::after {
+     width: 16px;
+      height: 16px;
+      left: 1px;
+      top: 0px;
+      border-radius: 9px;
+      border: 3px solid #5f5f5f;
+  }
+  .search-wrapper .close {
+      position: absolute;
+      z-index: 1;
+      top:24px;
+
+      width:25px;
+      height:25px;
+      cursor: pointer;
+      transform: rotate(-180deg);
+      transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+      transition-delay: 0.2s;
+  }
+  .search-wrapper.active .close {
+      /*right:-30px;*/
+      transform: rotate(45deg);
+      transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+      transition-delay: 0.5s;
+  }
+  .search-wrapper .close::before, .search-wrapper .close::after {
+      position:absolute;
+      content:'';
+      background: #5d5d5d;
+      border-radius: 2px;
+  }
+  .search-wrapper .close::before {
+        width: 3px;
+      height: 20px;
+      left: 11px;
+      top: 0px;
+  }
+  .search-wrapper .close::after {
+     width: 19px;
+      height: 3px;
+      left: 3px;
+      top: 9px;
+  }
+  .close {
+      float: right;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      filter: alpha(opacity=20);
+      opacity: 0.7!important;
+  }
+
+
+
+  </style>
+
+  <style type="text/css">
+
+
+
+  .share-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1;
+  }
+  .share-btn span {
+    height: 60px;
+    width: 60px;
+    background: #16a085;
+    line-height: 60px;
+    font-size: 25px;
+    color: #e9fcf8;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #159d82;
+  }
+  .share-btn:hover span {
+    background: #159d82;
+    border-color: #12876f;
+  }
+  .share-btn a span {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    font-size: 18px;
+    border: 1px solid transparent;
+    background: #16a085;
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.6s;
+  }
+  #click:checked ~ .share-btn a span {
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    font-size: 23px;
+    z-index: 1;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #click:checked ~ .share-btn a:nth-child(2) span {
+    bottom: 0px;
+    right: 80px;
+    background: #1da1f2;
+    border-color: #0e9af1;
+  }
+  #click:checked ~ .share-btn a:nth-child(3) span {
+    bottom: 65px;
+    right: 65px;
+    background: #e1306c;
+    border-color: #df2060;
+  }
+  .share-btn a:nth-child(3) span {
+    transition-delay: 0.2s;
+  }
+  #click:checked ~ .share-btn a:nth-child(4) span {
+    bottom: 80px;
+    right: 0px;
+    background: #ff0000;
+    border-color: #e60000;
+  }
+  .share-btn a:nth-child(4) span {
+    transition-delay: 0.4s;
+  }
+  #click {
+    display: none;
+  }
+
+
+
+  #modalOverlay {
+           position: fixed;
+           top: 0;
+           left: 0;
+           backdrop-filter: blur(4px);
+           z-index: 99999;
+           height: 100%;
+           width: 100%;
+     }
+    #modalStartlearning {
+           position: fixed;
+           top: 0;
+           left: 0;
+           backdrop-filter: blur(4px);
+           z-index: 99999;
+           height: 100%;
+           width: 100%;
+     }
+    #modalStreams {
+           position: fixed;
+           top: 0;
+           left: 0;
+           backdrop-filter: blur(4px);
+           z-index: 99999;
+           height: 100%;
+           width: 100%;
+     }
+  .modalPopup {
+           position: absolute;
+           top: 45%;
+           left: 50%;
+           border-radius: 10px;
+           transform: translate(-50%, -50%);
+           background: #fff;
+           width: 50%;
+           padding: 0 0 30px;
+           -webkit-box-shadow: 0 2px 10px 3px rgba(0,0,0,.2);
+           /*-moz-box-shadow: 0 2px 10px 3px rgba(0,0,0,.2);
+           box-shadow: 0 2px 10px 3px rgba(0,0,0,.2);*/
+     }
+  .modalContent {padding: 0 2em;}
+  .headerBar {
+        width: 100%;
+        background: #00b0f0;
+        margin: 0;
+        border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+       text-align: center;
+     }
+  .headerBar img {
+        margin: 1em .7em;
+     }
+  /*h1 {
+    margin-bottom: .2em;
+    font-size: 26px;
+    text-transform: capitalize;
+  }
+  p {margin: .75em 0 1.5em;}*/
+  .buttonStyle {
+     border: transparent;
+      border-radius: 0;
+      background: none;
+      font-weight: 800;
+      margin-top: 5px;
+      color: #565555 !important;
+      cursor: pointer;
+      font-size: 15px;
+      text-transform: uppercase;
+      padding: 6px 25px;
+      text-decoration: none;
+      transition: all 1s ease;
+     }
+     .modal_intro_home{
+          background: rgba(255,255,255,255);
+      height: 575px;
+      width: 100%;
+      border: 0 none;
+      border-radius: 9px;
+      box-shadow: 0 0 15px 1px rgb(0 0 0 / 19%);
+      margin: auto;
+     }
+     .buttonStyle:hover {
+
+        color: #fff;
+
+
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e1e1e', endColorstr='#6d6d6d',GradientType=0 );
+     }
+  .returnToProfile {text-align: center; margin:3em;}
+  .returnToProfile a, .returnToProfile a:visited {color: #ddd;}
+  .returnToProfile a:hover {color: #fff;}
+
+
+  #msform {
+         width: 390px;
+      margin: 50px auto;
+      position: relative;
+  }
+  #msform fieldset {
+    height: 575px;
+      overflow-y: scroll;
+     /*background: rgba(255,255,255,255);*/
+     border: 0 none;
+     border-radius: 9px;
+     /*box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);*/
+     padding: 20px 30px;
+
+     box-sizing: border-box;
+     width: 100%;
+     /*margin: 0 10%;*/
+
+
+     /*stacking fieldsets above each other*/
+     position: absolute;
+  }
+  /*Hide all except first fieldset*/
+  #msform fieldset:not(:first-of-type) {
+     display: none;
+  }
+  #msform::-webkit-scrollbar {
+    display: none;
+  }
+  #msform fieldset::-webkit-scrollbar {
+  width: 0px;
+  }
+  #msform input, #msform textarea {
+     border-radius: 3px;
+      margin-bottom: 10px;
+      width: 86%;
+      line-height: 43px;
+      box-sizing: border-box;
+      font-family: montserrat;
+      color: #000000;
+      font-size: 14px;
+      font-weight: 600;
+  }
+  #msform input:hover{
+  color: black;
+      transform: scale(1.1);
+      transition: all ease 500ms;
+      font-weight: 700;
+      border-bottom: 3px solid #646363!important;
+  }
+  /*buttons*/
+  #msform .action-button {
+     width: 500px;
+     background: #27AE60;
+    font-family: Lato;
+    text-align:center;
+     font-weight: 900;
+     color: white;
+     border: 0 none;
+     border-radius: 1px;
+     cursor: pointer;
+     padding: 10px 5px;
+     margin: 10px 5px;
+  }
+
+  #msform .action-button:hover, #msform .action-button:focus {
+     box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+  }
+  #msform .action-button1 {
+     width: 100px;
+     background: #27AE60;
+    font-family: Lato;
+    text-align:center;
+     font-weight: 900;
+     color: white;
+     border: 0 none;
+     border-radius: 1px;
+     cursor: pointer;
+     padding: 10px 5px;
+     margin: 10px 5px;
+  }
+  #msform .action-button1:hover, #msform .action-button1:focus {
+     box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+  }
+  /*headings*/
+  .fs-title {
+  font-family: Gotham Medium,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+      font-size: 26px;
+      font-weight: 600;
+      text-transform: unset;
+      color: #2C3E50;
+      margin-bottom: 20px;
+  }
+  .fs-subtitle {
+    font-family: Lato;
+     font-weight: 900;
+     font-size: 16px;
+     color: #183563;
+     margin-bottom: 20px;
+  }
+  /*progressbar*/
+  #progressbar {
+     margin-bottom: 30px;
+     overflow: hidden;
+     /*CSS counters to number the steps*/
+     counter-reset: step;
+  }
+  #progressbar li {
+     list-style-type: none;
+     color: white;
+     text-transform: uppercase;
+     font-size: 9px;
+     width: 33.33%;
+     float: left;
+     position: relative;
+  }
+  #progressbar li:before {
+     content: counter(step);
+     counter-increment: step;
+     width: 20px;
+     line-height: 20px;
+     display: block;
+     font-size: 10px;
+     color: #333;
+     background: white;
+     border-radius: 3px;
+     margin: 0 auto 5px auto;
+  }
+  /*progressbar connectors*/
+  #progressbar li:after {
+     content: '';
+     width: 100%;
+     height: 2px;
+     background: white;
+     position: absolute;
+     left: -50%;
+     top: 9px;
+     z-index: -1; /*put it behind the numbers*/
+  }
+  #progressbar li:first-child:after {
+     /*connector not needed before the first step*/
+     content: none;
+  }
+  /*marking active/completed steps green*/
+  /*The number of the step and the connector before it = green*/
+  #progressbar li.active:before,  #progressbar li.active:after{
+     background: #27AE60;
+     color: white;
+  }
+
+
+
+  .range-slider-active-segment{
+    background:#183563;
+  }
+
+  .range-slider.round .range-slider-handle{
+    background:#6699cc;
+  }
+  .range-slider.round .range-slider-handle:hover{
+    background:#6699cc;
+  }
+  .room{
+     font-family:Lato;
+    font-weight:700;
+    margin-left:10px;
+  }
+
+  #buttonrow{
+   margin-top:20px;
+   margin-left:15px;
+    margin-bottom:20px;
+  }
+
+  .button  {
+    height:30px;
+    Background:#183563;
+    border-radius:6px;
+    font-family: Lato;
+    font-weight:700;
+    margin-right:10px;
+    line-height:2px;
+
+
+  }
+  .button:hover{
+    background:#6699cc;
+    color:#183563;
+    font-family: Lato;
+    font-weight:700;
+    border-radius:6px;
+
+
+  }
+
+  .big{
+       text-align: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-family: Lato;
+      font-weight: 900;
+      padding-top: 42px;
+      padding-bottom: 18px;
+      background: rgba(251,249,240,0.7);
+  }
+  .course-popover-content .last-updated {
+      margin: 10px 0;
+      font-size: 13px;
+  }
+  .course-popover-content .course-meta {
+      padding: 5px 0;
+  }
+  .course-popover-content .course-subtitle {
+      display: block!important;
+      display: -webkit-box!important;
+      -webkit-line-clamp: 3;
+      -moz-line-clamp: 3;
+      -ms-line-clamp: 3;
+      -o-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      -moz-box-orient: vertical;
+      -ms-box-orient: vertical;
+      -o-box-orient: vertical;
+      box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      visibility: visible;
+      font-size: 15px;
+      line-height: 1.53;
+      letter-spacing: -.2px;
+      color: #686f7a;
+      padding-top: 10px;
+  }
+  .course-popover-content .what-will-learn {
+      margin-top: 15px;
+      margin-left: 17px;
+  }
+  .course-popover-content .popover-btns {
+      margin-top: 50px;
+      padding-right: 65px;
+      position: relative;
+      margin-bottom: 15px;
+  }
+  .course-popover-content .popover-btns .add-to-cart-btn {
+      width: 100%;
+      padding: 16px 12px;
+  }
+  .course-popover-content .popover-btns .wishlist-btn {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      border: none;
+      background: none;
+      font-size: 24px;
+  }
+  .course-popover-content .course-title a {
+      visibility: visible;
+      display: block!important;
+      display: -webkit-box!important;
+      -webkit-line-clamp: 3;
+      -moz-line-clamp: 3;
+      -ms-line-clamp: 3;
+      -o-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      -moz-box-orient: vertical;
+      -ms-box-orient: vertical;
+      -o-box-orient: vertical;
+      box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.33;
+      letter-spacing: -.3px;
+      color: #505763;
+  }
+  #CartContainer {
+      background-color: #fff;
+      overflow: visible;
+      position: fixed;
+      border-radius: 15px;
+      top: 8%;
+      min-height: 40%;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+      right: 12%;
+      width: 18%;
+      z-index: -1;
+  }
+  #cartBody{
+    padding: 33px 0px 0px 0px !important;
+  }
+  .cartlist ul {
+      list-style-type: none;
+      display: inline-block;
+      padding-left: 12px;
+  }
+  #CartContainer:before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      color: transparent;
+      border: 10px solid black;
+      border-color: transparent transparent white;
+      margin-top: -20px;
+      right: 52px;
+  }
+
+  </style>
+         <style type="text/css">
+
+
+  .burger {
+  position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 47px;
+      /*height: 38px;*/
+      background: none;
+      /*border: none;*/
+      /*outline: none;*/
+      z-index: 9999999;
+  }
+  .burger span {
+    position: relative;
+    height: 2px;
+    width: 100%;
+    background: #3fa2ff;
+    display: inline-block;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+  .burger span:before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    background: #3fa2ff;
+    position: absolute;
+    top: -10px;
+    right: 0;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+  }
+  .burger span:after {
+    content: "";
+    height: 2px;
+    width: 100%;
+    background: #3fa2ff;
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+  }
+  .burger.open span {
+    background: #3fa2ff;
+  }
+  .burger.open span:before {
+    opacity: 1;
+    transform: rotate(40deg);
+    width: 50%;
+    top: -6px;
+    background: #3fa2ff;
+  }
+  .burger.open span:after {
+    opacity: 1;
+    transform: rotate(-40deg);
+    width: 50%;
+    bottom: -6px;
+    background: #3fa2ff;
+  }
+
+  .sidemenu {
+    background: #fff;
+    position: fixed;
+    right: 0;
+    width: 300px;
+    overflow: scroll;
+    height: 100%;
+    z-index: 999999;
+    transform: translateX(300px);
+    transition: all 0.5s cubic-bezier(0.04, 0.79, 0.34, 1.3);
+  }
+  .sidemenu ul {
+    padding: 8px 2px 0px 44px;
+  }
+
+  .sidemenu ul li {
+    display: block;
+    margin-bottom: 1.5rem;
+        /*padding-left: 29px;*/
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.04, 0.79, 0.34, 1.3);
+  }
+  .sidemenu ul li i {
+    font-size: 2.5rem;
+    margin-right: 1rem;
+  }
+  .sidemenu ul li a {
+  color: #000;
+    /*  font-weight: 600;*/
+      text-decoration: none;
+      font-size: 14px;
+  }
+  .sidemenu ul li a:hover {
+    color: #0084ff;
+  }
+  .sidemenu .sidemenu_footer {
+    background: #2DB8C2;
+    color: white;
+    height: 100%;
+    padding: 5rem;
+    transform: translateY(150px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.04, 0.79, 0.34, 1.3);
+  }
+  .sidemenu .sidemenu_footer h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.04, 0.79, 0.34, 1.3);
+  }
+  .sidemenu .sidemenu_footer p {
+    font-weight: 300;
+    line-height: 1.4;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.04, 0.79, 0.34, 1.3);
+  }
+  .sidemenu.open {
+    transform: translateX(0);
+  }
+  .sidemenu.open ul li:nth-child(1) {
+    /*-webkit-animation: pavanAnime 0.3s 0.15s ease 1 forwards;*/
+    animation: pavanAnime 1.0s 0.15s linear 1 forwards;
+  }
+  .sidemenu.open ul li:nth-child(2) {
+    /*-webkit-animation: pavanAnime 0.3s 0.3s ease 1 forwards;*/
+    animation: pavanAnime 1.0s 0.30s linear 1 forwards;
+  }
+  .sidemenu.open ul li:nth-child(3) {
+    /*-webkit-animation: pavanAnime 0.3s 0.45s ease 1 forwards;*/
+    animation: pavanAnime 1.0s 0.45s linear 1 forwards;
+  }
+  .sidemenu.open ul li:nth-child(4) {
+    /*-webkit-animation: pavanAnime 0.3s 0.6s ease 1 forwards;*/
+    animation: pavanAnime 1.0s 0.60s linear 1 forwards;
+  }
+  .sidemenu.open ul li:nth-child(5) {
+    /*-webkit-animation: pavanAnime 0.3s 0.75s ease 1 forwards;*/
+    animation: pavanAnime 1.0s 0.75s linear 1 forwards;
+  }
+  .sidemenu.open ul li:nth-child(6) {
+    /*-webkit-animation: pavanAnime 0.3s 0.9s ease 1 forwards;*/
+    animation: pavanAnime 1.0s 0.90s linear 1 forwards;
+  }
+  .sidemenu.open .sidemenu_footer {
+    transform: translateY(0px);
+    transition-delay: 0.3s;
+    opacity: 1;
+  }
+  .sidemenu.open .sidemenu_footer h3 {
+    transform: translateY(0px);
+    transition-delay: 0.5s;
+    opacity: 1;
+  }
+  .sidemenu.open .sidemenu_footer p {
+    transform: translateY(0px);
+    opacity: 1;
+    transition-delay: 0.7s;
+  }
+
+  @-webkit-keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0px);
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0px);
+    }
+  }
+  @keyframes pavanAnime {
+    0% {
+      opacity: 0;
+      /*transform: translateX(-50px);*/
+    }
+    100% {
+      opacity: 1;
+      /*transform: translateX(0px);*/
+    }
+  }
+  .img_profile_list{
+    height: 24px;
+      padding-right: 9px;
+  }
+  .slide_heading_home{
+  font-weight: bold;
+      padding: 8px;
+      color: #388fe1;
+      padding-right: 0px;
+      padding-left: 31px;
+  }
+  .sidemenu::-webkit-scrollbar {
+      display: none;
+  }
+  .next{
+        border: unset!important;
+      background: unset!important;
+      padding: 0px!important;
+      text-align: left;
+      font-weight: 600;
+  }
+   @media (max-width: 992px){
+
+.top_icons{
+  display: none;
+}
+}
+ .top_icons{
+     display: none;
+ }
+  </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+
+
+
+
+
+
+
+
+  <div id="modalStartlearning" style="display: none;">
+
+    <div class="modalContent">
+
+  <!-- multistep form -->
+  <form id="msform" action ="" method = "post">
+   <!-- progressbar -->
+
+   <!-- fieldsets -->
+   <div class="modal_intro_home">
+   <fieldset style="text-align: center;" >
+      <h2 class="fs-title">Select Your Stream</h2>
+
+<input type="button" name="next" class="next" id="BTECH" onclick="modalStreams(this.id);openLogin();" value="BTECH">
+<input type="button" name="next" class="next " id="GRE"  onclick="modalStreams(this.id);openLogin();"value="GRE">
+<input type="button" name="next" class="next"  id="TOFEL" onclick="modalStreams(this.id);openLogin();"value="TOFEL">
+
+
+
+
+
+<!-- Initialize Foundation JS -->
+
+
+   </fieldset>
+
+
+ </div>
+</form>
+
+
+
+           </div>
+
+     </div>
+
+
+
+   <div id="modalStreams" style="display: none;">
+
+    <div class="modalContent">
+
+  <!-- multistep form -->
+  <form id="msform" action ="" method = "post">
+   <!-- progressbar -->
+
+   <!-- fieldsets -->
+   <div class="modal_intro_home">
+
+
+   <fieldset style="text-align: center;overflow: hidden;padding: 0!important;" >
+    <form class="form-horizontal" action="" method="post" style="top:40px!important;">
+   <div class="box box-info">
+      <div class="box-body">
+         <div class="container" style="width: 100%!important;padding: 0!important;">
+            <div class="margin10" style="margin-top: 50%"></div>
+            <div class="col-sm-12 " >
+               <h2 style="    padding: 0px;
+    text-transform: capitalize;
+    font-size: 15px;
+
+
+
+    line-height: 28px;
+    color: #545454;
+    font-weight: bold;">Login With Google To get 3 Months  Premium Content For Free</h2>
+                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+
+               </a>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>
+
+   </fieldset>
+
+ </div>
+</form>
+
+
+
+           </div>
+
+     </div>
+
+
+
+
+
+
+  <script type="text/javascript">
+
+      function addFormValues() {
+          try {
+              var university_select = document.getElementById('university_select');
+                var regulation_select = document.getElementById('regulation_select');
+                var branch_select = document.getElementById('branch_select');
+                var year_select = document.getElementById('year_select');
+                if(!(getCookie("university_name") == "" || getCookie("university_name") === "" || getCookie("university_name") == "null" || getCookie("university_name") == null)){
+                  university_select.value = getCookie("university_id");
+                }
+                regulation_select.value = getCookie("regulation");
+                branch_select.value = getCookie("branch_id");
+                year_select.value = getCookie("semester_id");
+          }catch (e) {
+
+          }
+
+      }
+function modalStreams(id){
+    document.cookie = "sid="+id+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+}
+
+
+function addUniversityCookie($this) {
+    document.cookie = "university_id="+$this.value+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+    document.cookie = "university_name="+$this.options[$this.selectedIndex].text;+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+}
+
+function addRegulationCookie($this) {
+    document.cookie = "regulation="+$this.value+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+}
+
+function addBranchCookie($this) {
+    document.cookie = "branch_id="+$this.value+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+    document.cookie = "branch_name="+$this.options[$this.selectedIndex].text+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+}
+
+function addYearCookie($this) {
+    document.cookie = "semester_id="+$this.value+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+    document.cookie = "year_name="+$this.options[$this.selectedIndex].text+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+}
+
+
+function openLogin(){
+    var user=getCookie("user_id");
+    if (user == "" || user === "" || user == "null" || user == null) {
+      console.log("**********"+user+"####");
+      document.getElementById('modalStartlearning').style.display = 'none';
+      document.getElementById('modalStreams').style.display = 'block'
+    }else{
+     redirectToIndexFromHomepage();
+    }
+}
+
+
+function myStartlearning() {
+    document.getElementById('modalStartlearning').style.display = 'block'
+}
+
+function myStartlearningClose() {
+    document.getElementById('modalStartlearning').style.display = 'none'
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="modalOverlay" class="modal-window"  style="display: none;">
+   <div>
+      <a href="#" title="Close" class="modal-close" style="color:black;display: none" onclick="closeUniversity()">Close</a>
+      <form class="form-horizontal" onsubmit="delete_cookie('version');document.getElementById('modalOverlay').style.display = 'none';commonFunctions();return false;">
+         <div class="box box-info">
+            <div class="box-body">
+               <div class="form-group">
+                  <label  class="col-sm-12 control-label" style="text-align: left;">Select University  <span>*</span></label>
+                  <div class="col-sm-12">
+
+                     <select name="university_id"  class="form-control select2" id="university_select" required onchange="addUniversityCookie(this)">
+
+                        <option value="">Select University</option>
+                         <option value="6">JNTUK</option>
+                        <option value="7">JNTUA</option>
+                        <option value="8">JNTUH</option>
+
+
+                  </select>
+               </div>
+
+                   </div>
+                <div class="form-group">
+                  <label  class="col-sm-12 control-label" style="text-align: left;">Select Regulation  <span>*</span></label>
+                  <div class="col-sm-12">
+
+                     <select name="regulation"  class="form-control select2" id="regulation_select" required onchange="addRegulationCookie(this)">
+
+                        <option value="">Select Regulation</option>
+                         <option value="R16">R16</option>
+                        <option value="R19">R19</option>
+<!--                        <option value="R13">R13</option>-->
+<!--                        <option value="R10">R10</option>-->
+<!--                        <option value="R09">R09</option>-->
+<!--                        <option value="R07">R07</option>-->
+
+
+                  </select>
+               </div>
+
+                   </div>
+
+                 <div class="form-group">
+
+                            <label  class="col-sm-12 control-label" style="text-align: left;">Select Branch  <span>*</span></label>
+               <div class="col-sm-12">
+
+
+
+                  <select name="branch_id" class="form-control " id="branch_select" required onchange="addBranchCookie(this)">
+
+                        <option value="">Select Branch</option>
+
+                     <option value="1">ECE</option>
+                     <option value="2">CSE</option>
+                     <option value="3">EEE</option>
+                     <option value="4">CIVIL</option>
+                     <option value="5">MECH</option>
+                     <option value="6">Internet of Things</option>
+                     <option value="7">Artificial Intelligence & Data Science</option>
+                     <option value="8">Information Technology</option>
+                     <option value="9">Artificial Intelligence</option>
+                     <option value="10">Artificial Intelligence and Machine Learning</option>
+
+                  </select>
+
+
+
+
+
+
+
+
+
+               </div>
+                 </div>
+
+                 <div class="form-group">
+                     <label  class="col-sm-12 control-label" style="text-align: left;">Select Year  <span>*</span></label>
+               <div class="col-sm-12">
+                  <select name="semester_id"  class="form-control select2" id="year_select" onchange="addYearCookie(this)" required>
+
+                        <option value="">Select Year</option>
+
+                     <option value="1">1st Year</option>
+                     <option value="2">2nd Year</option>
+                     <option value="3">3rd Year</option>
+                     <option value="4">4th Year</option>
+
+
+                  </select>
+                   <input name="url" type="hidden" value="index">
+               </div>
+                 </div>
+
+            </div>
+            <div class="form-group">
+
+               <div class="col-sm-12">
+                  <button type="submit" class="openbtn btn-bt rounded "  style="width: 100%;height: 49px;">Submit</button>
+               </div>
+            </div>
+         </div>
+
+   </form>
+       </div>
+</div>
+
+
+
+<script src="http://thecodeplayer.com/uploads/js/jquery.easing.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  function checkCookie() {
+
+  }
+  </script>
+
+
+
+
+  <style type="text/css">
+  .share-buttons {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: transparent;
+  transition: none;
+  width: 3.75rem;
+      z-index: 99999;
+      margin: auto;
+}
+.share-buttons li {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.45s ease-in-out;
+}
+ .share-buttons li:nth-child(6) {
+    transform: translateY(610%);
+    z-index: 1;
+  }
+  .share-buttons li:nth-child(5) {
+    transform: translateY(500%);
+    z-index: 5;
+  }
+  .share-buttons li:nth-child(4) {
+    transform: translateY(600%);
+    z-index: 4;
+  }
+  .share-buttons li:nth-child(3) {
+    transform: translateY(700%);
+    z-index: 3;
+  }
+  .share-buttons li:nth-child(2) {
+    transform: translateY(800%);
+    z-index: 2;
+  }
+  .share-buttons li:nth-child(1) {
+    transform: translateY(610%);
+    z-index: 1;
+  }
+
+.share-buttons li:last-child {
+  z-index: 6;
+}
+.share-buttons.share-buttons-active {
+  background-color: #fff;
+  transition: background-color 0.25s 0.25s;
+}
+.share-buttons.share-buttons-active li {
+  transform: none;
+}
+
+.share-button {
+  display: block;
+  height: 3.125rem;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+.share-button span {
+  font-size: 0;
+}
+.share-button svg {
+  position: absolute;
+  top: -33%;
+  right: -33%;
+  bottom: -33%;
+  left: -33%;
+  height: 166%;
+  overflow: hidden;
+  width: 166%;
+     margin: auto;
+}
+.share-button[data-network=facebook] {
+  background-color: #3b5998;
+}
+.share-button[data-network=linkedin] {
+    background-color: #b9b9b9;
+}
+.share-button[data-network=twitter] {
+  background-color: #55acee;
+}
+.share-button[data-network=pinterest] {
+  background-color: #bd081c;
+}
+.share-button[data-network=email] {
+  background-color: #FF7661;
+}
+.share-button[data-network=share] {
+  background-color: #223C56;
+}
+.share-button[data-network=share] {
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  display: block;
+  font-size: 0.5625rem;
+  height: 3.75rem;
+  padding-top: 1.875rem;
+  text-align: center;
+  text-indent: 0;
+  text-transform: uppercase;
+}
+.share-button[data-network=share] svg {
+  position: absolute;
+  top: 20%;
+  right: 33%;
+  bottom: auto;
+  left: 33%;
+  height: 33%;
+  width: 33%;
+}
+</style>
+
+
+<ul id="share-buttons" class="share-buttons" style="padding: 0">
+
+    <li>
+      <a class="share-button" data-network="facebook" href="https://www.facebook.com/veteach.in" target="_blank"><span>Share this Page on Facebook</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="#fff" d="M54.8 45.8h-1.6c-1.3 0-1.5.6-1.5 1.5v1.9h3l-.4 3h-2.6v7.7h-3.1v-7.7H46v-3h2.6V47c0-2.6 1.6-4 3.9-4 1.1 0 2 .1 2.3.1v2.7z"/></svg></a>
+    </li>
+    <li>
+      <a class="share-button" data-network="twitter" href="https://twitter.com/teach_ve" target="_blank"><span>Share this Page on Twitter</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="#fff" d="M57.4 47.2v.4c0 4.3-3.3 9.4-9.4 9.4-1.9 0-3.6-.5-5-1.5h.8c1.5 0 3-.5 4.1-1.4-1.4 0-2.7-1-3.1-2.3.2 0 .4.1.6.1.3 0 .6 0 .9-.1-1.5-.3-2.6-1.6-2.6-3.2.4.2.9.4 1.5.4-.9-.6-1.5-1.6-1.5-2.7 0-.6.2-1.2.4-1.7 1.6 2 4.1 3.3 6.8 3.4-.1-.2-.1-.5-.1-.8 0-1.8 1.5-3.3 3.3-3.3.9 0 1.8.4 2.4 1 .7-.1 1.5-.4 2.1-.8-.2.8-.8 1.4-1.4 1.8.7-.1 1.3-.3 1.9-.5-.5.8-1.1 1.4-1.7 1.8z"/></svg></a>
+    </li>
+    <li>
+      <a class="share-button" data-network="linkedin" href="https://www.youtube.com/channel/UCXggp4p7o_4jmWmTslqO4Qg/videos" target="_blank"><span>Share this Page on Youtube</span>
+   <svg xmlns="http://www.w3.org/2000/svg" width="  2500" height="1756" viewBox="5.368 13.434 53.9 37.855" style="
+    font-size: 10px;
+    height: 20px;
+    width: 30px;
+    left: 3px;
+    bottom: 0px;
+    top: 4px;
+    right: 0px;
+    /* background: red; */
+"><path fill="#FFF" d="M41.272 31.81c-4.942-2.641-9.674-5.069-14.511-7.604v15.165c5.09-2.767 10.455-5.301 14.532-7.561h-.021z"/><path fill="#E8E0E0" d="M41.272 31.81c-4.942-2.641-14.511-7.604-14.511-7.604l12.758 8.575c.001 0-2.324 1.289 1.753-.971z"/><path fill="#CD201F" d="M27.691 51.242c-10.265-.189-13.771-.359-15.926-.803-1.458-.295-2.725-.95-3.654-1.9-.718-.719-1.289-1.816-1.732-3.338-.38-1.268-.528-2.323-.739-4.9-.323-5.816-.4-10.571 0-15.884.33-2.934.49-6.417 2.682-8.449 1.035-.951 2.239-1.563 3.591-1.816 2.112-.401 11.11-.718 20.425-.718 9.294 0 18.312.317 20.426.718 1.689.317 3.273 1.267 4.203 2.492 2 3.146 2.035 7.058 2.238 10.118.084 1.458.084 9.737 0 11.195-.316 4.836-.57 6.547-1.288 8.321-.444 1.12-.823 1.711-1.479 2.366a7.085 7.085 0 0 1-3.76 1.922c-8.883.668-16.426.813-24.987.676zM41.294 31.81c-4.942-2.641-9.674-5.09-14.511-7.625v15.166c5.09-2.767 10.456-5.302 14.532-7.562l-.021.021z"/>
+  <metadata>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <rdf:Description about="https://iconscout.com/legal#licenses" dc:title="youtube-icon" dc:description="youtube-icon" dc:publisher="Iconscout" dc:date="2017-06-17" dc:format="image/svg+xml" dc:language="en">
+        <dc:creator>
+          <rdf:Bag>
+            <rdf:li>Icon Mafia</rdf:li>
+          </rdf:Bag>
+        </dc:creator>
+      </rdf:Description>
+    </rdf:RDF>
+    </metadata></svg>
+
+      </a>
+    </li>
+
+    <li>
+      <a class="share-button" data-network="email" href="https://www.instagram.com/veteach5/" target="_blank"><span>Share this Page on Instagram</span><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="48px" height="48px" style="
+    font-size: 10px;
+    height: 25px;
+    width: 37px;
+    left: 0px;
+    bottom: 0px;
+    top: 4px;
+    right: 0px;
+    /* background: red; */
+"><radialGradient id="yOrnnhliCrdS2gy~4tD8ma" cx="19.38" cy="42.035" r="44.899" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd5"/><stop offset=".328" stop-color="#ff543f"/><stop offset=".348" stop-color="#fc5245"/><stop offset=".504" stop-color="#e64771"/><stop offset=".643" stop-color="#d53e91"/><stop offset=".761" stop-color="#cc39a4"/><stop offset=".841" stop-color="#c837ab"/></radialGradient><path fill="url(#yOrnnhliCrdS2gy~4tD8ma)" d="M34.017,41.99l-20,0.019c-4.4,0.004-8.003-3.592-8.008-7.992l-0.019-20  c-0.004-4.4,3.592-8.003,7.992-8.008l20-0.019c4.4-0.004,8.003,3.592,8.008,7.992l0.019,20 C42.014,38.383,38.417,41.986,34.017,41.99z"/><radialGradient id="yOrnnhliCrdS2gy~4tD8mb" cx="11.786" cy="5.54" r="29.813" gradientTransform="matrix(1 0 0 .6663 0 1.849)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4168c9"/><stop offset=".999" stop-color="#4168c9" stop-opacity="0"/></radialGradient><path fill="url(#yOrnnhliCrdS2gy~4tD8mb)" d="M34.017,41.99l-20,0.019c-4.4,0.004-8.003-3.592-8.008-7.992l-0.019-20 c-0.004-4.4,3.592-8.003,7.992-8.008l20-0.019c4.4-0.004,8.003,3.592,8.008,7.992l0.019,20 C42.014,38.383,38.417,41.986,34.017,41.99z"/><path fill="#fff" d="M24,31c-3.859,0-7-3.14-7-7s3.141-7,7-7s7,3.14,7,7S27.859,31,24,31z M24,19c-2.757,0-5,2.243-5,5  s2.243,5,5,5s5-2.243,5-5S26.757,19,24,19z"/><circle cx="31.5" cy="16.5" r="1.5" fill="#fff"/><path fill="#fff" d="M30,37H18c-3.859,0-7-3.14-7-7V18c0-3.86,3.141-7,7-7h12c3.859,0,7,3.14,7,7v12  C37,33.86,33.859,37,30,37z M18,13c-2.757,0-5,2.243-5,5v12c0,2.757,2.243,5,5,5h12c2.757,0,5-2.243,5-5V18c0-2.757-2.243-5-5-5H18z"/></svg></a>
+    </li>
+      <li>
+      <a class="share-button" data-network="pinterest" href="https://in.pinterest.com/teach0470/pins/" target="_blank"><span>Share this Page on Pinterest</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" enableBackground="0 0 100 100"><path fill="#fff" d="M51.4 44c2.9 0 5.6 2 5.6 5.1 0 2.9-1.5 6.2-4.8 6.2-.8 0-1.8-.4-2.2-1.1-.7 2.8-.7 3.2-2.2 5.4h-.1l-.1-.1c-.1-.6-.1-1.2-.1-1.8 0-1.9.9-4.7 1.3-6.5-.2-.5-.3-1.1-.3-1.6 0-.9.7-2.1 1.7-2.1.8 0 1.2.6 1.2 1.3 0 1.2-.8 2.4-.8 3.5 0 .8.7 1.4 1.4 1.4 2.2 0 2.8-3.1 2.8-4.8 0-2.2-1.6-3.4-3.7-3.4-2.5 0-4.4 1.8-4.4 4.3 0 1.2.7 1.8.7 2.1 0 .2-.2 1.1-.5 1.1h-.2c-1.3-.4-1.8-2.2-1.8-3.4.1-3.5 3.3-5.6 6.5-5.6z"/></svg></a>
+    </li>
+
+      <li>
+      <a class="share-button" data-network="pinterest" href="whatsapp://send?text=https://veteach.in" target="_blank" style="
+    background-color: #c5ffac;
+"><span>Share this Page on WhatsApp</span>
+
+
+       <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="48px" height="48px" style="
+    font-size: 10px;
+    height: 25px;
+    width: 37px;
+    left: 0px;
+    bottom: 0px;
+    top: 4px;
+    right: 0px;
+    /* background: red; */
+"><linearGradient id="k87TA_gnBJ8uBlK4qfs8ia" x1="6.718" x2="35.097" y1="12.801" y2="41.18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#dfe9f2"/><stop offset=".391" stop-color="#d6e0e9"/><stop offset="1" stop-color="#bfc8d1"/></linearGradient><path fill="url(#k87TA_gnBJ8uBlK4qfs8ia)" d="M37.848,9.86C34.073,6.083,29.052,4.002,23.709,4C12.693,4,3.727,12.962,3.722,23.979  c-0.001,3.367,0.849,6.685,2.461,9.622L3.598,43.04c-0.094,0.345,0.002,0.713,0.254,0.967c0.19,0.192,0.447,0.297,0.711,0.297 c0.085,0,0.17-0.011,0.254-0.033l9.687-2.54c2.828,1.468,5.998,2.243,9.197,2.244c11.024,0,19.99-8.963,19.995-19.98  C43.698,18.656,41.621,13.636,37.848,9.86z"/><linearGradient id="k87TA_gnBJ8uBlK4qfs8ib" x1="15.389" x2="28.863" y1="10.726" y2="39.265" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2ecc75"/><stop offset="1" stop-color="#0b964a"/></linearGradient><path fill="url(#k87TA_gnBJ8uBlK4qfs8ib)" d="M34.871,12.832c-2.98-2.982-6.941-4.625-11.157-4.626c-8.704,0-15.783,7.076-15.787,15.774  c-0.001,2.981,0.833,5.883,2.413,8.396l0.376,0.597l-1.595,5.821l5.973-1.566l0.577,0.342c2.422,1.438,5.2,2.198,8.032,2.199h0.006  c8.698,0,15.777-7.077,15.78-15.776C39.49,19.778,37.851,15.814,34.871,12.832z"/><path d="M28.893,33.879c-0.995,0-2.354-0.254-5.087-1.331c-3.06-1.208-6.066-3.83-8.464-7.384l-0.077-0.113 c-0.642-0.857-2.132-3.107-2.132-5.5c0-2.58,1.288-3.953,1.838-4.54l0.085-0.091C15.815,14.089,16.709,14,17.058,14 c0.369,0.004,0.682,0,0.953,0.012c0.654,0.026,1.399,0.215,1.936,1.409l0,0c0.25,0.558,0.676,1.605,1.009,2.426 c0.213,0.527,0.386,0.955,0.439,1.069c0.294,0.586,0.308,1.167,0.036,1.714l-0.065,0.133c-0.128,0.262-0.261,0.533-0.544,0.863  l-0.235,0.282c-0.162,0.197-0.325,0.393-0.47,0.545c0.389,0.641,1.206,1.856,2.331,2.86c1.394,1.241,2.588,1.76,3.229,2.039 c0.127,0.055,0.233,0.102,0.317,0.142c0.405-0.47,1.072-1.271,1.302-1.614c0.77-1.156,1.877-0.755,2.24-0.622 c0.569,0.206,3.323,1.576,3.35,1.589l0.255,0.125c0.419,0.203,0.813,0.394,1.062,0.808c0.395,0.661,0.176,2.073-0.193,3.105 c-0.534,1.503-2.828,2.805-4.054,2.915l-0.226,0.024C29.465,33.855,29.196,33.879,28.893,33.879z M17.216,16  c-0.14,0-0.385-0.058-0.686,0.27l-0.101,0.109c-0.453,0.483-1.297,1.383-1.297,3.172c0,1.843,1.326,3.757,1.732,4.3 c0.027,0.036,0.071,0.101,0.135,0.194c2.175,3.223,4.853,5.582,7.541,6.642c3.384,1.335,4.253,1.234,4.956,1.151l0.278-0.03 c0.609-0.055,2.122-0.951,2.351-1.594c0.209-0.585,0.276-1.087,0.287-1.374c-0.044-0.021-0.092-0.043-0.143-0.067l-0.283-0.139  c-0.637-0.32-2.779-1.366-3.131-1.495c-0.442,0.608-1.262,1.565-1.479,1.814c-0.407,0.467-1.127,0.909-2.229,0.354  c-0.066-0.033-0.156-0.071-0.268-0.12c-0.691-0.301-2.13-0.926-3.763-2.38c-1.469-1.311-2.474-2.904-2.838-3.529  c-0.445-0.761-0.322-1.495,0.366-2.18c0.12-0.12,0.257-0.291,0.397-0.46l0.262-0.314c0.118-0.137,0.161-0.226,0.267-0.441 l0.035-0.071c-0.092-0.204-0.278-0.659-0.502-1.213c-0.323-0.797-0.736-1.815-0.979-2.357v0c-0.065-0.144-0.114-0.215-0.138-0.245 c0.005,0.015-0.029,0.016-0.058,0.014C17.706,16,17.463,16,17.216,16z M32.407,28.615L32.407,28.615L32.407,28.615z M19.642,19.736  L19.642,19.736L19.642,19.736z" opacity=".05"/><path d="M28.889,33.384c-0.846,0-2.155-0.22-4.899-1.302c-2.967-1.17-5.891-3.727-8.233-7.198l-0.087-0.128  c-0.616-0.822-2.037-2.962-2.037-5.206c0-2.382,1.193-3.654,1.703-4.198l0.089-0.096c0.625-0.683,1.351-0.756,1.634-0.756 c0.377,0.003,0.667,0,0.931,0.012c0.492,0.02,1.057,0.124,1.502,1.114l0,0c0.249,0.554,0.671,1.594,1.001,2.409 c0.225,0.555,0.405,1.002,0.452,1.097c0.082,0.165,0.338,0.674,0.039,1.275l-0.067,0.136c-0.125,0.255-0.233,0.476-0.475,0.758  L20.2,21.59c-0.173,0.21-0.346,0.419-0.496,0.569c-0.216,0.215-0.216,0.215-0.13,0.362c0.328,0.563,1.232,1.998,2.541,3.165 c1.453,1.295,2.696,1.834,3.363,2.124c0.144,0.062,0.259,0.113,0.344,0.156c0.293,0.146,0.323,0.116,0.427-0.002  c0.288-0.328,1.168-1.364,1.463-1.807c0.554-0.83,1.269-0.57,1.654-0.431c0.506,0.184,3.039,1.437,3.296,1.566l0.262,0.128  c0.38,0.184,0.68,0.329,0.852,0.614c0.254,0.426,0.149,1.603-0.235,2.681c-0.488,1.371-2.646,2.497-3.628,2.585l-0.239,0.026  C29.441,33.354,29.196,33.384,28.889,33.384z M17.201,15.5c-0.026,0-0.052,0-0.078,0c-0.183,0-0.595,0.031-0.962,0.432l-0.097,0.104 c-0.465,0.496-1.432,1.528-1.432,3.514c0,1.943,1.281,3.864,1.832,4.6c0.025,0.033,0.064,0.09,0.121,0.174  c2.231,3.306,4.991,5.73,7.772,6.828c3.505,1.382,4.445,1.271,5.197,1.183l0.267-0.029c0.693-0.062,2.451-1.013,2.776-1.925 c0.333-0.932,0.347-1.71,0.296-1.877c0.007,0.006-0.232-0.098-0.405-0.182l-0.276-0.136c-0.623-0.313-2.806-1.381-3.188-1.52  c-0.36-0.13-0.361-0.133-0.48,0.046c-0.349,0.521-1.32,1.657-1.542,1.91c-0.642,0.735-1.384,0.359-1.629,0.236  c-0.072-0.036-0.171-0.078-0.293-0.131c-0.668-0.291-2.057-0.895-3.63-2.296c-1.416-1.262-2.387-2.803-2.739-3.407  c-0.476-0.814,0.059-1.347,0.287-1.574c0.13-0.13,0.28-0.313,0.431-0.497l0.255-0.306c0.159-0.186,0.226-0.322,0.336-0.547  l0.07-0.143c0.049-0.098,0.058-0.189-0.04-0.383c-0.052-0.104-0.245-0.578-0.483-1.167c-0.326-0.803-0.741-1.829-0.987-2.374l0,0  c-0.229-0.509-0.363-0.515-0.632-0.525C17.717,15.5,17.461,15.5,17.201,15.5z" opacity=".07"/><path fill="#fff" fill-rule="evenodd" d="M19.035,15.831c-0.355-0.79-0.729-0.806-1.068-0.82 C17.69,14.999,17.374,15,17.058,15s-0.83,0.119-1.265,0.594c-0.435,0.475-1.661,1.622-1.661,3.956s1.7,4.59,1.937,4.906 c0.237,0.316,3.282,5.259,8.104,7.161c4.007,1.58,4.823,1.266,5.693,1.187c0.87-0.079,2.807-1.147,3.202-2.255  c0.395-1.108,0.395-2.057,0.277-2.255c-0.119-0.198-0.435-0.316-0.909-0.554s-2.807-1.385-3.242-1.543  c-0.435-0.158-0.751-0.237-1.068,0.238c-0.316,0.474-1.225,1.543-1.502,1.859c-0.277,0.317-0.554,0.357-1.028,0.119 c-0.474-0.238-2.002-0.738-3.815-2.354c-1.41-1.257-2.362-2.81-2.639-3.285c-0.277-0.474-0.03-0.731,0.208-0.968  c0.213-0.213,0.474-0.554,0.712-0.831c0.237-0.277,0.316-0.475,0.474-0.791c0.158-0.317,0.079-0.594-0.04-0.831 C20.379,19.115,19.457,16.769,19.035,15.831z" clip-rule="evenodd"/></svg>
+
+
+      </a>
+    </li>
+    <li>
+      <button class="js-share-toggle share-button share-buttons-toggle" data-network="share"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-42 44.5 13.7 13.5"><g fill="#fff"><path d="M-28.3 53.8v-2.4c0-.4-.4-.7-.7-.7-.4 0-.7.3-.7.7v5.1h-10.8v-5.1c0-.4-.4-.7-.7-.7-.6 0-.8.4-.8.7v5.4c0 .6.5 1.1 1.1 1.1h11.6c.6 0 1-.5 1-1.1v-3z"/><path d="M-37.4 48.3l1.5-1.5v6c0 .4.4.7.8.7s.7-.3.7-.7v-6l1.5 1.5c.3.3.7.3 1 0s.3-.7 0-1l-2.7-2.6c-.1-.1-.3-.2-.5-.2s-.4.1-.5.2l-2.7 2.6c-.3.3-.3.7 0 1 .2.3.7.3.9 0z"/></g></svg>Social</button>
+    </li>
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <script type="text/javascript">
+     (function($) {
+    var $share_toggle   = $( '.js-share-toggle' ),
+        $share_list     = $( '#share-buttons' );
+
+    $share_toggle.on( 'click', function(e) {
+      $share_list.toggleClass( 'share-buttons-active' );
+    });
+  })(jQuery);
+   </script>
+     <body  class="home page-template-default page page-id-4 header_1 fullwidth_slider_page header_transparency wpb-js-composer js-comp-ver-5.4.2 vc_responsive"  style="margin:0;" onload="commonFunctions()">
+
+        <div class="viewport  "  id="Safe">
+        <div  class="header_wrapper   header_1  normal  background--light  ">
+        <header id="header" class="" style="
+           z-index: 99999999;
+           ">
+           <div class="container-fluid">
+              <div class="row-fluid">
+                 <div class="span12" style="width: 100%!important">
+                    <div id="logo" class="" style="width: 79%;">
+                       <a href='?url=index'>
+                       <img class='logomak' src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/logo.png" alt='' />
+
+
+
+                       </a>
+                    </div>
+
+
+<style type="text/css">
+
+
+    /*button animation end*********/
+.nav-trigger {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  background: transparent;
+  border: none;
+  vertical-align: middle;
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+}
+.nav-trigger:focus {
+  outline: 0;
+}
+.nav-trigger:hover span,
+.nav-trigger:hover span:before,
+.nav-trigger:hover span:after {
+  background: #3fa2ff;
+}
+.nav-trigger:before {
+  content: "";
+  opacity: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+}
+.nav-trigger span {
+  display: block;
+  position: relative;
+}
+.nav-trigger span:before, .nav-trigger span:after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+.nav-trigger span:before {
+  top: -8px;
+}
+.nav-trigger span:after {
+  bottom: -8px;
+}
+.nav-trigger span,
+.nav-trigger span:before,
+.nav-trigger span:after {
+  width: 100%;
+  height: 4px;
+  background: #3fa2ff;
+  transition: all 0.4s ease;
+}
+.nav-trigger.is-active:before {
+  opacity: 1;
+  width: 50px;
+  height: 50px;
+  background: #fff;
+}
+.nav-trigger.is-active span {
+  background: transparent;
+}
+.nav-trigger.is-active span:before {
+  top: 0;
+  transform: rotate(225deg);
+}
+.nav-trigger.is-active span:after {
+  bottom: 0;
+  transform: rotate(-225deg);
+}
+  </style>
+
+
+<button class="nav-trigger burger pull-right" type="button" style="right: 0">
+  <span></span>
+</button>
+
+<script type="text/javascript">
+  ;(function(window, document, undefined) {
+
+  'use strict';
+
+  var navTrigger = document.querySelector('.nav-trigger');
+
+  navTrigger.addEventListener('click', function(e) {
+    e.preventDefault();
+    this.classList.toggle('is-active');
+  }, false);
+
+})(window, document);
+</script>
+  <style type="text/css">
+    .backskns.open{
+      position: fixed;
+           top: 0;
+           left: 0;
+           background-color: rgba(0,0,0,.35);
+           z-index: 99999;
+           height: 100%;
+           width: 100%;
+    }
+  </style>
+  <div class="backskns">
+  </div>
+
+
+
+
+
+  <!--                 <button class="burger">
+    <span></span>
+  </button> -->
+
+
+  <div class="sidemenu">
+
+<h5 class="slide_heading_home" style="padding: 52px 20px 20px 30px;" >Settings</h5>
+<ul class="main_menu" style="padding: 0px 2px 0px 42px;border-bottom: 1px solid rgba(0,0,0,0.2);" >
+
+    <li><a href="#" onclick="changeCourse(0)"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/courses.png" class="img_profile_list"><span id="menuchange"></span></a></li>
+
+<!-- <li><a href="https://veteach.in/user-profile.php"><img src="assets/filter/settings.png" class="img_profile_list">Settings</a></li> -->
+
+  </ul>
+
+
+
+    <h5 class="slide_heading_home">Personal</h5>
+    <ul class="main_menu"style="border-bottom: 1px solid rgba(0,0,0,0.2);" >
+
+<li ><a href="?url=profile"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/nam.png" class="img_profile_list">Profile</a></li>
+<li style="display: none"><a href="?url=checkout"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/cart.png" class="img_profile_list">Cart</a></li>
+<li style="display: none"><a href="?url=wishlist"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/wishlist.png" class="img_profile_list">Wishlist</a></li>
+<li style="display: none"><a href="?url=my_courses"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/courses1.png" class="img_profile_list">My Courses</a></li>
+<li style="display: none"><a href="?url=notification"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/notification.png" class="img_profile_list">Notification</a></li>
+<!-- <li><a href="https://veteach.in/user-profile.php"><img src="assets/filter/material.png" class="img_profile_list">Buy Material</a></li> -->
+</ul>
+
+
+  <h5 class="slide_heading_home">Communicate</h5>
+  <ul class="main_menu" style="border-bottom: 1px solid rgba(0,0,0,0.2);">
+
+    <li><a href="?url=coming_soon"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/team.png" class="img_profile_list">VETeach Team</a></li>
+    <li><a href="?url=contact"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/contact.png" class="img_profile_list">Contact Us</a></li>
+    <li><a href="?url=privacy-policy"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/privacy.png" class="img_profile_list">Privacy Policy</a></li>
+    <li><a href="?url=terms"><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/terms.png" class="img_profile_list">Terms & Conditions</a></li>
+  </ul>
+
+      <ul class="main_menu" style="border-bottom: 1px solid rgba(0,0,0,0.2);">
+              <li onclick="logout123()"><a href="#" ><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/assets/filter/logout.png" class="img_profile_list">Logout</a></li>
+      </ul>
+
+
+
+</div>
+
+<span style="float: right !important;padding: 22px;" class="top_icons">
+
+                     <div class="dropdown notifcart"  >
+                         <a href="?url=checkout" >
+                       <i class="fa fa-shopping-cart dropbtn" aria-hidden="true"  class="" style="font-size: 21px;">&nbsp; <span class="badge" id="cart_number">0</span></i>
+                        </a>
+                    </div>
+
+                 <div class="dropdown notifcart" >
+                         <a href="?url=wishlist" >
+                       <i class="fa fa-heart dropbtn" aria-hidden="true"  class="" style="font-size: 21px;">&nbsp; <span class="badge" id="wishlist_number">0</span></i>
+                        </a>
+                    </div>
+
+
+                    <div class="dropdown notifmob" >
+                       <i class="fa fa-bell dropbtn" aria-hidden="true" onclick="myNotify()" class="" style="font-size: 21px;">&nbsp; <span class="badge" id="notification_number" style="display: none;">0 <!-- $total_notification; --></span></i>
+                       <div id="myNotification" class="dropdown-content">
+                          <div id="notificationContainer" style="display: block;">
+                             <div id="notificationTitle">Notifications</div>
+                             <div id="notificationsBody" class="notifications" style="min-height: 279px;">
+                                <ul>
+
+
+                                     <!--  $notification_array);   -->
+
+                                   <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/02.png" style="padding: 48px;">
+
+                                </ul>
+                             </div>
+                             <div id="notificationFooter"><a href="#" id="AddNew">See All</a>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+</span>
+
+
+
+
+                    <script>
+                       /* When the user clicks on the button,
+                       toggle between hiding and showing the dropdown content */
+                       function myNotify() {
+                         document.getElementById("myNotification").classList.toggle("show");
+
+                       }
+
+                       // Close the dropdown if the user clicks outside of it
+                       window.onclick = function(event) {
+                         if (!event.target.matches('.dropbtn')) {
+                           var dropdowns = document.getElementsByClassName("dropdown-content");
+                           var i;
+                           for (i = 0; i < dropdowns.length; i++) {
+                             var openDropdown = dropdowns[i];
+                             if (openDropdown.classList.contains('show')) {
+                               openDropdown.classList.remove('show');
+                             }
+                           }
+                         }
+                       }
+                    </script>
+
+
+
+
+                <!--    <button class="openbtn btn-bt rounded rounded1 header_button btnad"  onclick="myloginFunction()"><img src="images/loginlogo.png" style="width:40px;" ></button> -->
+
+  <script type="text/javascript">
+
+
+    $('.burger').click(function() {
+      // $(this).toggleClass('open');
+      $('.sidemenu').toggleClass('open')
+      $('.backskns').toggleClass('open')
+
+    });
+
+
+    $('.backskns').click(function() {
+      $(this).toggleClass('open');
+      $('.sidemenu').toggleClass('open');
+        document.getElementsByClassName('nav-trigger')[0].classList.toggle('is-active');
+    });
+  </script>
+<script>
+    function myUniversity() {
+        document.getElementById('modalOverlay').style.display = 'block'
+    }
+</script>
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+
+
+.description {
+  text-align: center;
+  font-size: 0.8em;
+  color: #bbb;
+  text-shadow: 0 2px 1px #fff;
+}
+
+b, strong {
+  font-weight: 600;
+}
+
+.wrapper {
+    margin: 0 auto;
+    display: block;
+    width: 400px;
+    padding: 10px;
+}
+
+.searchbox {
+  width: 100%;
+  position: relative;
+}
+.searchbox input[type=search] {
+ width: 100%;
+    background: none;
+    border: 2px solid #bfbfbf;
+    border-radius: 19px;
+    padding: 7px 10px;
+}
+.searchbox .search-autocomplete {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 0.9em;
+  border: 1px solid #eee;
+  border-top: none;
+  background: #fff;
+  box-shadow: 0 4px 4px rgba(10, 10, 10, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+}
+.searchbox .search-autocomplete ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.searchbox .search-autocomplete li, .searchbox .search-autocomplete a {
+  display: block;
+}
+.searchbox .search-autocomplete li {
+  border-bottom: 1px solid #eee;
+  color: #0074D9;
+}
+.searchbox .search-autocomplete li:last-of-type {
+  border-bottom: none;
+}
+.searchbox .search-autocomplete li:hover, .searchbox .search-autocomplete li:active {
+  background: #fafafa;
+  color: #FF4136;
+}
+.searchbox .search-autocomplete a {
+  padding: 7px 10px;
+  color: inherit;
+  text-decoration: none;
+}
+.searchbox .search-autocomplete .search-description {
+  font-size: 0.8em;
+  color: #999;
+  font-weight: 300;
+  display: block;
+}
+.searchbox .search-autocomplete .loader, .searchbox .search-autocomplete .load-more, .searchbox .search-autocomplete .no-results, .searchbox .search-autocomplete .error {
+  padding: 7px 10px;
+  text-align: center;
+}
+.searchbox .search-autocomplete .load-more {
+  font-size: 0.8em;
+  color: #0074D9;
+}
+.searchbox .search-autocomplete .error, .searchbox .search-autocomplete .error:hover, .searchbox .search-autocomplete .error:active {
+  color: #FF4136;
+}
+.searchbox .search-autocomplete .no-results, .searchbox .search-autocomplete .no-results:hover, .searchbox .search-autocomplete .no-results:active {
+  color: #999;
+}
+
+/* SpinKit by Tobias Ahlit
+/* https://github.com/tobiasahlin/SpinKit
+/**********************************************************/
+.spinner {
+  margin: auto;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 14px;
+  height: 14px;
+  background-color: #0074D9;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+  }
+}
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+</style>
+
+
+<div class="wrapper" style="display:none;">
+  <form class="searchbox">
+    <input type="search" placeholder="Search" id="search" autocomplete="off">
+    <div id="search-autocomplete" class="search-autocomplete">
+      <ul>
+
+        <li class="load-more"><a href="#">Load more</a></li>
+        <li class="no-results">No results.</li>
+        <li class="error">%err%</li>
+      </ul>
+      <div class="loader">
+        <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<script type="text/javascript">
+
+(function() {
+  var searchbox = $('#search'),
+      autocomplete = $('#search-autocomplete'),
+      loadMoreButton = $('.load-more', autocomplete),
+      spinner = $('.loader', autocomplete),
+      noResults = $('.no-results', autocomplete),
+      error = $('.error', autocomplete);
+
+  var currentOffset = 0,
+      // some random URL to load because we don't use the result anyway, just so the request will succeed :P
+      searchUrl = 'https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json', //'https://www.crossorigin.me/https://ajax.googleapis.com/ajax/services/search/web',
+      lastSearch = '',
+      searchTimeout = 0.5, //seconds
+      searchTimer;
+
+  function loadData() {
+    noResults.hide();
+    error.hide();
+    loadMoreButton.hide();
+    spinner.show();
+
+    if(searchbox.val() !== lastSearch) {
+      $('.search-result', autocomplete).remove();
+      currentOffset = 0;
+    }
+
+    lastSearch = searchbox.val();
+
+    $.ajax({
+      type: 'GET',
+      url: searchUrl,
+      dataType: 'text',
+      data: {
+        'v': '1.0',
+        'q': lastSearch,
+        'start': currentOffset
+      },
+      success: function(data) {
+        // Since the web search API is dead we have to fake it for the demo
+        // Can't be bothered to actually remove the AJAX request so it stays ;)
+        console.log(addSubject(0,10,0)+"search data");
+        data = addSubject(0,10,0);
+
+        var json = $.parseJSON(data);
+
+        if(json &&
+           json.responseData &&
+           json.responseData.results &&
+           json.responseData.results.length > 0) {
+          for(var i = 0; i < json.responseData.results.length; ++i) {
+            $('<li class="search-result">' +
+                '<a href="'+ json.responseData.results[i].url +'" target="_blank">' +
+                  json.responseData.results[i].titleNoFormatting +
+                  '<span class="search-description">' +
+                    json.responseData.results[i].content +
+                  '</span>' +
+                '</a>' +
+              '</li>').insertBefore(loadMoreButton);
+          }
+
+          noResults.hide();
+          loadMoreButton.show();
+          error.hide();
+        } else {
+          noResults.show();
+          loadMoreButton.hide();
+          error.hide();
+        }
+
+        if(json &&
+           !json.responseData &&
+            json.responseDetails) {
+          noResults.hide();
+          loadMoreButton.hide();
+          error.text(json.responseDetails).show();
+          console.error(json.responseDetails);
+        }
+
+        spinner.hide();
+        currentOffset += json.responseData.results.length;
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error(errorThrown);
+
+        error.text(textStatus + ': ' + errorThrown).show();
+
+        loadMoreButton.hide();
+        noResults.hide();
+        spinner.hide();
+      }
+    });
+  }
+
+  searchbox.on('focus', function() {
+    if($(this).val().length > 0) {
+      autocomplete.slideDown('fast');
+    }
+  })
+  .on('input propertychange paste', function() {
+    //this will handle pasting text and clearing text with browser built in clear button
+    $(this).trigger('keyup');
+  })
+  .on('keydown', function() {
+    clearTimeout(searchTimer);
+  })
+  .on('keyup', function() {
+    if($(this).val().length > 0) {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(loadData, searchTimeout * 1000);
+      autocomplete.slideDown('fast');
+    } else {
+      clearTimeout(searchTimer);
+      autocomplete.slideUp('fast');
+    }
+  });
+
+  $(document).on('click', function(e) {
+    //click anywhere outside searchbox to close
+    if(!$(e.target).closest('.searchbox').length) {
+      if(autocomplete.is(':visible')) {
+        autocomplete.slideUp('fast');
+        clearTimeout(searchTimer);
+      }
+    }
+  });
+
+
+  autocomplete.css('top', (searchbox.outerHeight()) + 'px');
+  loadMoreButton.on('click', loadData)
+                .hide();
+  noResults.hide();
+  error.hide();
+
+}());
+
+</script>
+
+
+
+
+
+
+                 </div>
+              </div>
+           </div>
+            <style>
+.active123{
+    color: #01add8!important;
+}
+</style>
+            <script>
+
+function delete_cookie(name) {
+  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function changeCourse(flag){
+    delete_cookie("version");
+    delete_cookie("branch_id");
+    delete_cookie("semester_id");
+    delete_cookie("university_id");
+    delete_cookie("regulation");
+    document.cookie = "version" + "=0"+";path=/";
+      indexedDB.databases().then(dbs => {
+      dbs.forEach(db => indexedDB.deleteDatabase(db.name))
+    });
+      // alert("redirecting");
+    if(flag == 1){}else{
+        document.location = "?url=index";
+    }
+    // commonFunctions();
+}
+
+function logout123() {
+    var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+        sessionStorage.clear();
+        localStorage.clear();
+        indexedDB.databases().then(dbs => {
+          dbs.forEach(db => indexedDB.deleteDatabase(db.name))
+        });
+        var transaction = db.transaction(["subject"], "readwrite");
+        var objectStore = transaction.objectStore("subject");
+        var objectStoreRequest = objectStore.clear();
+        objectStoreRequest.onsuccess = function(event) {
+            // report the success of our request
+            console.log("sucess clearing");
+          };
+        signOut();
+}
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+      delete_cookie("user_id");
+      changeCourse(0);
+    });
+  }
+
+            </script>
+        </header>
+
+<script src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/fstdropdown.js"></script>
+<script>
+   function setDrop() {
+       if (!document.getElementById('third').classList.contains("fstdropdown-select"))
+           document.getElementById('third').className = 'fstdropdown-select';
+       setFstDropdown();
+   }
+   setFstDropdown();
+   function removeDrop() {
+       if (document.getElementById('third').classList.contains("fstdropdown-select")) {
+           document.getElementById('third').classList.remove('fstdropdown-select');
+           document.getElementById("third").fstdropdown.dd.remove();
+       }
+   }
+   function addOptions(add) {
+       var select = document.getElementById("fourth");
+       for (var i = 0; i < add; i++) {
+           var opt = document.createElement("option");
+           var o = Array.from(document.getElementById("fourth").querySelectorAll("option")).slice(-1)[0];
+           var last = o == undefined ? 1 : Number(o.value) + 1;
+           opt.text = opt.value = last;
+           select.add(opt);
+       }
+   }
+   function removeOptions(remove) {
+       for (var i = 0; i < remove; i++) {
+           var last = Array.from(document.getElementById("fourth").querySelectorAll("option")).slice(-1)[0];
+           if (last == undefined)
+               break;
+           Array.from(document.getElementById("fourth").querySelectorAll("option")).slice(-1)[0].remove();
+       }
+   }
+   function updateDrop() {
+       document.getElementById("fourth").fstdropdown.rebind();
+   }
+   //jQuery time
+var current_fs, next_fs, previous_fs; //fieldsets
+var left, opacity, scale; //fieldset properties which we will animate
+var animating; //flag to prevent quick multi-click glitches
+
+$(".next").click(function(){
+   if(animating) return false;
+   animating = true;
+
+   current_fs = $(this).parent();
+   next_fs = $(this).parent().next();
+
+   //activate next step on progressbar using the index of next_fs
+   $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+   //show the next fieldset
+   next_fs.show();
+   //hide the current fieldset with style
+   current_fs.animate({opacity: 0}, {
+      step: function(now, mx) {
+         //as the opacity of current_fs reduces to 0 - stored in "now"
+         //1. scale current_fs down to 80%
+         scale = 1 - (1 - now) * 0.2;
+         //2. bring next_fs from the right(50%)
+         left = (now * 50)+"%";
+         //3. increase opacity of next_fs to 1 as it moves in
+         opacity = 1 - now;
+         current_fs.css({'transform': 'scale('+scale+')'});
+         next_fs.css({'left': top, 'opacity': opacity});
+      },
+      duration: 800,
+      complete: function(){
+         current_fs.hide();
+         animating = false;
+      },
+      //this comes from the custom easing plugin
+      easing: 'easeInOutBack'
+   });
+});
+
+$(".previous").click(function(){
+   if(animating) return false;
+   animating = true;
+
+   current_fs = $(this).parent();
+   previous_fs = $(this).parent().prev();
+
+   //de-activate current step on progressbar
+   $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+   //show the previous fieldset
+   previous_fs.show();
+   //hide the current fieldset with style
+   current_fs.animate({opacity: 0}, {
+      step: function(now, mx) {
+         //as the opacity of current_fs reduces to 0 - stored in "now"
+         //1. scale previous_fs from 80% to 100%
+         scale = 0.8 + (1 - now) * 0.2;
+         //2. take current_fs to the right(50%) - from 0%
+         left = ((1-now) * 50)+"%";
+         //3. increase opacity of previous_fs to 1 as it moves in
+         opacity = 1 - now;
+         current_fs.css({'left': top});
+         previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+      },
+      duration: 800,
+      complete: function(){
+         current_fs.hide();
+         animating = false;
+      },
+      //this comes from the custom easing plugin
+      easing: 'easeInOutBack'
+   });
+});
+
+$(".submit").click(function(){
+   return false;
+})
+
+   $(function() {
+  // This will select everything with the class smoothScroll
+  // This should prevent problems with carousel, scrollspy, etc...
+  $('.smoothScroll').click(function() {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 1000); // The number here represents the speed of the scroll in milliseconds
+        return false;
+      }
+    }
+  });
+});
+
+</script>
+
+
+<script src="https://thecodeplayer.com/uploads/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+

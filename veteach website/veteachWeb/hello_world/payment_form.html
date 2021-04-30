@@ -1,0 +1,37 @@
+<style>
+    .razorpay-payment-button{
+        width: 50%;
+    margin: auto;
+    color: #ffffff;
+    height: 29px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 0px;
+    border-radius: 6px;
+    background-color: #70ab31;
+    }
+</style>
+
+{{^user_phone}}
+  Phone : <input type="text" class="form-control" name="user_phone" style="width: 74%;height: 30px;" required>
+
+    {{/user_phone}}
+<form action="" method="GET">
+<script
+    src="https://checkout.razorpay.com/v1/checkout.js"
+    data-key="rzp_live_xBoLeiOILrTfRi"
+    data-amount="{{amount}}"
+    data-currency="INR"
+    data-order_id="{{payment}}"
+    data-buttontext="Proceed To Pay"
+    data-name="VETEACH.IN"
+    data-description="Online Btech Lessons"
+    data-image="https://veteach.in/assets/uploads/logo.png"
+    data-prefill.name="{{name}}"
+    data-prefill.email="{{email}}"
+    data-prefill.contact="{{phone}}"
+    data-theme.color="#00B0F0"
+></script>
+<input type="hidden" custom="Hidden Element" name="hidden">
+<input type="hidden"  name="url" value="success">
+</form>

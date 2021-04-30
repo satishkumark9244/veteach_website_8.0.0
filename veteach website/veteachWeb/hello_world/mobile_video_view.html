@@ -1,0 +1,673 @@
+
+<html lang="en">
+<head>
+  <title>Veteach</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link href="//db.onlinewebfonts.com/c/871d8358eb00359a7c53fac055a02c06?family=retina" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@800&display=swap" rel="stylesheet">
+
+  <style>
+@media only screen and (min-width: 400px) {
+
+    .embed-container {
+
+    min-height: 240px!important;
+
+}
+
+}
+  @import url(//db.onlinewebfonts.com/c/871d8358eb00359a7c53fac055a02c06?family=retina);
+  .text_style2{
+      color: #7e7e7e;
+    font-family: Retina,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    font-weight: 100;
+    line-height: 2px;
+  }
+  p {
+    margin: 0;
+    padding-bottom: 12px!important;
+}
+  .embed-container {
+position: relative;
+    min-height: 210px;
+    margin-bottom: 0px;
+    height: 0;
+    width: 100%;
+    padding: 0px;
+    overflow: hidden;
+    max-width: 100%;
+}
+   .embed-container iframe, .embed-container object, .embed-container embed {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   }
+    .text_style1{
+            display: -webkit-box;
+    max-height: 2.34em;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: #232323;
+    font-family: Retina,Arial,Helvetica,sans-serif;
+    font-weight: 900;
+    line-height: 1.17;
+    margin-right: 24px;
+    overflow: hidden;
+    font-size: 22px;
+    }
+
+ .filterDiv {
+  /*float: left;*/
+  /*background-color: #2196F3;*/
+  /*color: #ffffff;*/
+  /*width: 100px;*/
+  /*line-height: 100px;*/
+  /*text-align: center;*/
+  /*margin: 2px;*/
+  display: none;
+}
+.show {
+  display: block;
+}
+
+.container {
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+/* Style the buttons */
+.btn {
+    display: inline;
+    /*padding: 0px 31px;*/
+    font-size: 14px;
+    width: 32%;
+    color: #636363;
+    font-weight: 400;
+    cursor: pointer;
+   text-transform: capitalize;
+    letter-spacing: 0px;
+}
+
+.btn.focus, .btn:focus {
+    outline: 0;
+     box-shadow:unset;
+}
+
+.btn.active {
+color: #232323;
+
+    border: 1px solid #232323;
+    border-radius: 15px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.faqanswer {
+   display: none;
+   background: #303030;
+   color:white;
+   padding: 12px 20px 0 30px;
+   font-family: 'Lora', serif;
+   }
+   .faqanswer p {
+   font-size: 16px;
+   line-height: 25px;
+   font-family: 'Lora', serif;
+   }
+   a.active {
+   font-weight: bold;
+   }
+   .togglefaq {
+       /* width: 108%; */
+    background-color: white;
+    text-decoration: none;
+    padding: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+    /* padding: 20px 33px; */
+    line-height: 20px;
+    font-weight: bold;
+    display: block;
+    font-family: 'Rubik', sans-serif;
+    border: 1px solid #d0d0d0;
+    margin-bottom: -1px;
+
+   }
+   .icon-plus {
+   color: #5ec4cd;
+   margin-right: 20px;
+   font-size: 20px;
+   float:left;
+   }
+   .icon-minus {
+   color: #5ec4cd;
+   margin-right: 20px;
+   font-size: 20px;
+   float:left;
+   }
+   p {
+   margin: 0;
+   padding-bottom: 20px;
+   }
+   .form-control {
+    display: inline;
+    width: 50%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+</style>
+<style>
+.buttonpdf {
+display: block;
+    position: relative;
+    float: left;
+    width: 120px;
+    padding: 0;
+    margin: 10px 20px 10px 0;
+    font-weight: 600;
+    text-align: center;
+    line-height: 50px;
+    color: #FFF;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.buttonpdf:hover {background-color: #3e8e41}
+
+.buttonpdf:active {
+  background: #5DC8CD;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+#pdf-prev{
+       padding: 5px;
+    border: 0px;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+        text-decoration: underline;
+}
+
+.pdf-pager{
+  font-size: 10px;
+    font-weight: bold;
+}
+#pdf-autofit-height{
+    padding: 5px;
+    border: 0px;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+    text-decoration: underline;
+}
+
+#pdf-autofit-width{
+    padding: 5px;
+    border: 0px;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+    text-decoration: underline;
+}
+
+#pdf-autofit{
+    padding: 5px;
+    border: 0px;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+    text-decoration: underline;
+
+}
+
+#pdf-next{
+       padding: 5px;
+    border: 0px;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: bold;
+    background: unset;
+    border-radius: 5px;
+    color: black;
+        text-decoration: underline;
+
+}
+.pdf-container
+{
+position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    min-height: 400px;
+    top: 20px;
+    bottom: 20px;
+    background-color: #fff;
+    border: solid 1px #111111;
+    overflow: hidden;
+}
+
+.pdf-toolbar
+{
+	background-color: #fff;
+	position: relative;
+	top: 0;
+	z-index: 100;
+	width: 100%;
+
+	line-height: 40px;
+
+
+}
+
+.pdf-container .pdf-canvas {
+	position: absolute;
+	margin-top: 40px;
+	top: 0;
+	bottom: 0px;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+.pdf-container canvas {
+	position: relative;
+	display: inline-block;
+}
+</style>
+
+  <style>
+      /*.login_text{*/
+      /*   padding: 35px;*/
+      /*   text-transform: capitalize;*/
+      /*   font-size: 26px; */
+      /*}*/
+      /*.login_botton{*/
+      /*    width:40px;*/
+
+      /*}*/
+      .notification_height{
+    min-height: 728px;
+}
+    .modal-window {
+  position: fixed;
+  background-color: rgb(33 33 33 / 81%);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.modal-window:target {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-window > div {
+  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  padding: 2em;
+  background: #ffffff;
+}
+.modal-window header {
+  font-weight: bold;
+}
+.modal-window h1 {
+  font-size: 150%;
+  margin: 0 0 15px;
+}
+
+.modal-close {
+  color: #aaa;
+  line-height: 50px;
+  font-size: 80%;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 106px;
+  text-decoration: none;
+}
+.modal-close:hover {
+  color: black;
+}
+
+/* Demo Styles */
+
+
+
+.modal-window div:not(:last-of-type) {
+  margin-bottom: 15px;
+}
+
+small {
+  color: #aaa;
+}
+
+
+
+</style>
+ <script type="text/javascript">
+
+if (screen.width >= 699) {
+    let url_str = window.location.href;
+    let window_url = new URL(url_str);
+    let search_params = window_url.searchParams;
+    let subject_id_url = search_params.get('subject_id');
+    let video_id_url = search_params.get('video_id');
+    let unit_id_url = search_params.get('unit_id');
+    let semester_id = search_params.get('semester_id');
+
+    document.location = "?url=video_view&subject_id="+subject_id_url+"&semester_id="+semester_id+"&video_id="+video_id_url+"&unit_id="+unit_id_url;
+}
+
+</script>
+</head>
+<body>
+
+
+
+
+<div class="container-fluid" style="padding-right: 0px; padding-left: 0px;padding-right: 0px;padding-left: 0px; position: sticky;top: 0px;overflow-y: scroll;z-index: 99999;">
+
+
+            <div class="col-md-12" style="padding:0px;" id="iframe_video">
+
+
+
+            </div>
+
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12" id="video_main_details">
+
+
+    </div>
+    <div class="col-sm-12 col-md-12">
+     <div id="myBtnContainer">
+  <hr>
+  <button class="btn active" onclick="filterSelection('topics')"> Topics</button>
+  <button class="btn " onclick="filterSelection('notes')"> Notes</button>
+  <button class="btn" onclick="filterSelection('syllabus')"> Syllabus</button>
+   <hr>
+
+</div>
+<div class="container" style=" padding: 19px;">
+  <div class="filterDiv topics">
+
+      <h2 style="color: #232323;font-family: Retina,Arial,Helvetica,sans-serif;font-size: 20px;font-weight: 800;line-height: 1.2;display:inline;width:50%;">Top Lessons</h2>
+
+        <form name="frm1" id="frm1" style="display:inline;width:50%;">
+    <select name="catid" id="catid" class="form-control" onChange="doReload(this.value);">
+
+
+        <option value="0">ALL</option>
+
+    </select>
+</form>
+
+
+<span id="unit_wise_videos">
+
+
+
+
+
+
+
+</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+
+  <div class="filterDiv notes">
+
+                  <div style="border: 0;
+    font-size: 11px;
+    background: rgba(63, 81, 181, 0.12);
+    box-shadow: none;
+    width: auto;
+    display: inline-block;
+    color: #3F51B5;"><b>Note:</b> For Better view of the pdf file Adjust it With Below Options & if you see a blank pdf file please click on auto adjust or adjust height/width</div>
+
+
+<span id="pdf_file">
+
+
+               </span>
+                   <hr>
+
+
+                          <div class="col-md-12 player-video" style="margin: auto !important; float:unset;text-align:center;" id="notes_pdf">
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+  </div>
+
+
+
+
+
+  <div class="filterDiv syllabus" id="syllabus_units">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Use latest PDF.js build from Github -->
+	<!-- script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script -->
+	<script src="pdfviewer.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".pdf-container").pdfviewer({
+				scale: 2,
+				onDocumentLoaded: function() {
+					var num = $(this).data('pdfviewer').pages();
+				// 	$(this).data('pdfviewer').autoFit();
+					//alert('onDocumentLoaded:'+num);
+
+				},
+	            onPrevPage: function() {
+	            	//alert('onPrevPage');
+	            	return true;
+	            },
+	            onNextPage: function() {
+	            	//alert('onNextPage');
+	            	return true;
+	            },
+	            onBeforeRenderPage: function(num) {
+	            	//alert('onBeforeRenderPage');
+	                return true;
+	            },
+	            onRenderedPage: function(num) {
+	            	//alert('onRenderedPage');
+	            }
+			});
+
+
+		});
+	</script>
+
+<script>
+   //faq toggle stuff
+   $('.togglefaq').click(function(e) {
+   e.preventDefault();
+   var notthis = $('.active').not(this);
+   notthis.find('.icon-minus').addClass('fa fa-angle-down').removeClass('fa fa-angle-up');
+   notthis.toggleClass('active').next('.faqanswer').slideToggle(200);
+    $(this).toggleClass('active').next().slideToggle("fast");
+   $(this).children('i').toggleClass('fa fa-angle-down fa fa-angle-up');
+   });
+
+</script>
+<script>
+filterSelection("topics")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "") c = "";
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+  }
+}
+
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function(){
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+      </header>
+        <script>
+function myloginFunction() {
+  document.getElementById("myLoginpage").style.display = "block";
+}
+function closeLogin(){
+    document.getElementById('myLoginpage').style.display='none'
+}
+</script>
+
+ <script>
+function myUniverpage() {
+  document.getElementById("myUniversitypage").style.display = "block";
+}
+function closeUniversity(){
+    document.getElementById('myUniversitypage').style.display='none'
+}
+</script>
+
+<script>
+    document.getElementById("add_to_cart_btn").click();
+</script>
+<?php } ?>
+
+<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-toggle.min.js"></script>
+<script src="js/footer.js"></script>
+
+
+

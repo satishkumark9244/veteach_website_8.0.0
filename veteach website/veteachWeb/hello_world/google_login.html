@@ -1,0 +1,47 @@
+<html lang="en">
+  <head>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="300328328829-33fb4vvr5b99s6kkr7p7rbs59ohq6qn9.apps.googleusercontent.com">
+
+  </head>
+  <body>
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <script>
+      console.log("*****************1");
+      function onSignIn(googleUser) {
+        console.log("*****************2");
+        // alert("ds2");
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        // console.log('Full Name: ' + profile.getName());
+        // console.log('Given Name: ' + profile.getGivenName());
+        // console.log('Family Name: ' + profile.getFamilyName());
+        // console.log("Image URL: " + profile.getImageUrl());
+        // console.log("Email: " + profile.getEmail());
+        // alert("ID: " + profile.getId())
+        // alert('Full Name: ' + profile.getName())
+        // alert('Given Name: ' + profile.getGivenName())
+        // alert("Image URL: " + profile.getImageUrl())
+
+        setCookie(profile.getEmail())
+        // location.reload();
+        // alert(profile.getEmail())
+        //
+        // // The ID token you need to pass to your backend:
+        // var id_token = googleUser.getAuthResponse().id_token;
+        // // console.log("ID Token: " + id_token);
+        // alert("ID Token: " + id_token)
+      };
+      function setCookie(value) {
+
+        var c_value = escape(value);
+        document.cookie = "email =" + c_value;
+     }
+
+
+    </script>
+
+  </body>
+</html>

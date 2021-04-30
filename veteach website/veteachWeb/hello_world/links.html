@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html lang="en-US" class="css3transitions">
+   <head>
+       <title>VEteach online video lessons platform</title>
+<meta name="keywords" content="Previous Question papers, online Btech courses for all Branches, Live Classes for Btech Students, Best online classes for Btech students, Btech Online Classes, Live classes for Btech.">
+<meta name="description" content="Veteach is a leading online learning platform for Btech Engineering Students learn from top faculty in India with practical learning and Previous Question papers of CSE, IT, ECE, EEE, MECH, CIVIL in the most interesting way.">
+<link rel="canonical" href="https://veteach.in" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+       <script async src="https://www.googletagmanager.com/gtag/js?id=AW-476148313"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    var db;
+    var dbReq = window.indexedDB.open('veteach', 1);
+    // const url = 'https://n9yz799guk.execute-api.ap-south-1.amazonaws.com/Prod/hello?url=app_api';
+    // const url = 'https://veteach.in?url=app_api';
+    var link_to_check = location.protocol + '//' + location.host;
+    if(link_to_check.includes("www.")){
+        window.location.href = "https://veteach.in";
+        // alert('true');
+
+    }else{
+        // alert('false');
+    }
+    const url = location.protocol + '//' + location.host+'?url=app_api';
+    // const url = 'https://so194d6tae.execute-api.ap-south-1.amazonaws.com/Prod?url=app_api';
+    var url_str = window.location.href;
+    var window_url = new URL(url_str);
+    var search_params = window_url.searchParams;
+    var url_page = search_params.get('url');
+    if(url_page == "" || url_page === "" || url_page == null || url_page == "none"){
+        url_page = "index";
+    }
+    var logout = search_params.get('logout');
+    var subject_id_url = search_params.get('subject_id');
+    var semester_id_url = search_params.get('semester_id');
+    var sub_sem_url = search_params.get('flag');
+    window.dbversion = -1;
+    var purchased_subjects = [];
+
+
+    dbReq.onupgradeneeded = function(event) {
+      // Set the db variable to our database so we can use it!
+      // db = event.target.result;
+      db = dbReq.result;
+        console.log("createInitTables@22222222222222222222222");
+      // Create an object store named subject. Object stores
+      // in databases are where data are stored.
+          let db_version = db.createObjectStore('db_version', {autoIncrement: true});
+          let subject = db.createObjectStore('subject', {autoIncrement: false});
+          let video = db.createObjectStore('video', {autoIncrement: true});
+          let users = db.createObjectStore('users', {autoIncrement: true});
+          let user_basket = db.createObjectStore('user_basket', {autoIncrement: false});
+          let semester = db.createObjectStore('semester', {autoIncrement: false});
+          let model_papers = db.createObjectStore('model_papers', {autoIncrement: true});
+          let top_lessons = db.createObjectStore('top_lessons', {autoIncrement: true});
+          let materials = db.createObjectStore('materials', {autoIncrement: true});
+          let testimonials = db.createObjectStore('testimonials', {autoIncrement: true});
+    }
+    dbReq.onsuccess = function(event) {
+        console.log("createInitTables@333333333333333333333");
+       // db = event.target.result;
+       db = dbReq.result;
+    }
+    dbReq.onerror = function(event) {
+        console.log("createInitTables@4444444444444444444444");
+      alert('error opening database ' + event.target.errorCode);
+    }
+</script>
+
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-476148313');
+  </script>
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  '');
+   fbq('init', '206402467639054');
+  fbq('track', 'PageView');
+  </script>
+  <!-- Quora Pixel Code (JS Helper) -->
+  <script>
+  !function(q,e,v,n,t,s){if(q.qp) return; n=q.qp=function(){n.qp?n.qp.apply(n,arguments):n.queue.push(arguments);}; n.queue=[];t=document.createElement(e);t.async=!0;t.src=v; s=document.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t,s);}(window, 'script', 'https://a.quora.com/qevents.js');
+  qp('init', '520c2559ee6a4f25a523c1c29df7cde2');
+  qp('track', 'ViewContent');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://q.quora.com/_/ad/520c2559ee6a4f25a523c1c29df7cde2/pixel?tag=ViewContent&noscript=1"/></noscript>
+
+
+   <style>
+   .login-window {
+   position: fixed;
+   background-color: rgb(33 33 33 / 81%);
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   z-index: 999;
+   /*visibility: hidden;*/
+   /*opacity: 0;*/
+
+   -webkit-transition: all 0.3s;
+   transition: all 0.3s;
+   }
+   .login-window:target {
+   visibility: visible;
+   opacity: 1;
+   pointer-events: auto;
+   }
+   .login-window > div {
+   width: 400px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   -webkit-transform: translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   padding: 2em;
+   background: #ffffff;
+   }
+   .login-window header {
+   font-weight: bold;
+   }
+   .login-window h1 {
+   font-size: 150%;
+   margin: 0 0 15px;
+   }
+   .modal-close {
+   color: #aaa;
+   line-height: 50px;
+   font-size: 80%;
+   position: absolute;
+   right: 0;
+   text-align: center;
+   top: 0;
+   width: 70px;
+   text-decoration: none;
+   }
+   .modal-close:hover {
+   color: black;
+   }
+   /* Demo Styles */
+   .login-window div:not(:last-of-type) {
+   margin-bottom: 15px;
+   }
+   small {
+   color: #aaa;
+   }
+   .btn {
+   background-color: #fff;
+   padding: 1em 1.5em;
+   border-radius: 3px;
+   text-decoration: none;
+   }
+   .btn i {
+   padding-right: 0.3em;
+   }
+       </style>
+      <link rel='stylesheet' id='redux-google-fonts-zeroone_redata-css'  href='https://fonts.googleapis.com/css?family=Karla%3A700%7COpen+Sans%7CRaleway%7CMontserrat%3A300%2C400%2C500%2C600%2C700%2C800%2C900%7CLato%3A300%7Clato%7CHind%3A300%2C400%2C500%2C600%2C700&amp;subset=latin&amp;ver=4.9.15' type='text/css' media='all' />
+      <link rel="icon" type="image/png" href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/favicon.ico">
+      <link rel='stylesheet' id='rs-plugin-settings-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/settings03e2.css' type='text/css' media='all' />
+      <link rel="stylesheet" as="font" href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/font.css" type="text/css" />
+      <link rel='stylesheet' id='style-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/wp-content/themes/zeroone/styleca80.css?v=2' type='text/css' media='all' />
+      <link rel='stylesheet' id='zeroone-bootstrap-responsive-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/bootstrap-responsiveca80.css' type='text/css' media='all' />
+      <link rel='stylesheet' id='jquery.fancybox-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/jquery.fancybox950b.css' type='text/css' media='all' />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel='stylesheet' id='idangerous.swiper-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/idangerous.swiperca80.css' type='text/css' media='all' />
+      <link rel='stylesheet' id='owl.carousel-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/owl.carouselca80.css' type='text/css' media='all' />
+      <link rel='stylesheet' id='owl.theme-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/owl.themeca80.css' type='text/css' media='all' />
+      <link rel='stylesheet' id='zeroone-dynamic-css-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/admin-ajax1b5d.css' type='text/css' media='all' />
+      <link rel='stylesheet' id='js_composer_front-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/css/js_composer.min7661.css' type='text/css' media='all' />
+      <link rel="stylesheet" type="text/css" href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/style.css?v=31">
+      <link rel="stylesheet" type="text/css" href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/mobilemode.css?v=6">
+      <script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jqueryb8ff.js'></script>
+      <script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery-migrate.min330a.js'></script>
+      <script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery.themepunch.tools.min03e2.js'></script>
+      <script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery.themepunch.revolution.min03e2.js'></script>
+      <script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/revolution.extension.slideanims.min.js"></script>
+      <script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/revolution.extension.layeranimation.min.js"></script>
+      <script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/revolution.extension.parallax.min.js"></script>
+      <!--<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/zeroone-loadCSSca80.js'></script>-->
+      <script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/pathformer68b3.js'></script>
+      <script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/vivus68b3.js'></script>
+      <script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/slide1.js"></script>
+      <script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/slide2.js"></script>
+      <script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/slide3.js"></script>
+
+       <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="708374782624-j0hfo6frb02d8qacaeku6cst7skkk13j.apps.googleusercontent.com">
+
+   </head>
+   <style type='text/css'>
+      @media (min-width: 768px){
+      .col-sm-offset-2 {
+      margin-left: 0!important;
+      }
+      }
+      img#wpstats{display:none}
+   </style>
+   <style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+   <meta name="generator" content=""/>
+   <meta name="generator" content="" />
+   <script type="text/javascript">
+      function setREVStartSize(e){
+            try{ var i=jQuery(window).width(),t=9999,r=0,n=0,l=0,f=0,s=0,h=0;
+              if(e.responsiveLevels&&(jQuery.each(e.responsiveLevels,function(e,f){f>i&&(t=r=f,l=e),i>f&&f>r&&(r=f,n=e)}),t>r&&(l=n)),f=e.gridheight[l]||e.gridheight[0]||e.gridheight,s=e.gridwidth[l]||e.gridwidth[0]||e.gridwidth,h=i/s,h=h>1?1:h,f=Math.round(h*f),"fullscreen"==e.sliderLayout){var u=(e.c.width(),jQuery(window).height());if(void 0!=e.fullScreenOffsetContainer){var c=e.fullScreenOffsetContainer.split(",");if (c) jQuery.each(c,function(e,i){u=jQuery(i).length>0?u-jQuery(i).outerHeight(!0):u}),e.fullScreenOffset.split("%").length>1&&void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0?u-=jQuery(window).height()*parseInt(e.fullScreenOffset,0)/100:void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0&&(u-=parseInt(e.fullScreenOffset,0))}f=u}else void 0!=e.minHeight&&f<e.minHeight&&(f=e.minHeight);e.c.closest(".rev_slider_wrapper").css({height:f})
+            }catch(d){console.log("Failure at Presize of Slider:"+d)}
+          };
+   </script>
+   </noscript>
+   <script src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/modernizr.custom.js"></script>
+   <!-- End of Header -->
+   <style>
+      .cbp-spmenu {
+      background: #47a3da;
+      position: fixed;
+      }
+      .cbp-spmenu h3 {
+      color: #afdefa;
+      font-size: 1.9em;
+      padding: 20px;
+      margin: 0;
+      font-weight: 300;
+      background: #0d77b6;
+      }
+      .cbp-spmenu a {
+      display: block;
+      color: #fff;
+      font-size: 1.1em;
+      font-weight: 300;
+      }
+      .cbp-spmenu a:hover {
+      background: #258ecd;
+      }
+      .cbp-spmenu a:active {
+      background: #afdefa;
+      color: #47a3da;
+      }
+      /* Orientation-dependent styles for the content of the menu */
+      .cbp-spmenu-vertical {
+      width: 240px;
+      height: 100%;
+      top: 0;
+      z-index: 1000;
+      }
+      .cbp-spmenu-vertical a {
+      border-bottom: 1px solid #258ecd;
+      padding: 1em;
+      }
+      .cbp-spmenu-horizontal {
+      width: 100%;
+      height: 150px;
+      left: 0;
+      z-index: 1000;
+      overflow: hidden;
+      }
+      .cbp-spmenu-horizontal h3 {
+      height: 100%;
+      width: 20%;
+      float: left;
+      }
+      .cbp-spmenu-horizontal a {
+      float: left;
+      width: 20%;
+      padding: 0.8em;
+      border-left: 1px solid #258ecd;
+      }
+      /* Vertical menu that slides from the left or right */
+      .cbp-spmenu-left {
+      left: -240px;
+      }
+      .cbp-spmenu-right {
+      right: -240px;
+      }
+      .cbp-spmenu-left.cbp-spmenu-open {
+      left: 0px;
+      }
+      .cbp-spmenu-right.cbp-spmenu-open {
+      right: 0px;
+      }
+      /* Horizontal menu that slides from the top or bottom */
+      .cbp-spmenu-top {
+      top: -150px;
+      }
+      .cbp-spmenu-bottom {
+      bottom: -150px;
+      }
+      .cbp-spmenu-top.cbp-spmenu-open {
+      top: 0px;
+      }
+      .cbp-spmenu-bottom.cbp-spmenu-open {
+      bottom: 0px;
+      }
+      /* Push classes applied to the body */
+      .cbp-spmenu-push {
+      overflow-x: hidden;
+      position: relative;
+      left: 0;
+      }
+      .cbp-spmenu-push-toright {
+      left: 240px;
+      }
+      .cbp-spmenu-push-toleft {
+      left: -240px;
+      }
+      /* Transitions */
+      .cbp-spmenu,
+      .cbp-spmenu-push {
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      }
+      /* Example media queries */
+      @media screen and (max-width: 55.1875em){
+      .cbp-spmenu-horizontal {
+      font-size: 75%;
+      height: 110px;
+      }
+      .cbp-spmenu-top {
+      top: -110px;
+      }
+      .cbp-spmenu-bottom {
+      bottom: -110px;
+      }
+      }
+      @media screen and (max-height: 26.375em){
+      .cbp-spmenu-vertical {
+      font-size: 90%;
+      width: 190px;
+      }
+      .cbp-spmenu-left,
+      .cbp-spmenu-push-toleft {
+      left: -190px;
+      }
+      .cbp-spmenu-right {
+      right: -190px;
+      }
+      .cbp-spmenu-push-toright {
+      left: 190px;
+      }
+      }
+      .card2 {
+      /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+      }
+      .title2 {
+      color: grey;
+      font-size: 18px;
+      }
+      button2 {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+      }
+      button2:hover, a:hover {
+      opacity: 0.7;
+      }
+   </style>
+   <style>
+      @import url(https://fonts.googleapis.com/css?family=Montserrat);
+      body {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      font-family: Montserrat;
+      }
+      .wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      }
+      .text {
+      color: #fbae17;
+      display: inline-block;
+      margin-left: 5px;
+      }
+      .bounceball {
+      position: relative;
+      display: inline-block;
+      height: 37px;
+      width: 15px;
+      }
+      .bounceball:before {
+      position: absolute;
+      content: '';
+      display: block;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: #fbae17;
+      -webkit-transform-origin: 50%;
+      transform-origin: 50%;
+      -webkit-animation: bounce 500ms alternate infinite ease;
+      animation: bounce 500ms alternate infinite ease;
+      }
+      @-webkit-keyframes bounce {
+      0% {
+      top: 30px;
+      height: 5px;
+      border-radius: 60px 60px 20px 20px;
+      -webkit-transform: scaleX(2);
+      transform: scaleX(2);
+      }
+      35% {
+      height: 15px;
+      border-radius: 50%;
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+      }
+      100% {
+      top: 0;
+      }
+      }
+      @keyframes bounce {
+      0% {
+      top: 30px;
+      height: 5px;
+      border-radius: 60px 60px 20px 20px;
+      -webkit-transform: scaleX(2);
+      transform: scaleX(2);
+      }
+      35% {
+      height: 15px;
+      border-radius: 50%;
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+      }
+      100% {
+      top: 0;
+      }
+      }
+      ::-webkit-scrollbar {
+      width: 10px;
+      transition: width 2s linear;
+      }
+      /*::-webkit-scrollbar:hover {*/
+      /*  width: 20px;*/
+      /*  transition: width 2s linear;*/
+      /*}*/
+      /* Track */
+      ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+      transition: width 2s linear;
+      }
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+      background: #00b0f0;
+      border-radius: 10px;
+      opacity:0.8;
+      transition: width 2s linear;
+      }
+      /* Handle on hover */
+      /*::-webkit-scrollbar-thumb:hover {*/
+      /*  background: #00b0f0; */
+      /*  width: 20px;*/
+      /*  opacity:1;*/
+      /*}*/
+   </style>

@@ -1,0 +1,172 @@
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+/* Style the container/contact section */
+.container {
+  border-radius: 5px;
+
+  padding: 10px;
+}
+
+/* Create two columns that float next to eachother */
+.column {
+  float: left;
+  width: 50%;
+  margin-top: 6px;
+  padding: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+  .column {
+    width: 100%;
+  }
+}
+</style>
+<style>
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+input[type=text],input[type=email],input[type=number], textarea {
+  width: 100%;
+  padding: 21px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+select{
+    height: 50px;
+      width: 100%;
+
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+
+</style>
+<br><br><br><br><br>
+<div class="col-md-12">
+
+<div class="container" >
+
+  <div style="text-align:center">
+    <h2>Contact Us</h2>
+    <p>Feel free to contact us at any time.</p>
+  </div>
+  <div class="row">
+    <div class="column">
+     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3020.4855692653!2d78.41534793213629!3d17.480121942451458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9198c6f867df%3A0x8839f2f1b2622082!2sveteach.in!5e0!3m2!1sen!2sin!4v1615849411884!5m2!1sen!2sin" width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+     <div class="wpb_wrapper" style="text-align:center;">
+         <br>
+      <h5>Hyderabad</h5>
+<b>VETEACH.IN</b><br>
+Manjeera Trinity Corporate,<br>
+Plot No-112, Survey No:1050,<br>
+JNTU, Hitech city Rd, KPHB Colony<br>
+Kukatpally, Hyderabad-500072<br>
+Phone : +91 7382708685<br>
+Web : www.veteach.in<br>
+Email: info@veteach.in<br>
+
+    </div>
+    </div>
+    <div class="column">
+    <h3>Contact Form</h3>
+
+			<div class="callout callout-danger" style="color: red;
+    padding: 1px;
+    border-radius: 10px;
+    text-align: center;">
+
+			<p>
+			{{
+                }}
+			</p>
+			</div>
+
+
+
+			<div class="callout callout-success"  style="background-color: #4dea4d;
+    padding: 1px;
+    border-radius: 10px;
+    text-align: center;">
+
+			<p>{{success_message}}</p>
+			</div>
+
+<div class="container">
+  <form action="" method="GET">
+    <label for="fname">Name</label>
+    <input type="text" name="contact_name" placeholder="Your name.." required>
+
+    <label for="lname">Email</label>
+    <input type="email" name="contact_email" placeholder="Your email" required>
+
+<label for="lname">Phone</label>
+    <input type="number"  name="contact_phone" pattern="[6-9]{1}[0-9]{9}" placeholder="Enter your phone.." required>
+    <label for="country">Select Subject</label>
+	<select name="contact_subject" class="form-control" required>
+									<option value="">Select Subject</option>
+									<option value="Query">Query</option>
+									<option value="Sales">Sales</option>
+									<option value="Request">Request</option>
+									<option value="Carrier">Career</option>
+									<option value="Bugreport">Bug-report</option>
+								</select>
+
+    <label for="subject">Comment</label>
+    <textarea id="subject" name="contact_purpose" placeholder="Write something.." style="height:200px"></textarea>
+
+    <input type="hidden" value="contact" name="url">
+    <input type="submit" value="Submit" name="contact_form">
+  </form>
+
+
+</div>
+
+
+
+    </div>
+  </div>
+</div>  <br><br>
+</div>

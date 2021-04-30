@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head><title>IndexedDB note store</title></head>
+  <body>
+    <div id="app">
+      <div id="textbox">
+        <textarea id="newmessage"></textarea>
+        <button onclick="submitNote()">Add note</button>
+      </div>
+      <div id="subject"></div>
+    </div>
+
+  </body>
+</html>
+
+
+<script type="text/javascript">
+
+//Created database and tables
+
+let db;
+let dbReq = indexedDB.open('myDatabase1', 1);
+dbReq.onupgradeneeded = function(event) {
+  // Set the db variable to our database so we can use it!
+  db = event.target.result;
+
+  // Create an object store named subject. Object stores
+  // in databases are where data are stored.
+   let db_version = db.createObjectStore('db_version', {autoIncrement: true});
+  let subject = db.createObjectStore('subject', {autoIncrement: true});
+  let video = db.createObjectStore('video', {autoIncrement: true});
+  let user_basket = db.createObjectStore('user_basket', {autoIncrement: true});
+
+}
+
+dbReq.onsuccess = function(event) {
+  db = event.target.result;
+   addStickyNote(db, 'Sloths are awesome!');
+   addStickyNote(db, 'Order more hibiscus tea');
+   addStickyNote(db, 'And Green Sheen shampoo, the best for sloth fur algae grooming!');
+   getAndDisplayNotes(db);
+}
+dbReq.onerror = function(event) {
+  alert('error opening database ' + event.target.errorCode);
+}
+
+
+
+
+// Add data to the tables
+
+
+
+function addStickyNote(db, message) {
+  // Start a database transaction and get the subject object store
+  let tx = db.transaction(['subject'], 'readwrite');
+  let store = tx.objectStore('subject');
+  // Put the sticky note into the object store
+  let note = {text: message, timestamp: Date.now()};
+  store.add(note);
+  // Wait for the database transaction to complete
+  tx.oncomplete = function() { console.log('stored note!') }
+  tx.onerror = function(event) {
+    alert('error storing note ' + event.target.errorCode);
+  }
+}
+
+// submit data via form
+
+function submitNote() {
+  let message = document.getElementById('newmessage');
+  addStickyNote(db, message.value);
+  message.value = '';
+}
+
+// Add forLoop/Multiple Data
+
+function addManysubject(db, messages) {
+  let tx = db.transaction(['subject'], 'readwrite');
+  let store = tx.objectStore('subject');
+  for (let i = 0; i < messages.length; i++) {
+    // All of the requests made from store.add are part of
+    // the same transaction
+    store.add({text: messages[i], timestamp: Date.now()});
+  }
+  tx.oncomplete = function() {console.log('transaction complete')};
+}
+
+
+
+//Fetch data From db/Indexdb
+
+
+
+function getAndDisplaysubject(db) {
+  let tx = db.transaction(['subject'], 'readonly');
+  let store = tx.objectStore('subject');
+  // Create a cursor request to get all items in the store, which
+  // we collect in the allsubject array
+  let req = store.openCursor();
+  let allsubject = [];
+
+  req.onsuccess = function(event) {
+    // The result of req.onsuccess is an IDBCursor
+    let cursor = event.target.result;
+    if (cursor != null) {
+      // If the cursor isn't null, we got an IndexedDB item.
+      // Add it to the note array and have the cursor continue!
+      allsubject.push(cursor.value);
+      cursor.continue();
+    } else {
+      // If we have a null cursor, it means we've gotten
+      // all the items in the store, so display the subject we got
+      displaysubject(allsubject);
+    }
+  }
+  req.onerror = function(event) {
+    alert('error in cursor request ' + event.target.errorCode);
+  }
+}
+
+//displaysubject
+
+
+function displaysubject(subject) {
+  let listHTML = '<ul>';
+  for (let i = 0; i < subject.length; i++) {
+    let note = subject[i];
+    listHTML += '<li>' + note.text + ' ' +
+      new Date(note).toString() + '</li>';
+  }
+  document.getElementById('subject').innerHTML = listHTML;
+  tx.oncomplete = function() { getAndDisplayNotes(db); }
+}
+
+</script>

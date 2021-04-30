@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Coming Soon</title>
+	<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Great+Vibes&family=VT323&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/favicon.jpg" type="image/gif" sizes="16x16">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<style>
+	body{
+  margin: 0;
+  padding: 0;
+ background-image:url('https://veteachwebfiles.s3.ap-south-1.amazonaws.com/images/coming_soon_background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+
+}
+.container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+.background{
+  height: 100vh;
+
+}
+.container h1{
+  padding: 0;
+  margin: 0;
+  color: #000;
+  text-shadow: -3px 1px 2px rgba(84, 84, 84, 0.5);
+  font-size: 60px;
+  color: #fff;
+  font-family: 'Fredericka the Great', cursive;
+  font-family: 'Great Vibes', cursive;
+  font-family: 'VT323', monospace;
+  font-family: monospace;
+}
+.container p{
+  color: green;
+  font-size: 18px;
+  margin: 0;
+  line-height: 35px;
+}
+.button_custom {
+      font-weight: 300;
+    color: #fff;
+    font-size: 1.2em;
+    text-decoration: none;
+    border: 1px solid #efefef;
+    padding: .5em;
+    border-radius: 3px;
+    float: left;
+    margin: 6em 0 0 -155px;
+    left: 43%;
+    position: relative;
+    text-align: center;
+    margin: auto;
+    margin-top: 33%;
+}
+
+.button_custom:hover {
+  /*background-color: #007aff;*/
+  color: #fff;
+  text-align: center;
+}
+span:before{
+  content:'';
+  animation: animate infinite 10s;
+
+}
+span:after{
+  animation-delay:5s;
+}
+
+@keyframes animate{
+  0%{
+    content: 'C'
+  }
+  5%{
+    content: 'Co'
+  }
+  15%{
+    content: 'Com'
+  }
+  20%{
+    content: 'Comi'
+  }
+  25%{
+    content: 'Comin'
+  }
+  30%{
+    content: 'Coming'
+  }
+  35%{
+    content: 'Coming S'
+  }
+  40%{
+    content: 'Coming So'
+  }
+  45%{
+    content: 'Coming Soo'
+  }
+  50%{
+    content: 'Coming Soon'
+  }
+  52%{
+    content: 'Coming Soon.'
+  }
+  54%{
+    content: 'Coming Soon..'
+  }
+  56%{
+    content: 'Coming Soon...'
+  }
+  100%{
+    content: 'Coming Soon...'
+  }
+}
+
+/*.load{
+  background: #fff;
+  color: #000;
+  height:5px;
+}*/
+
+.icon{
+  width: 30px;
+  height: 30px;
+  background: blue;
+  margin: 5px;
+}
+
+
+
+.icons-container {
+    display: inline-flex;
+}
+@media only screen and (max-width: 600px) {
+  .button_custom{
+   left: 25%;
+       margin-top: 131%;
+  }
+  .container{
+    position: absolute;
+    left: 0;
+     transform: translate(0%, 0%);
+    text-align: center;
+    margin: auto;
+    right: 0;
+    text-align: center;
+  }
+  .container h1{
+    font-size: 40px;
+  }
+}
+</style>
+<body>
+<div class="background">
+<div class="container">
+  <h1><span></span></h1>
+  <div class="load"></div>
+</div>
+    {{^isApp}}
+<div class="button1_custom">
+<a class="button button_custom" href="?url=index"><i class="icon-home"></i> Go back to home page.</a>
+</div>
+    {{/isApp}}
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,2689 @@
+<script type="text/javascript">
+    var db;
+    var dbReq = indexedDB.open('veteach', 1);
+    // const url = 'https://n9yz799guk.execute-api.ap-south-1.amazonaws.com/Prod/hello?url=app_api';
+    // const url = 'https://veteach.in?url=app_api';
+    // const url = 'https://so194d6tae.execute-api.ap-south-1.amazonaws.com/Prod?url=app_api';
+    var url_str = window.location.href;
+    var window_url = new URL(url_str);
+    var search_params = window_url.searchParams;
+
+    var logout = search_params.get('logout');
+    var subject_id_url = search_params.get('subject_id');
+    var semester_id_url = search_params.get('semester_id');
+    var sub_sem_url = search_params.get('flag');
+    window.dbversion = -1;
+    var purchased_subjects = [];
+
+
+    dbReq.onupgradeneeded = function(event) {
+      // Set the db variable to our database so we can use it!
+      db = event.target.result;
+        console.log("createInitTables@22222222222222222222222");
+      // Create an object store named subject. Object stores
+      // in databases are where data are stored.
+          let db_version = db.createObjectStore('db_version', {autoIncrement: true});
+          let subject = db.createObjectStore('subject', {autoIncrement: false});
+          let video = db.createObjectStore('video', {autoIncrement: true});
+          let users = db.createObjectStore('users', {autoIncrement: true});
+          let user_basket = db.createObjectStore('user_basket', {autoIncrement: false});
+          let model_papers = db.createObjectStore('model_papers', {autoIncrement: true});
+          let top_lessons = db.createObjectStore('top_lessons', {autoIncrement: true});
+          let materials = db.createObjectStore('materials', {autoIncrement: true});
+          let testimonials = db.createObjectStore('testimonials', {autoIncrement: true});
+    }
+    dbReq.onsuccess = function(event) {
+        console.log("createInitTables@333333333333333333333");
+       db = event.target.result;
+    }
+    dbReq.onerror = function(event) {
+        console.log("createInitTables@4444444444444444444444");
+        alert('error opening database ' + event.target.errorCode);
+    }
+
+    function sendRequest($data,$cmd,$extraData1,$extraData2){
+        console.log("sendRequest-1111111111111111"+$cmd);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                crossDomain: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify($data),
+                success: function(result) {
+                    console.log(result);
+
+                    switch($cmd){
+                        case 100:
+                            console.log(getCookie("version")+"extra from db");
+
+                             console.log(result.version+"from response");
+                            if (getCookie("version") !=  result.version) {//result.version //extradata = db version in cookie
+                                console.log("result.version");
+                                //clear subject data and version data
+                                createVersion(result.version);
+                            }else{
+                                console.log("else --- result.version");
+                                addSubject(1,1,0);
+                            }
+
+                        break;
+                        case 101:
+                            // console.log(result.user_id+$extraData1[0]+$extraData1[1]+$extraData1[2]+"");
+                            document.cookie = "user_id=" + result.user_id + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+                            // checkCookie();
+
+
+                            insertUserDetails(result.user_id,$extraData1[0],$extraData1[1],$extraData1[2],"");
+                            document.getElementById('modalStreams').style.display = 'none'
+                            break;
+                        case 103:
+
+                            var db;
+                            var dbReq = indexedDB.open('veteach', 1);
+                            // const url = 'https://n9yz799guk.execute-api.ap-south-1.amazonaws.com/Prod/hello?url=app_api';
+                            // const url = 'https://veteach.in?url=app_api';
+                            // const url = 'https://so194d6tae.execute-api.ap-south-1.amazonaws.com/Prod?url=app_api';
+                            var url_str = window.location.href;
+                            var window_url = new URL(url_str);
+                            var search_params = window_url.searchParams;
+                            // var url_page = search_params.get('url');
+                            var logout = search_params.get('logout');
+                            var subject_id_url = search_params.get('subject_id');
+                            var semester_id_url = search_params.get('semester_id');
+                            var sub_sem_url = search_params.get('flag');
+                            window.dbversion = -1;
+                            var purchased_subjects = [];
+
+
+                            dbReq.onupgradeneeded = function(event) {
+                              // Set the db variable to our database so we can use it!
+                              db = event.target.result;
+                                console.log("createInitTables@22222222222222222222222");
+                              // Create an object store named subject. Object stores
+                              // in databases are where data are stored.
+                                  let db_version = db.createObjectStore('db_version', {autoIncrement: true});
+                                  let subject = db.createObjectStore('subject', {autoIncrement: false});
+                                  let video = db.createObjectStore('video', {autoIncrement: true});
+                                  let users = db.createObjectStore('users', {autoIncrement: true});
+                                  let user_basket = db.createObjectStore('user_basket', {autoIncrement: false});
+                            }
+                            dbReq.onsuccess = function(event) {
+                                console.log("createInitTables@333333333333333333333");
+                               db = event.target.result;
+                               if ($extraData1 == 1) {
+                                    insertSubjects(result,1);
+                                    // insertSemester(result,1);
+                                }else{
+                                    insertSubjects(result,2);
+                                    // insertSemester(result,2);
+                                }
+                            }
+                            dbReq.onerror = function(event) {
+                                console.log("createInitTables@4444444444444444444444");
+                              alert('error opening database ' + event.target.errorCode);
+                            }
+
+                        break;
+                        case 104:
+                            var purchase_status = result.purchase_status;
+                            document.cookie = "purchase_status=" + purchase_status + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+                            addVideos();
+                            break;
+                        case 105:
+                            console.log(result);
+                            insertVideo(result);
+                        break;
+                        case 106:
+                            if($extraData1 == 1){
+                                document.location = "?url=success";
+                                return;
+                            }
+                            console.log("cmd -- 106");
+                            console.log(result);
+                            create_payment_page(result);
+                        break;
+                    }
+
+                },
+
+                error: function(xhr, textStatus, error) {
+                    console.log(xhr.responseText);
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                },
+        // beforeSend: setHeader
+            });
+		}
+
+	function fetchSemesterDetails($cmd,$subsem) {
+        let tx = db.transaction(['semester'], 'readonly');
+        let store = tx.objectStore('semester');
+        var keyRangeValue;
+        keyRangeValue = IDBKeyRange.only($subject_id);
+
+
+        let req = store.openCursor(keyRangeValue);
+        let allsubjects = [];
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                allsubjects.push(cursor.value);
+                cursor.continue();
+            } else {
+                updateSemesterDetails($cmd,allsubjects)
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+
+
+    }
+
+    function updateSemesterDetails($cmd,allsubjects) {
+        var each_subject = JSON.stringify(allsubjects[0]);
+        var subjectJsonObj = JSON.parse(each_subject);
+        var row = subjectJsonObj;
+        var discounted_price = row['discounted_price'];//decode json
+        var semester_photo = row['subject_photo'];//decode json
+
+        if($cmd == 1){
+            var semester_button = document.getElementById('semester_button')
+            semester_button.innerHTML = discounted_price;
+        }
+    }
+
+    function insertSemester($results,$sub_sem) {
+        var result = $results;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+        let tx = db.transaction(['semester'], 'readwrite');
+        let store = tx.objectStore('semester');
+        // Put the sticky note into the object store
+
+        data = result.semester_details
+        var data_length = data.length
+        var discounted_price = data[0].discounted_price;//decode json
+        var price = data[0].price;//decode json
+        // var subject_description = data[i].subject_description;//decode json
+        var subject_id = data[0].subject_id;//decode json
+        var subject_photo = data[0].subject_photo;//decode json
+
+        let note = {discounted_price:discounted_price, price:price, subject_id:subject_id, subject_photo:subject_photo};
+        let key = subject_id;
+        store.put(note,key);
+
+        // Wait for the database transaction to complete
+        tx.oncomplete = function() {
+        }
+
+        tx.onerror = function(event) {
+            alert('error storing note ' + event.target.errorCode);
+        }
+    }
+
+    function create_payment_page($result) {
+
+            var order_id = $result.order_id;
+            var amount = $result.amount;
+            // document.location = "?url=checkout&amount="+amount+"&order_id="+order_id;
+            // var payment_form = document.getElementById('payment_form');
+            // payment_form.style.display = "block";
+            // var before_payment_form = document.getElementById('before_payment_form');
+            // before_payment_form.style.display = "none";
+            // var s = document.createElement("script");
+            // s.src = "https://checkout.razorpay.com/v1/checkout.js";
+            // s.dataset.key = "rzp_live_xBoLeiOILrTfRi";
+            // s.dataset.amount = amount;
+            // s.dataset.currency = "INR";
+            // s.dataset.order_id = order_id;
+            // s.dataset.buttontext = "Proceed To Pay";
+            // s.dataset.name = "VETEACH.IN";
+            // s.dataset.description = "Online Btech Lessons";
+            // s.dataset.image = "https://veteach.in/assets/uploads/logo.png";
+            // // s.dataset.prefill.name = getCookie("user_name");
+            // // s.dataset.prefill.email = getCookie("user_email");
+            // // s.dataset.prefill.contact = "9999999999";
+            // // s.dataset.theme.color = "#00B0F0";
+            // var s = $result.script;
+            // document.body.appendChild(s);
+            // $('body').append(s);
+        // eval(s)
+            // var razorpay_payment_button = document.getElementsByClassName('razorpay-payment-button');razorpay_payment_button[0].click();
+
+        var order_id = $result.order_id;
+        var amount = $result.amount;
+
+
+        // var options = {
+        //     "key": "rzp_live_xBoLeiOILrTfRi", // Enter the Key ID generated from the Dashboard
+        //     "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        //     "currency": "INR",
+        //     "name": "VETEACH.IN",
+        //     "description": "Online Btech Lessons",
+        //     "image": "https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/logo.png",
+        //     "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        //     "callback_url": "https://veteach.in?url=app_api&cmd=106&task=1&phone=0&promo_code=0&user_id="+getCookie("user_id"),
+        //     "prefill": {
+        //         "name": getCookie("user_name"),
+        //         "email": getCookie("user_email"),
+        //         "contact": "9999999999"
+        //     },
+        //     "notes": {
+        //         "address": "veteach.in"
+        //     },
+        //     "theme": {
+        //         "color": "#3399cc"
+        //     }
+        // };
+        // var rzp1 = new Razorpay(options);
+        // rzp1.open();
+
+
+
+        var options = {
+            "key": "rzp_live_xBoLeiOILrTfRi", // Enter the Key ID generated from the Dashboard
+            "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "VETEACH.IN",
+            "description": "Online Btech Lessons",
+            "image": "https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/logo.png",
+            "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response){
+                payment_success(response);
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+            },
+            "prefill": {
+                "name": getCookie("user_name"),
+                "email": getCookie("user_email"),
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "veteach.in"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+                // alert(response.error.code);
+                // alert(response.error.description);
+                // alert(response.error.source);
+                // alert(response.error.step);
+                // alert(response.error.reason);
+                // alert(response.error.metadata.order_id);
+                // alert(response.error.metadata.payment_id);
+
+            payment_error(response);
+        });
+        rzp1.open();
+    }
+
+    function payment_error(response){
+        alert(response.error.reason);
+    }
+
+    function payment_success(response){
+         data = {
+            cmd: 106,
+            order_id:response.razorpay_order_id,
+            university_id:"6",//need to change later
+            university_name: "JNTUK",
+            task:"1",
+            sub_cmd:"",
+            branch_id:getCookie("branch_id"),
+            year_id:getCookie("year_id"),
+            sub_sem_id:getCookie("sub_sem_id"),
+            user_id:getCookie("user_id"),
+            phone:"",
+            promo_code:"",
+            subject_id:purchased_subjects,
+            razorpay_payment_id:response.razorpay_payment_id,
+            razorpay_signature:response.razorpay_signature
+        }
+        console.log(data)
+        sendRequest(data,106,1,0);
+    }
+
+    function proceed_to_pay(allsubjects) {
+        // if(allsubjects.length == 0 && (sub_sem_url != 5 || sub_sem_url == 6)){
+        //     alert("Please select atleast 1 subject to proceed!");
+        //     return;
+        // }
+        var sub_cmd = 0;
+        if(sub_sem_url == 5 || sub_sem_url == 6){
+            sub_cmd = 1;
+        }
+
+        purchased_subjects = allsubjects;
+
+        data = {
+            cmd: 106,
+            order_id:"",
+            university_id:"6",//need to change later
+            university_name: "JNTUK",
+            task:"0",
+            sub_cmd:sub_cmd,
+            branch_id:getCookie("branch_id"),
+            year_id:getCookie("year_id"),
+            sub_sem_id:getCookie("sub_sem_id"),
+            user_id:getCookie("user_id"),
+            phone:"",
+            promo_code:"",
+            subject_id:allsubjects,
+        }
+        sendRequest(data,106,0,0);
+    }
+
+    function parseDate(str) {
+        var mdy = str.split('/');
+        return new Date(mdy[2], mdy[0]-1, mdy[1]);
+    }
+
+    function datediff(first, second) {
+        // Take the difference between the dates and divide by milliseconds per day.
+        // Round to nearest whole number to deal with DST.
+        return Math.round((second-first)/(1000*60*60*24));
+    }
+
+    function commonFunctions() {
+        $(document).ready(function(){
+            //
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = mm + '/' + dd + '/' + yyyy;
+            var daysleft = datediff(parseDate(today), parseDate("06/30/2021"));
+            document.cookie = "days_left="+daysleft+"; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+        try {
+            let tx = db.transaction(['subject'], 'readonly');
+            let store = tx.objectStore('subject');
+        }catch (e) {
+            // dbReq = indexedDB.open('veteach', 1);
+            // dbReq.onupgradeneeded = function(event) {
+            //   // Set the db variable to our database so we can use it!
+            //   db = event.target.result;
+            //     console.log("createInitTables@22222222222222222222222");
+            //   // Create an object store named subject. Object stores
+            //   // in databases are where data are stored.
+            //       let db_version = db.createObjectStore('db_version', {autoIncrement: true});
+            //       let subject = db.createObjectStore('subject', {autoIncrement: false});
+            //       let video = db.createObjectStore('video', {autoIncrement: true});
+            //       let users = db.createObjectStore('users', {autoIncrement: true});
+            //       let user_basket = db.createObjectStore('user_basket', {autoIncrement: false});
+            // }
+            // dbReq.onsuccess = function(event) {
+            //     console.log("createInitTables@333333333333333333333");
+            //    db = event.target.result;
+            //
+            // }
+            // dbReq.onerror = function(event) {
+            //     console.log("createInitTables@4444444444444444444444");
+            //   alert('error opening database ' + event.target.errorCode);
+            // }
+            // logout123();
+            // let tx = db.transaction(['subject'], 'readonly');
+            // let store = tx.objectStore('subject');
+        }
+        var menuchange = document.getElementById('menuchange');
+        if(url_page != "mobile_video_view"){
+            updateUserId();
+            if(url_page != "index"){
+                addUserBasketStyle(2);
+            }
+            menuchange.innerHTML = getCookie("branch_name")+" "+getCookie("year_name")+"(Change)";
+        }
+        console.log("commonFunctions-777777777777777777");
+
+
+
+        if(logout == "logout"){
+            logout1();
+        }if(url_page == "video_view"){
+            console.log("video_viewwwwwwwwwwwwwwwww");
+            var category = search_params.get('category');
+            var video_id = search_params.get('video_id');
+            if(category == "model_paper"){
+                addModelVideos(video_id);
+            }else if(category == "top_lessons"){
+                addTopLessonsVideos(video_id);
+            }else{
+                // checkPurchaseStatus();
+                addVideos();
+            }
+            // addVideos();
+
+        }else if(url_page == "mobile_video_view"){
+            checkPurchaseStatus();
+        }else if(url_page == "checkout"){
+            if(sub_sem_url == 5 || sub_sem_url == 6){
+                addSubject(sub_sem_url,0,0)
+            }else{
+                cartDetails(1);
+            }
+        }else if(url_page == "profile"){
+            var user_name_div = document.getElementById('user_name');
+            var user_name_div1 = document.getElementById('user_name1');
+            var user_email_div = document.getElementById('user_email');
+            var user_email_div1 = document.getElementById('user_email1');
+            var user_phone_div = document.getElementById('user_phone');
+            var user_referral_div = document.getElementById('user_referral');
+            var user_name_first = document.getElementById('user_name_first');
+
+            user_name_div.innerHTML = getCookie("user_name");
+            user_name_div1.innerHTML = getCookie("user_name");
+            user_email_div.innerHTML = getCookie("user_email");
+            user_email_div1.innerHTML = getCookie("user_email");
+            user_phone_div.innerHTML = getCookie("user_phone");
+            user_referral_div.innerHTML = getCookie("user_referral");
+            user_name_first.innerHTML = getCookie("user_name").charAt(0);
+        }else if(url_page == "wishlist"){
+            cartDetails(2);
+        }else if(url_page == "homepage"){
+            addModelPapers();
+            // load();
+        }else{
+
+
+            var selectedsem1 = document.getElementById('selectedSem1');
+            var selectedsem2 = document.getElementById('selectedSem2');
+            selectedsem1.innerHTML = getCookie("branch_name")+" "+getCookie("year_name")+" 1st Sem";
+            selectedsem2.innerHTML = getCookie("branch_name")+" "+getCookie("year_name")+" 2nd Sem";
+            updateSyllabusLink();
+
+            // createInitTables();
+            var data = {
+                cmd:100
+            }
+            userData();//show/hide login button in menu
+            // console.log(data+getVersion()+"");
+            let branch_id=getCookie("branch_id");
+            let year_id=getCookie("semester_id");
+
+
+
+            if(year_id){// != null || year_id != "null" || year_id != ""
+                sendRequest(data,100,getVersion(),0);
+            }else{
+                // alert(year_id);
+            }
+        }
+        });
+    }
+
+    function updateSyllabusLink() {
+
+        var select_university = document.getElementById('select_university');
+        var select_regulation = document.getElementById('select_regulation');
+        var select_branch = document.getElementById('select_branch');
+        var download_syllabus = document.getElementById('download_syllabus');
+        try {
+            select_university.innerHTML = getCookie("university_name");
+            select_regulation.innerHTML = getCookie("regulation");
+            select_branch.innerHTML = getCookie("branch_name");
+            download_syllabus.href = "https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/syllabus/"+getCookie("university_name")+"_"+getCookie("branch_name")+"_"+getCookie("regulation")+".pdf";
+        }catch (e) {
+
+        }
+
+    }
+
+    function cartDetails($flag) {
+        let tx = db.transaction(['user_basket'], 'readonly');
+        let store = tx.objectStore('user_basket');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+        let req = store.openCursor();
+        let allsubjects = [];
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                if($flag == 10){
+                    if((cursor.key).slice(-1) == "1"){
+                        allsubjects.push(cursor.key.slice(0, -2));
+                    }
+                }else{
+                    allsubjects.push(cursor.value);
+                }
+                cursor.continue();
+            } else {
+                if($flag == 10){
+                    proceed_to_pay(allsubjects)
+                }else{
+                    displayCart(allsubjects,$flag)
+                }
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayCart(allsubjects,$flag) {
+        console.log("displaytcart flag ="+$flag);
+        var checkout_list = document.getElementById('checkout_list');
+        if($flag == 2){
+            checkout_list = document.getElementById('wishlist_items');
+        }
+        if(allsubjects.length == 0){
+            // fetchVideos(subject_id_url)
+            var empty_cart = document.getElementById('empty_cart');
+            empty_cart.style.display = 'block';
+            var summary_details = document.getElementById('summary_details');
+            summary_details.style.display = 'none';
+            if($flag == 1){
+                var summary_details1 = document.getElementById('summary_details1');
+                summary_details1.style.display = 'none';
+            }
+            return;
+        }
+        var num_sub = 0;
+        var total_amount_to_display = 0;
+        for (let i = 0; i < allsubjects.length; i++) {
+            var each_subject = JSON.stringify(allsubjects[i]);
+            var subjectJsonObj = JSON.parse(each_subject);
+            var row = subjectJsonObj;
+
+            var branch_id = row['branch_id'];//decode json
+            var discounted_price = row['discounted_price'];//decode json
+            var price = row['price'];//decode json
+            var regulation = row['regulation'];//decode json
+            var semester_id = row['semester_id'];//decode json
+            var subject_id = row['subject_id'];//decode json
+            var subject_name = row['subject_name'];//decode json
+            var subject_photo = row['subject_photo'];//decode json
+            var avg_rating = row['avg_rating'];//decode json
+            var rating_count = row['rating_count'];//decode json
+            var university_id = row['university_id'];//decode json
+            var university_name = "JNTUK";
+            var user_id = row['user_id'];
+            var branch_name = getCookie("branch_name");
+            var semester_name = "semester "+semester_id
+            var percent1 = (((price-discounted_price)/price)*100)
+            var percent = percent1.toFixed(2)
+            var professor_name = ""
+            var flagtype = row['flag'];
+            console.log(flagtype+"flagtype");
+            if($flag == 2){
+                console.log("displaytcart flag oin wishlist ="+$flag)
+                if(flagtype == 2){
+                    var buynow_display = "";
+                    if(discounted_price == "Coming Soon"){
+                        buynow_display = "none";
+                    }
+                    checkout_list.innerHTML += "<div class=\"col-md-12 col-sm-12 col-xs-12 mobile_mode1\"> <div class=\"container\" style=\"margin-top: 10px;border-radius: 10px;background-color: #fff;-webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);color: #454545;\"> <div class=\"col-md-12 \" style=\"border-bottom: 2px solid #f0f0f0;\"> <div class=\"row\"> <div class=\"col-md-6 col-xs-8 col-sm-8\" > <p style=\"font-size: 11px;word-spacing: 5px;\"> <div class=\"mobile_mode4\" style=\"font-size: 27px;color: #a0a0a0b3;display:inline;\"><b>"+university_name+"</b></div> <b class=\"mobile_mode3\"> | "+regulation+" | "+branch_name+" | "+semester_name+"</b></p></div><div class=\"col-md-2 col-xs-4 col-sm-4 pull-right mobil_mode5\" style=\"padding: 20px;\"> <button class=\"btn\" type=\"submit\" name=\"remove_from_cart\" style=\" font-weight: 600;display: "+display_property+"\"onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',8,this)\"> <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"color: #d25151;font-size:20px;\"></i>Remove </button> </div> </div> </div> <div class=\"col-md-3\" style=\" padding: 17px;margin: auto;text-align: center \"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/"+subject_photo+"\" style=\"border-radius: 15px;\" alt=\"video-classes\"> </div> <div class=\"col-md-5\" style=\"margin: auto;text-align:center;padding-top: 22px;font-size: 19px;\"> <p><b>"+subject_name+"</b></p> <p style='display: "+display_property+"'><span style=\"font-weight: bold;\"><span style=\"display: "+buynow_display+";\">&#x20b9;</span> "+discounted_price+"&nbsp;&nbsp;</span><span style=\"display: "+buynow_display+";\"><strike style=\"font-size: 16px;color: #9c9b9b;\">&#x20b9; "+price+"</strike><span style=\" font-size: 14px; color: #00b0f0; font-weight: 700;\">&nbsp;"+percent+"%</span></p></span><h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">485</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span>&nbsp; <h7 style=\"color: #73726c;\">785</h7> </div> <div class=\"col-md-4\" style=\"padding: 31px;\"> <button type=\"button\" class=\"btn add-to-cart-btn  big-cart-button-21\" id=\"21\" tabindex=\"0\" style=\"color: #fff;background-color: #f6892a;border-color: #f6892a;padding: 11px 12px;font-size: 15px;border-radius: 2px;line-height: 1.35135;font-weight: 600;\ display: "+buynow_display+";\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',4,this)\">Buy Now</button></div> <div class=\"col-md-12\" style=\"border-top: 2px solid #f0f0f0; height: 30px;\"> <div class=\"row\"> <div class=\"col-md-4\" style=\"text-align:center;\" > <p>Total Orders-218</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"><p>Total Downloads-123</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Likes-233</p></div></div></div></div></div>";
+
+
+                }
+            }else{
+                console.log("displaytcart flag cart="+$flag)
+                if(flagtype == 1){
+                    var display_property = "";
+                    if(sub_sem_url == 5 || sub_sem_url == 6){
+                        display_property = "none";
+                    }
+                    total_amount_to_display += parseInt(discounted_price);
+                    checkout_list.innerHTML += "<div class=\"col-md-12 col-sm-12 col-xs-12 mobile_mode1\"> <div class=\"container\" style=\"margin-top: 10px;border-radius: 10px;background-color: #fff;-webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);color: #454545;\"> <div class=\"col-md-12 \" style=\"border-bottom: 2px solid #f0f0f0;\"> <div class=\"row\"> <div class=\"col-md-6 col-xs-8 col-sm-8\" > <p style=\"font-size: 11px;word-spacing: 5px;\"> <div class=\"mobile_mode4\" style=\"font-size: 27px;color: #a0a0a0b3;display:inline;\"><b>"+university_name+"</b></div> <b class=\"mobile_mode3\"> | "+regulation+" | "+branch_name+" | "+semester_name+"</b></p> </div> <div class=\"col-md-2 col-xs-4 col-sm-4 pull-right mobil_mode5\" style=\"padding: 20px;\"> <button class=\"btn\" type=\"submit\" name=\"remove_from_cart\" style=\" font-weight: 600;\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',7,this)\"> <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"color: #d25151;font-size:20px;\"></i>Remove </button>  </div> </div> </div> <div class=\"col-md-3\" style=\" padding: 17px;width: 50%;margin: auto;text-align: center; \"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/"+subject_photo+"\" style=\"border-radius: 15px;\" alt=\"video-classes\"> </div> <div class=\"col-md-5\" style=\"margin: auto;text-align: center;padding-top: 22px;font-size: 19px;\"> <p><b>"+subject_name+"</b></p> <p><span style=\"font-weight: bold;\">&#x20b9; "+discounted_price+"&nbsp;&nbsp;</span><strike style=\"font-size: 16px;color: #9c9b9b;\">&#x20b9; "+price+"</strike><span style=\" font-size: 14px; color: #00b0f0; font-weight: 700;\">&nbsp;"+percent+"%</span></p><h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">4.5</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span>&nbsp; <h7 style=\"color: #73726c;\">203</h7><p style=\" display:none; font-size: 11px; font-weight: 990;\">BY-"+professor_name+"</p> </div> <div class=\"col-md-4\" style=\"padding: 31px;\"></div> <div class=\"col-md-12\" style=\"border-top: 2px solid #f0f0f0; height: 30px;\"> <div class=\"row\"> <div class=\"col-md-4\" style=\"text-align:center;\" > <p>Total Orders-2182</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Downloads-23</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Likes-233</p> </div> </div> </div> </div> </div>";
+
+                    num_sub++;
+                }
+            }
+
+        }
+        if($flag != 2) {
+            var checkout_total_product = document.getElementById('checkout_total_product');
+            var checkout_total_price_to_show = document.getElementById('checkout_total_price_to_show');
+            var checkout_promo_value = document.getElementById('checkout_promo_value');
+            var checkout_grandtotal = document.getElementById('checkout_grandtotal');
+
+
+
+            checkout_total_product.innerHTML = num_sub;
+            checkout_total_price_to_show.innerHTML = '&#8377;' + total_amount_to_display;
+            var promo_value_to_display = "";
+            if(sub_sem_url == 5 || sub_sem_url == 6){
+                total_amount_to_display = "5000";
+                promo_value_to_display = parseInt(total_amount_to_display)-5000;
+                // alert(sub_sem_url + "sss");
+            }else{
+                // alert(sub_sem_url);
+            }
+            checkout_promo_value.innerHTML = '&#8377;' + promo_value_to_display;
+
+            checkout_grandtotal.innerHTML = '&#8377;' + total_amount_to_display;
+        }
+    }
+
+    function checkPurchaseStatus() {
+        var data = {
+                cmd:104,
+                subject_id:subject_id_url,
+                user_id: getCookie("user_id")
+            }
+        sendRequest(data,104,0,0);
+    }
+
+    function updateUserId() {
+
+        if(url_page == "index"){
+
+            var university_id=getCookie("university_id");
+            var university_name=getCookie("university_name");
+            var regulation=getCookie("regulation");
+            var branch=getCookie("branch_id");
+            var year=getCookie("semester_id");
+            var open = false;
+
+
+            if(university_id == "" || university_id === "" || university_id == "null" || university_id == null || university_id == "undefined"){
+                    document.getElementById('modalOverlay').style.display = 'block';
+                    // changeCourse(1);
+                    open = true;
+            }
+
+            if(university_name == "" || university_name === "" || university_name == "null" || university_name == null || university_name == "undefined"){
+                    document.getElementById('modalOverlay').style.display = 'block';
+                    // changeCourse(1);
+                    open = true;
+            }
+
+            if(regulation == "" || regulation === "" || regulation == "null" || regulation == null || regulation == "undefined"){
+                    document.getElementById('modalOverlay').style.display = 'block';
+                    // changeCourse(1);
+                    open = true;
+            }
+
+            if(branch == "" || branch === "" || branch == "null" || branch == null || branch == "undefined"){
+                    document.getElementById('modalOverlay').style.display = 'block';
+                    // changeCourse(1);
+                    open = true;
+            }
+
+            if(year == "" || year === "" || year == "null" || year == null || year == "undefined"){
+                    document.getElementById('modalOverlay').style.display = 'block';
+                    // changeCourse(1);
+                    open = true;
+            }
+
+            if(!open){
+                document.getElementById('modalOverlay').style.display = 'none';
+            }else{
+                addFormValues();
+
+            }
+        }
+
+
+
+        // myFunctionbuttonClose();
+        // try {
+        //     let tx = db.transaction(['users'], 'readonly');
+        //     let store = tx.objectStore('users');
+        //     // Create a cursor request to get all items in the store, which
+        //     // we collect in the allsubject array
+        //     let req = store.openCursor();
+        //     let allsubjects = [];
+        //     req.onsuccess = function(event) {
+        //         let cursor = event.target.result;
+        //         if (cursor != null) {
+        //             allsubjects.push(cursor.value);
+        //             cursor.continue();
+        //         } else {
+        //            updateUserCookie(allsubjects);
+        //         }
+        //     }
+        //     req.onerror = function(event) {
+        //         alert('error in cursor request ' + event.target.errorCode);
+        //     }
+        // }catch (e) {
+        //     updateUserCookie([]);
+        // }
+    }
+
+    function updateUserCookieInHomePage(allsubjects){
+        if(allsubjects.length == 0){
+            var sid=getCookie("sid");
+            var user=getCookie("user_id");
+            if (user == "" || user === "" || user == "null" || user == null || sid == "" || sid === "" || sid == "null" || sid == null) {
+              console.log("**********"+user+"####");
+              document.getElementById('modalStartlearning').style.display = 'block';
+            }
+            return;
+        }
+    }
+
+    function updateUserCookie(allsubjects) {
+
+
+        if(url_page == "homepage"){
+            // updateUserCookieInHomePage(allsubjects);
+        }else{
+            if(allsubjects.length == 0){
+                // document.getElementById('modalOverlay').style.display = 'block';
+                var branch=getCookie("branch_id");
+                var year=getCookie("semester_id");
+                var user=getCookie("user_id");
+                if (user == "" || user === "" || user == "null" || user == null || branch == "" || branch === "" || branch == "null" || branch == null || year == "" || year === "" || year == "null" || year == null) {
+                  console.log("**********"+user+"####");
+                  if(url_page != "homepage"){
+                      document.getElementById('modalOverlay').style.display = 'block';
+                  }
+                         // updateUserId();
+                }else {
+                  console.log("555555555");
+                  document.getElementById('modalOverlay').style.display = 'none';
+                }
+                return;
+            }
+
+
+
+            var each_subject = JSON.stringify(allsubjects[0]);
+            var subjectJsonObj = JSON.parse(each_subject);
+            var row = subjectJsonObj;
+            var branch_id = ""
+            var semester_id = ""
+            var user_id = ""
+            try{
+                branch_id = row['branch_id'];
+                semester_id = row['semester_id'];
+
+            }catch (e) {
+                branch_id = "2"
+                semester_id = "2"
+            }
+
+            user_id = row['user_id'];
+            var branch=getCookie("branch_id");
+            var year=getCookie("semester_id");
+            var user=getCookie("user_id");
+            var open = false;
+
+            if(semester_id == "" || semester_id === "" || semester_id == "null" || semester_id == null || semester_id == "undefined"){
+                if(year == "" || year === "" || year == "null" || year == null || year == "undefined"){
+                    if(url_page != "homepage") {
+                        document.getElementById('modalOverlay').style.display = 'block';
+                        open = true;
+                    }
+                }
+            }else{
+                document.cookie = "semester_id="+semester_id + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+            }
+
+            if(branch_id == "" || branch_id === "" || branch_id == "null" || branch_id == null || branch_id == "undefined"){
+                if(branch == "" || branch === "" || branch == "null" || branch == null || branch == "undefined"){
+                    if(url_page != "homepage") {
+                        document.getElementById('modalOverlay').style.display = 'block';
+                        open = true;
+                    }
+                }
+            }else{
+                document.cookie = "branch_id="+branch_id + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+            }
+
+
+            document.cookie = "user_id="+user_id + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+
+            if(!open){
+                myFunctionbuttonClose();
+            }
+        }
+    }
+
+    function userBasket(subject_id,subject_name,price,discounted_price,subject_photo,university,university_name,regulation,branch_id,semester_id,$flag,$this) {
+        let user_id = getCookie("user_id");
+
+        $this.classList.toggle("active123");
+        let tx = db.transaction(['user_basket'], 'readwrite')
+        let store = tx.objectStore('user_basket');
+        var key_flag = $flag;
+        if(key_flag == 4 || key_flag == 7){
+            key_flag = 1;
+        }
+        var key = subject_id+"_"+key_flag
+
+        let note = {user_id:user_id, subject_id:subject_id, subject_name:subject_name, price:price, discounted_price:discounted_price, subject_photo:subject_photo, university:university, university_name:university_name, regulation:regulation, branch_id:branch_id, semester_id:semester_id, flag:key_flag};
+
+        if($flag == 8){
+            key = subject_id+"_2"
+            console.log('stored note!dd');
+            store.delete(key);
+            document.location = "?url=wishlist";
+            addWishlistNum(2);
+        }else if($flag == 7){
+            key = subject_id+"_1"
+            console.log('stored note!dd');
+            store.delete(key);
+            document.location = "?url=checkout";
+            addCartNum(2);
+        }else if($flag == 4){
+            console.log('stored note!cc');
+            store.put(note,key);
+            if($this.classList.contains("active1234")){
+
+            }else{
+                addCartNum(1);
+            }
+        }else if($flag == 5 || $flag == 6){
+            document.location = "?url=checkout&flag="+$flag;
+        }else if($this.classList.contains("active123")){
+            console.log('stored note!cc');
+            store.put(note,key);
+            if(key_flag == 1){
+                addCartNum(1);
+            }else if(key_flag == 2){
+                addWishlistNum(1)
+            }
+        }else{
+            console.log('stored note!dd');
+            store.delete(key);
+            if(key_flag == 1){
+                addCartNum(2);
+            }else if(key_flag == 2){
+                addWishlistNum(2)
+            }
+        }
+        tx.oncomplete = function() {
+            console.log('stored note!');
+            if($flag == 4){
+                document.location = "?url=checkout";
+            }
+        }
+        tx.onerror = function(event) {
+            alert('error storing note ' + event.target.errorCode);
+        }
+
+    }
+
+    function addCartNum($flag) {
+
+        if(url_page != "mobile_video_view"){
+            var cart_count_div = document.getElementById('cart_number');
+            var cart_num = cart_count_div.innerHTML;
+            if($flag == 1){
+                cart_count_div.innerHTML = parseInt(cart_num)+1;
+                cart_count_div.style.display = 'block';
+            }else{
+                cart_count_div.innerHTML = parseInt(cart_num)-1;
+                if(parseInt(cart_num)-1 == 0){
+                    cart_count_div.style.display = 'none';
+                }
+            }
+        }
+
+
+    }
+
+    function addWishlistNum($flag) {
+        var cart_count_div = document.getElementById('wishlist_number');
+        var cart_num = cart_count_div.innerHTML;
+        if($flag == 1){
+            cart_count_div.innerHTML = parseInt(cart_num)+1;
+            cart_count_div.style.display = 'block';
+        }else{
+            cart_count_div.innerHTML = parseInt(cart_num)-1;
+            if(parseInt(cart_num)-1 == 0){
+                cart_count_div.style.display = 'none';
+            }
+        }
+    }
+
+    function insertSubjects($result,$subCmd){
+    	console.log("insertSubjects-44444444444444444--"+$subCmd);
+        var result = $result;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+
+        let tx = db.transaction(['subject'], 'readwrite');
+        let store = tx.objectStore('subject');
+        // Put the sticky note into the object store
+
+        data = result.data
+        var data_length = data.length
+        for (i=0;i<data_length;i++) {
+            var branch_id = data[i].branch_id;//decode json
+            var complete_notes = data[i].complete_notes;//decode json
+            var date = data[i].date;//decode json
+            var discounted_price = data[i].discounted_price;//decode json
+            var flag = data[i].flag;//decode json
+            var num_of_unit = data[i].num_of_unit;//decode json
+            var price = data[i].price;//decode json
+            var priority = data[i].priority;//decode json
+            var regulation = data[i].regulation;//decode json
+            var semester_id = $subCmd;//data[i].semester_id;//decode json
+            var specialization = data[i].specialization;//decode json
+            var subject_description = data[i].subject_description;//decode json
+            var subject_id = data[i].subject_id;//decode json
+            var subject_name = data[i].subject_name;//decode json
+            var subject_photo = data[i].subject_photo;//decode json
+            var tags = data[i].tags;//decode json
+            var avg_rating = data[i].avg_rating;//decode json
+            var new_subject_photo = data[i].new_subject_photo;//decode json
+            var rating_count = data[i].rating_count;//decode json
+            var single_line_content = data[i].single_line_content;//decode json
+            var subject_points = data[i].subject_points;//decode json
+            var subject_time = data[i].subject_time;//decode json
+            var unit1 = data[i].unit1;//decode json
+            var unit1_name = data[i].unit1_name;//decode json
+            var unit2 = data[i].unit2;//decode json
+            var unit2_name = data[i].unit2_name;//decode json
+            var unit3 = data[i].unit3;//decode json
+            var unit3_name = data[i].unit3_name;//decode json
+            var unit4 = data[i].unit4;//decode json
+            var unit4_name = data[i].unit4_name;//decode json
+            var unit5 = data[i].unit5;//decode json
+            var unit5_name = data[i].unit5_name;//decode json
+            var unit6 = data[i].unit6;//decode json
+            var unit6_name = data[i].unit6_name;//decode json
+            var unit7 = data[i].unit7;//decode json
+            var unit7_name = data[i].unit7_name;//decode json
+            var unit8 = data[i].unit8;//decode json
+            var unit8_name = data[i].unit8_name;//decode json
+            var unit9 = data[i].unit9;//decode json
+            var unit9_name = data[i].unit9_name;//decode json
+            var unit10 = data[i].unit10;//decode json
+            var unit10_name = data[i].unit10_name;//decode json
+            var university_id = data[i].university_id;//decode json
+            var year_id=getCookie("semester_id");
+
+
+            let note = {branch_id:branch_id, complete_notes:complete_notes, date:date, discounted_price:discounted_price, flag:flag, num_of_unit:num_of_unit, price:price, priority:priority, regulation:regulation,semester_id:$subCmd,year_id:year_id, specialization:specialization, subject_description:subject_description, subject_id:subject_id, subject_name:subject_name, subject_photo:subject_photo, tags:tags, avg_rating:avg_rating, new_subject_photo:new_subject_photo, rating_count:rating_count, single_line_content:single_line_content, subject_points:subject_points, subject_time:subject_time, unit1:unit1, unit1_name:unit1_name, unit2:unit2, unit2_name:unit2_name, unit3:unit3, unit3_name:unit3_name, unit4:unit4, unit4_name:unit4_name, unit5:unit5, unit5_name:unit5_name, unit6:unit6, unit6_name:unit6_name, unit7:unit7, unit7_name:unit7_name, unit8:unit8, unit8_name:unit8_name, unit9:unit9, unit9_name:unit9_name, unit10:unit10, unit10_name:unit10_name, university_id:university_id};
+            let key = semester_id+subject_id;
+            store.put(note,key);
+
+            // Wait for the database transaction to complete
+            tx.oncomplete = function() {
+                console.log('stored note!');
+                if ($subCmd == 1) {
+                    addSubject(1,0,0);
+                    fetchSubject(2);
+                } else if($subCmd == 2) {
+                    // insert_version(result);
+                    // console.log("adding in else condition");
+                    addSubject(2,0,0);
+                    // deleteSubjects();
+                }
+            }
+
+            tx.onerror = function(event) {
+                alert('error storing note ' + event.target.errorCode);
+            }
+
+                // var sql = "INSERT INTO subject(branch_id,complete_notes,date,discounted_price,flag,num_of_unit,price,priority,regulation,semester_id,year_id,specialization,subject_description,subject_id,subject_name,subject_photo,tags,avg_rating,new_subject_photo,rating_count,single_line_content,subject_points,subject_time,unit1,unit1_name,unit2,unit2_name,unit3,unit3_name,unit4,unit4_name,unit5,unit5_name,unit6,unit6_name,unit7,unit7_name,unit8,unit8_name,unit9,unit9_name,unit10,unit10_name,university_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                // transaction.executeSql(sql, [branch_id, complete_notes, date, discounted_price, flag, num_of_unit, price, priority, regulation,$subCmd,year_id, specialization, subject_description, subject_id, subject_name, subject_photo, tags, avg_rating, new_subject_photo, rating_count, single_line_content, subject_points, subject_time, unit1, unit1_name, unit2, unit2_name, unit3, unit3_name, unit4, unit4_name, unit5, unit5_name, unit6, unit6_name, unit7, unit7_name, unit8, unit8_name, unit9, unit9_name, unit10, unit10_name, university_id], function () {
+                //     // console.log("condition----"+$subCmd+"------"+j);
+                //     j++;
+                //     if ($subCmd == 1 && j == (data_length)) {
+                //         // // alert("adding in if condition");
+                //         // deleteSubjects();
+                //         addSubject(1,0,0);
+                //         j=0;
+                //         fetchSubject(2);//get subjects
+                //         // console.log("adding in if condition");
+                //
+                //     } else if($subCmd == 2 && j == (data_length)) {
+                //         // insert_version(result);
+                //         // console.log("adding in else condition");
+                //         addSubject(2,0,0);
+                //         // deleteSubjects();
+                //     }
+                // }, function () {
+                //     alert("error");
+                // });
+        }
+
+
+
+
+        // db.transaction(function(transaction){
+        //     var sql = "CREATE TABLE IF NOT EXISTS subject (branch_id VARCHAR(10) NOT NULL,complete_notes TEXT NOT NULL,date TEXT NOT NULL,discounted_price INTEGER NOT NULL,flag INTEGER NOT NULL,num_of_unit INTEGER NOT NULL,price INTEGER NOT NULL,priority INTEGER NOT NULL,regulation INTEGER NOT NULL,semester_id INTEGER NOT NULL,year_id INTEGER NULL,specialization INTEGER NOT NULL,subject_description TEXT NOT NULL,subject_id VARCHAR(255) NOT NULL,subject_name VARCHAR(255) NOT NULL,subject_photo VARCHAR(255) NOT NULL,tags TEXT NOT NULL,avg_rating VARCHAR(100) NOT NULL,rating_count VARCHAR(100) NOT NULL,single_line_content TEXT NOT NULL,subject_points VARCHAR(100) NOT NULL,new_subject_photo TEXT NOT NULL,subject_time VARCHAR(100) NOT NULL,unit1 TEXT NOT NULL,unit1_name TEXT NOT NULL,unit2 TEXT NOT NULL,unit2_name TEXT NOT NULL,unit3 TEXT NOT NULL,unit3_name TEXT NOT NULL,unit4 TEXT NOT NULL,unit4_name TEXT NOT NULL,unit5 TEXT NOT NULL,unit5_name TEXT NOT NULL,unit6 TEXT NOT NULL,unit6_name TEXT NOT NULL,unit7 TEXT NOT NULL,unit7_name TEXT NOT NULL,unit8 TEXT NOT NULL,unit8_name TEXT NOT NULL,unit9 TEXT NOT NULL,unit9_name TEXT NOT NULL,unit10 TEXT NOT NULL,unit10_name TEXT NOT NULL,university_id INT NOT NULL)";
+        //     transaction.executeSql(sql,undefined,function(){
+        //         db.transaction(function (transaction) {
+        //         data = result.data
+        //         var data_length = data.length
+        //         for (i=0;i<data_length;i++) {
+        //             var branch_id = data[i].branch_id;//decode json
+        //             var complete_notes = data[i].complete_notes;//decode json
+        //             var date = data[i].date;//decode json
+        //             var discounted_price = data[i].discounted_price;//decode json
+        //             var flag = data[i].flag;//decode json
+        //             var num_of_unit = data[i].num_of_unit;//decode json
+        //             var price = data[i].price;//decode json
+        //             var priority = data[i].priority;//decode json
+        //             var regulation = data[i].regulation;//decode json
+        //             var semester_id = data[i].semester_id;//decode json
+        //             var specialization = data[i].specialization;//decode json
+        //             var subject_description = data[i].subject_description;//decode json
+        //             var subject_id = data[i].subject_id;//decode json
+        //             var subject_name = data[i].subject_name;//decode json
+        //             var subject_photo = data[i].subject_photo;//decode json
+        //             var tags = data[i].tags;//decode json
+        //             var avg_rating = data[i].avg_rating;//decode json
+        //             var new_subject_photo = data[i].new_subject_photo;//decode json
+        //             var rating_count = data[i].rating_count;//decode json
+        //             var single_line_content = data[i].single_line_content;//decode json
+        //             var subject_points = data[i].subject_points;//decode json
+        //             var subject_time = data[i].subject_time;//decode json
+        //             var unit1 = data[i].unit1;//decode json
+        //             var unit1_name = data[i].unit1_name;//decode json
+        //             var unit2 = data[i].unit2;//decode json
+        //             var unit2_name = data[i].unit2_name;//decode json
+        //             var unit3 = data[i].unit3;//decode json
+        //             var unit3_name = data[i].unit3_name;//decode json
+        //             var unit4 = data[i].unit4;//decode json
+        //             var unit4_name = data[i].unit4_name;//decode json
+        //             var unit5 = data[i].unit5;//decode json
+        //             var unit5_name = data[i].unit5_name;//decode json
+        //             var unit6 = data[i].unit6;//decode json
+        //             var unit6_name = data[i].unit6_name;//decode json
+        //             var unit7 = data[i].unit7;//decode json
+        //             var unit7_name = data[i].unit7_name;//decode json
+        //             var unit8 = data[i].unit8;//decode json
+        //             var unit8_name = data[i].unit8_name;//decode json
+        //             var unit9 = data[i].unit9;//decode json
+        //             var unit9_name = data[i].unit9_name;//decode json
+        //             var unit10 = data[i].unit10;//decode json
+        //             var unit10_name = data[i].unit10_name;//decode json
+        //             var university_id = data[i].university_id;//decode json
+        //            	var year_id=getCookie("semester_id");
+        //
+        //                 var sql = "INSERT INTO subject(branch_id,complete_notes,date,discounted_price,flag,num_of_unit,price,priority,regulation,semester_id,year_id,specialization,subject_description,subject_id,subject_name,subject_photo,tags,avg_rating,new_subject_photo,rating_count,single_line_content,subject_points,subject_time,unit1,unit1_name,unit2,unit2_name,unit3,unit3_name,unit4,unit4_name,unit5,unit5_name,unit6,unit6_name,unit7,unit7_name,unit8,unit8_name,unit9,unit9_name,unit10,unit10_name,university_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        //                 transaction.executeSql(sql, [branch_id, complete_notes, date, discounted_price, flag, num_of_unit, price, priority, regulation,$subCmd,year_id, specialization, subject_description, subject_id, subject_name, subject_photo, tags, avg_rating, new_subject_photo, rating_count, single_line_content, subject_points, subject_time, unit1, unit1_name, unit2, unit2_name, unit3, unit3_name, unit4, unit4_name, unit5, unit5_name, unit6, unit6_name, unit7, unit7_name, unit8, unit8_name, unit9, unit9_name, unit10, unit10_name, university_id], function () {
+        //                     // console.log("condition----"+$subCmd+"------"+j);
+        //                     j++;
+        //                     if ($subCmd == 1 && j == (data_length)) {
+        //                         // // alert("adding in if condition");
+        //                         // deleteSubjects();
+        //                         addSubject(1,0,0);
+        //                         j=0;
+        //                         fetchSubject(2);//get subjects
+        //                         // console.log("adding in if condition");
+        //
+        //                     } else if($subCmd == 2 && j == (data_length)) {
+        //                         // insert_version(result);
+        //                         // console.log("adding in else condition");
+        //                         addSubject(2,0,0);
+        //                         // deleteSubjects();
+        //                     }
+        //                 }, function () {
+        //                     alert("error");
+        //                 });
+        //                 }
+        //             });
+        //     },function(){});
+        // });
+    }
+
+    function fetchSubject($subsem){
+        // console.log("fetchSubject-666666666666666666");
+        var branch_id=getCookie("branch_id");
+        var year_id=getCookie("semester_id");
+
+        if(branch_id == null || year_id == null){
+            // showpopup()
+            return;
+        }
+        var subsem = 1;
+        if($subsem == 2){
+            subsem = 2;
+            // updateVersionToDb();
+        }
+
+        var data = {
+            cmd: 103,
+            branch_id:branch_id,//insert branch id
+            year_id:year_id,//insert year id
+            sub_sem_id:subsem,//sub sem id = 1 means 1st sem 2 = 2nd sem
+            university_name :"JNTUK",
+            university_id:"6",
+            regulation:"R19",
+        }
+
+        sendRequest(data,103,subsem,0);//get subjects
+    }
+
+    function addSubject($subsem,$cmdFrom,$subject_id){
+    	console.log("addSubjecttohomepage-5555555555555555"+$subject_id);
+    	var year_id=getCookie("semester_id");
+    	var branch_id=getCookie("branch_id");
+    	var queryText = "";
+        var div_to_append = "";
+        let dataForSearch = "";
+    	if(year_id == 1){//delete later
+    		branch_id = 0;
+    	}
+
+
+    	let tx = db.transaction(['subject'], 'readonly');
+        let store = tx.objectStore('subject');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+        var keyRangeValue;
+        if($subsem == 5){
+            keyRangeValue = IDBKeyRange.bound("1", "2");
+        }else if($subsem == 6){
+            keyRangeValue = IDBKeyRange.bound("2", "3");
+        }else if($subject_id != 0){
+            keyRangeValue = IDBKeyRange.only($subject_id);
+        }else if($subsem == 1){
+            keyRangeValue = IDBKeyRange.bound("1", "2");
+        }else if($cmdFrom == 10){
+            keyRangeValue = "";
+        }else{
+            keyRangeValue = IDBKeyRange.bound("2", "3");
+        }
+
+        let req = store.openCursor(keyRangeValue);
+        let allsubject = [];
+
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                console.log(cursor.value);
+              allsubject.push(cursor.value);
+              cursor.continue();
+            } else {
+              // displaysubject(allsubject);
+                console.log("$subsem"+$subsem+"$cmdFrom"+$cmdFrom+"$subject_id"+$subject_id+"allsubject"+allsubject);
+                displaySubjects($subsem,$cmdFrom,$subject_id,allsubject);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+
+		}
+
+    function displaySubjects($subsem,$cmdFrom,$subject_id,subject){
+        console.log("sub:"+$subsem+"--cmdfrom:"+$cmdFrom+" subject_id:"+$subject_id+" subject:"+subject);
+        var total_mobile_content = "";
+        var checkout_list = document.getElementById('checkout_list');
+        var total_amount_to_display = 0;
+        var num_sub = 0;
+        for (let i = 0; i < subject.length; i++) {
+
+            var each_subject = JSON.stringify(subject[i]);
+            var subjectJsonObj = JSON.parse(each_subject);
+            console.log(subjectJsonObj['subject_name']);
+            var row = subjectJsonObj;
+            var div_to_append = "";
+            var div_to_append_mobile = "";
+
+            if($subsem == 5 || $subsem == 6){
+
+            }else if($subject_id != 0){
+                // queryText = "WHERE subject_id = '"+$subject_id+"'";
+            }else if($cmdFrom == 10){
+                // queryText = "";
+            }else if($subsem == 1){
+                div_to_append = document.getElementById("homepage_subjects");
+                div_to_append_mobile = document.getElementById("homepage_subjects_mobile");
+                div_to_append_popup = document.getElementById("subject_popup");
+                // queryText = "WHERE semester_id = '1' AND year_id = '"+year_id+"' AND branch_id = '"+branch_id+"' ORDER BY flag DESC";
+            }else{
+                div_to_append = document.getElementById("homepage_subjects1");
+                div_to_append_popup = document.getElementById("subject_popup");
+                // div_to_append_mobile = document.getElementById("homepage_subjects_mobile1");
+                // queryText = "WHERE semester_id = '2' AND year_id = '"+year_id+"' AND branch_id = '"+branch_id+"' ORDER BY flag DESC";
+            }
+
+            var branch_id = row['branch_id'];//decode json
+            var complete_notes = row['complete_notes'];//decode json
+            var date = row['date'];//decode json
+            var discounted_price = row['discounted_price'];//decode json
+            var flag = row['flag'];//decode json
+            var num_of_unit = row['num_of_unit'];//decode json
+            var price = row['price'];//decode json
+            var priority = row['priority'];//decode json
+            var regulation = row['regulation'];//decode json
+            var semester_id = row['semester_id'];//decode json
+            var specialization = row['specialization'];//decode json
+            var subject_description = row['subject_description'];//decode json
+            var subject_id = row['subject_id'];//decode json
+            var subject_name = row['subject_name'];//decode json
+            var subject_photo = row['subject_photo'];//decode json
+            var tags = row['tags'];//decode json
+            var avg_rating = row['avg_rating'];//decode json
+            var new_subject_photo = row['new_subject_photo'];//decode json
+            var rating_count = row['rating_count'];//decode json
+            var single_line_content = row['single_line_content'];//decode json
+            var subject_points = row['subject_points'];//decode json
+            var subject_time = row['subject_time'];//decode json
+            var unit1 = row['unit1'];//decode json
+            var unit1_name = row['unit1_name'];//decode json
+            var unit2 = row['unit2'];//decode json
+            var unit2_name = row['unit2_name'];//decode json
+            var unit3 = row['unit3'];//decode json
+            var unit3_name = row['unit3_name'];//decode json
+            var unit4 = row['unit4'];//decode json
+            var unit4_name = row['unit4_name'];//decode json
+            var unit5 = row['unit5'];//decode json
+            var unit5_name = row['unit5_name'];//decode json
+            var unit6 = row['unit6'];//decode json
+            var unit6_name = row['unit6_name'];//decode json
+            var unit7 = row['unit7'];//decode json
+            var unit7_name = row['unit7_name'];//decode json
+            var unit8 = row['unit8'];//decode json
+            var unit8_name = row['unit8_name'];//decode json
+            var unit9 = row['unit9'];//decode json
+            var unit9_name = row['unit9_name'];//decode json
+            var unit10 = row['unit10'];//decode json
+            var unit10_name = row['unit10_name'];//decode json
+            var university_id = row['university_id'];//decode json
+            var university_name = "JNTUK";
+
+            if($subsem == 5 || $subsem == 6){
+                var user_id = getCookie("user_id");
+                var branch_name = getCookie("branch_name");
+                var semester_name = "semester "+semester_id
+                var percent1 = (((price-discounted_price)/price)*100)
+                var percent = percent1.toFixed(2)
+                var professor_name = ""
+                var display_property = "none";
+                total_amount_to_display += parseInt(discounted_price);
+                checkout_list.innerHTML += "<div class=\"col-md-12 col-sm-12 col-xs-12 mobile_mode1\"> <div class=\"container\" style=\"margin-top: 10px;border-radius: 10px;background-color: #fff;-webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);color: #454545;\"> <div class=\"col-md-12 \" style=\"border-bottom: 2px solid #f0f0f0;\"> <div class=\"row\"> <div class=\"col-md-6 col-xs-8 col-sm-8\" > <p style=\"font-size: 11px;word-spacing: 5px;\"> <div class=\"mobile_mode4\" style=\"font-size: 27px;color: #a0a0a0b3;display:inline;\"><b>"+university_name+"</b></div> <b class=\"mobile_mode3\"> | "+regulation+" | "+branch_name+" | "+semester_name+"</b></p> </div> <div class=\"col-md-2 col-xs-4 col-sm-4 pull-right mobil_mode5\" style=\"padding: 20px;\"> <button class=\"btn\" type=\"submit\" name=\"remove_from_cart\" style=\" font-weight: 600;display: "+display_property+"\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',7,this)\"> <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"color: #d25151;font-size:20px;\"></i>Remove </button>  </div> </div> </div> <div class=\"col-md-3\" style=\" padding: 17px;width: 50%; \"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/"+subject_photo+"\" style=\"border-radius: 15px;\" alt=\"video-classes\"> </div> <div class=\"col-md-5\" style=\"margin: auto;padding-top: 22px;font-size: 19px;\"> <p><b>"+subject_name+"</b></p> <p style='display: "+display_property+"'><span style=\"font-weight: bold;\">&#x20b9; "+discounted_price+"&nbsp;&nbsp;</span><strike style=\"font-size: 16px;color: #9c9b9b;\">&#x20b9; "+price+"</strike><span style=\" font-size: 14px; color: #00b0f0; font-weight: 700;\">&nbsp;"+percent+"%</span></p><h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">4.5</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span>&nbsp; <h7 style=\"color: #73726c;\">203</h7><p style=\" display:none; font-size: 11px; font-weight: 990;\">BY-"+professor_name+"</p> </div> <div class=\"col-md-4\" style=\"padding: 31px;\"></div> <div class=\"col-md-12\" style=\"border-top: 2px solid #f0f0f0; height: 30px;\"> <div class=\"row\"> <div class=\"col-md-4\" style=\"text-align:center;\" > <p>Total Orders-2182</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Downloads-23</p> </div> <div class=\"col-md-4\" style=\"text-align:center;\"> <p>Total Likes-233</p> </div> </div> </div> </div> </div>";
+                num_sub++;
+            }else if($subject_id !=0){
+                var top_buynow_button = document.getElementById("top_buynow_button");
+                var syllabus_units = document.getElementById("syllabus_units");
+                var subject_details_title_down = document.getElementById("subject_details_title_down");
+                var notes_pdf = document.getElementById("notes_pdf");
+                var purchase_status = getCookie("purchase_status");
+                var purchase_status = "true";
+                console.log("purchase_status_in subject"+purchase_status);
+
+                // if(purchase_status == "false" || purchase_status == false){
+                    console.log("purchase_status_in subject1"+purchase_status);
+                     if(url_page == "mobile_video_view"){
+                        top_buynow_button.innerHTML = "<button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"background: #00b0f0; box-shadow: none; padding: 9px; margin: auto; width: 90%; color: white; font-size: 13px; border: 0px; font-family: Retina,Arial,Helvetica,sans-serif; font-weight: 800; display:none\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',4,this)\" >Buy Now : &#x20B9;"+discounted_price+"</button> ";
+                    }else{
+                        top_buynow_button.innerHTML = "<div style=\"background: #4593e3;\" class=\"col-md-12\"><form method=\"POST\" action=\"\" style=\"margin:;text-align:right; ;\" ><input type=\"hidden\" class=\"form-control\" name=\"university_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"semester_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"branch_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"subject_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"regulation\" value=\" \" > <h1 style=\"font-family: 'Inconsolata', monospace; font-weight: 900; font-size: 18px; margin: 0; display: inline-block; max-width: 74%; color: #ffffff; text-shadow: 0 0 2px #000;vertical-align:middle;margin: 21px;\">Watch Complete "+subject_name+" Course For <strike style=\"font-size:0.7em;\">&#x20B9;"+discounted_price+"</strike><span style='color:#e8ce4f;font-weight: 900'>Free(upto "+getCookie("days_left")+" Days)</span></h1> <button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"margin: 21px; background: #216fbd; box-shadow: none; font-family: 'Inconsolata', monospace; font-weight: 900; display: none\" name=\"add_to_cart\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',4,this)\">Buy Now: &#x20B9;"+discounted_price+"</button> </form> </div>";
+                    }
+                // }else{
+                //     console.log("purchase_status_in subject2"+purchase_status);
+                // }
+                // for (k= 0;k<10;k++)
+                var unit_heaading = [];
+                var unit_boody = [];
+
+                unit_heaading[0] = unit1;
+                unit_boody[0] = unit1_name;
+
+                unit_heaading[1] = unit2;
+                unit_boody[1] = unit2_name;
+
+                unit_heaading[2] = unit3;
+                unit_boody[2] = unit3_name;
+
+                unit_heaading[3] = unit4;
+                unit_boody[3] = unit4_name;
+
+                unit_heaading[4] = unit5;
+                unit_boody[4] = unit5_name;
+
+                unit_heaading[5] = unit6;
+                unit_boody[5] = unit6_name;
+
+                unit_heaading[6] = unit7;
+                unit_boody[6] = unit7_name;
+
+                unit_heaading[7] = unit8;
+                unit_boody[7] = unit8_name;
+
+                unit_heaading[8] = unit9;
+                unit_boody[8] = unit9_name;
+
+                unit_heaading[9] = unit10;
+                unit_boody[9] = unit10_name;
+                syllabus_units.innerHTML = "";
+
+
+                for (j=0;j<10;j++){
+                    if(unit_boody[j]){
+                        var unit_heading = unit_heaading[j];
+                        var unit_body = unit_boody[j];
+                        // console.log(unit_heaading[j]+"---"+unit_boody[j]);
+                        syllabus_units.innerHTML +=
+                        "<a href=\"#\" class=\"togglefaq\" onclick=\"syllabusDropdown(this)\" style=\"text-decoration:none\"><b>" +
+                        "UNIT-"+(j+1)+": "+unit_heading+
+                        "</b> <i class=\"fa fa-angle-down pull-right\" style=\"font-size:26px\"></i> </a> <div class=\"faqanswer\" style=\"width: 107%;margin-left: -14px;\"> <p>"+
+                        unit_body+
+                        " </p> </div> "
+                    }
+                }
+                regulation = "R"+regulation;
+                branch_name = getCookie("branch_name");
+                if(url_page == "mobile_video_view"){
+                    subject_details_title_down.innerHTML = ""+university_name+"&nbsp; &gt;&gt; &nbsp; "+regulation+"&nbsp; &gt;&gt; &nbsp; "+getCookie("branch_name")+"&nbsp; &gt;&gt; &nbsp; "+getCookie("year_name")+"&nbsp; &gt;&gt; &nbsp; "+subject_name+"";
+                }else{
+                    subject_details_title_down.innerHTML = "<p dir=\"auto\" itemprop=\"description\"> "+university_name+"&nbsp; &gt;&gt; &nbsp; "+regulation+" &nbsp; &gt;&gt; &nbsp; "+branch_name+" &nbsp; &gt;&gt; &nbsp; Semester-"+semester_id+" &nbsp; &gt;&gt; &nbsp; "+subject_name+" </p>";
+                }
+                var flag_to_send = 4 + parseInt(semester_id_url);
+                if(purchase_status == "false"){
+                    if(url_page == "mobile_video_view"){
+                        notes_pdf.innerHTML = "<style>.watch-video-show-more.desc.pt_mn_wtch_rdmre{display:none!important;}</style><div class=\"col-md-12\" style=\"padding-top: 8px;\"> <h1 style=\"font-family: Retina,Arial,Helvetica,sans-serif;font-size: 14px;line-height: 25px;font-weight: 700;color: rgb(83 82 82 / 80%);\">To Get Complete Notes and video Lessons Purchase complete "+subject_name+" Course For Just &#x20B9;"+discounted_price+" <strike style=\"font-size:0.7em;\">"+price+"</strike></h1> <button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"margin: 9px;background: #216fbd;box-shadow: none;padding: 9px; width: 90%;color: white;font-size: 11px;border: 0px;font-family: Retina,Arial,Helvetica,sans-serif;font-weight: 800;\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',4,this)\">Buy Now: &#x20B9;"+discounted_price+"</button><br> <button class=\"btn btn-success\" id=\"semester_button\" type=\"submit\" style=\"margin: 9px;background: #216fbd;box-shadow: none;padding: 9px; width: 90%;color: white;font-size: 11px;border: 0px;font-family: Retina,Arial,Helvetica,sans-serif;font-weight: 800;\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"','"+flag_to_send+"',this)\">Buy Complete Semester: &#x20B9; 5000</button> </div>";
+
+                    }else{
+                        notes_pdf.innerHTML = "<style>.watch-video-show-more.desc.pt_mn_wtch_rdmre{display:none}</style> <h1 style=\"font-family: Retina,Arial,Helvetica,sans-serif;font-size: 14px;line-height: 25px;font-weight: 700;color: rgb(83 82 82 / 80%);\">To Get Complete Notes and video Lessons Purchase complete "+subject_name+" Course For Just &#x20B9;"+discounted_price+" <strike style=\"font-size:0.7em;\">"+price+"</strike></h1> <button class=\"btn btn-success\" id=\"add_to_cart_btn\" type=\"submit\" style=\"margin: 9px;background: #216fbd;box-shadow: none;padding: 9px; width: 40%;color: white;font-size: 11px;border: 0px;font-family: Retina,Arial,Helvetica,sans-serif;font-weight: 800;\" name=\"add_to_cart\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',4,this)\">Buy Now: &#x20B9;"+discounted_price+"</button><button class=\"btn btn-success\" id=\"semester_button\" type=\"submit\" style=\"margin: 9px;background: #216fbd;box-shadow: none;padding: 9px; width: 40%;color: white;font-size: 11px;border: 0px;font-family: Retina,Arial,Helvetica,sans-serif;font-weight: 800;\" name=\"add_to_cart\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"','"+flag_to_send+"',this)\">Buy Complete Semester: &#x20B9; 5000</button>";
+                    }
+                }
+            }else if($cmdFrom == 10){
+
+                dataForSearch += '{\"responseData\": {\"results\" : [{\"url\": \"nv pettoko\",\"titleNoFormatting\": \"'+subject_name+'\",\"content\": \"'+subject_description+'\"},]}}';
+            }else{
+                var link = "";
+                var display_cart = "";
+                var rupee_symbol = "";
+                var coming_soon_text = "";
+                var buy_now_btn_style = "";
+                var subjectmodelheight = "";
+                var price_content = "";
+                if(flag != 2){
+                    discounted_price = "Coming Soon";
+                    link = "?url=coming_soon";
+                    display_cart = "none";
+                    coming_soon_text = "Coming Soon";
+                    buy_now_btn_style = "none";
+                    subjectmodelheight = "";
+                    price_content = "<span style='color:#eb8a2f'>" + rupee_symbol + discounted_price + "</span>";
+
+                }else{
+                    link = "?url=video_view&subject_id="+subject_id+"&semester_id="+$subsem;
+                    rupee_symbol = "&#x20b9;";
+                    price_content = "<strike><span style='color:#eb8a2f'>" + rupee_symbol + discounted_price + "</span></strike><span style='color:#00aeef'> Free(upto "+getCookie("days_left")+" Days)</span>";
+                }
+
+                var cart_id = subject_id+"_1";
+                var button_id_buynow = subject_id+"_50";
+                var wishlist_id = subject_id+"_2";
+                var flag_to_send = 4 + parseInt($subsem);
+                // var buy_now_display = "block";
+                // if(getCookie("user_id") == "139"){
+                //     buy_now_display = "none";
+                // }
+
+                if(screen.width>699) {
+
+                    div_to_append.innerHTML += "<style> .loading{display:none!important;} " + "#" + cart_id + "{display: " + display_cart + "}#" + button_id_buynow + "{display:" + buy_now_btn_style + "}.coming_soon_text{font-weight:bold;text-align: center;margin: auto}</style><div class=\"item hover-container desktop_view \" id=\"subject_popup"+subject_id+"\" onClick=\"subjectPopup(this.id)\" style=\"padding-bottom: 40px;max-width: 280.2px!important;\"> <div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"> <div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div> <div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"><div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"> <img alt=\"\" width=\"240\" height=\"135\" class=\"course-card--course-image--2sjYP browse-course-card--image--35hYN\" src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/" + subject_photo + "\"> </div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\"> <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">" + subject_name + "</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">" + single_line_content + "</div> <div class=\"course-card--row--1OMjg\" style='display:"+buy_now_btn_style+"'> <span class=\"star-rating--star-wrapper--2eczq\"> <span class=\"udlite-sr-only\">Rating: 4.5 out of 5</span><span class=\"udlite-heading-sm star-rating--rating-number--3lVe8\" aria-hidden=\"true\" data-purpose=\"rating-number\">4.5</span> <span class=\"checked_star fa fa-star\"></span><span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star-0\"></span> </span> <span aria-label=\"139919 reviews\" class=\"udlite-text-xs course-card--reviews-text--12UpL\">(519)</span> </div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> <div class=\"price-text--price-part--Tu6MH course-card--discount-price--3TaBk udlite-heading-md\" data-purpose=\"course-price-text\"><span class=\"udlite-sr-only\">Current price</span><span>"+price_content+"</span></div> <span style=\"position: absolute;right: 0;color: #c5c5c5;z-index:9999999;\"><button style=\"border: none;background: none;display: none\" type=\"button\" class=\"wishlist-btn \" title=\"Add to Cart\"  id=\"21\" tabindex=\"0\"><i class=\"fa fa-shopping-cart\" id=\"" + cart_id + "\" onclick=\"userBasket('" + subject_id + "','" + subject_name + "','" + price + "','" + discounted_price + "','" + subject_photo + "','" + university_id + "','" + university_name + "','" + regulation + "','" + branch_id + "','" + semester_id + "',1,this)\"></i></button> <button style=\"border: none;padding-left:10px;background: none;display: none\" type=\"button\" class=\"wishlist-btn \" title=\"Add to wishlist\"  id=\"21\" tabindex=\"0\"><i class=\"fa fa-heart\" id=\"" + wishlist_id + "\" onclick=\"userBasket('" + subject_id + "','" + subject_name + "','" + price + "','" + discounted_price + "','" + subject_photo + "','" + university_id + "','" + university_name + "','" + regulation + "','" + branch_id + "','" + semester_id + "',2,this)\"></i></button></span></div> <div class=\"udlite-badge udlite-heading-xs udlite-badge-bestseller \" style='display:"+buy_now_btn_style+"'>Bestseller</div> </div> </div> </div> </div> </div> </div> </div> </div>";
+                    div_to_append_popup.innerHTML +="<div class=\"subject-wrapper \" id=\"_subject_popup"+subject_id+"\" onclick=\"this.classList.remove('open');\"><div class=\"subjectmodal\" style='"+subjectmodelheight+"'><div class=\"subject-close\" id=\"__subject_popup"+subject_id+"\" onClick=\"subjectPopupClose(this.id)\" ></div><div class=\"clear\"></div><div class=\"content\"><aside class=\"wwwhover-popup\" style='transition: all 0.65s cubic-bezier(0.84, -0.18, 0.31, 1.26);'> <div class=\"course-popover-content\"> <div class=\"course-title\"> <a  tabindex=\"0\">" + subject_name + "</a> </div> <div class=\"last-updated\" style='display:"+buy_now_btn_style+"'>Last update " + date + "</div> <div class=\"course-meta\" style=\"color: #f6892a;display: "+buy_now_btn_style+"\"> <span class=\"\"><i class=\"fa fa-play-circle\" aria-hidden=\"true\"></i>  </span> <span class=\"\"><i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> " + subject_time + " Hours </span> <span class=\"\"><i class=\"fa fa-closed-captioning\" aria-hidden=\"true\"></i></span> </div> <div class=\"course-subtitle\">" + subject_description + "</div> <div class=\"what-will-learn\"> <ul> <li style=\"display: block!important; display: -webkit-box!important; -webkit-line-clamp: 3; -moz-line-clamp: 3; -ms-line-clamp: 3; -o-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; -moz-box-orient: vertical; -ms-box-orient: vertical; -o-box-orient: vertical; box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; visibility: visible; font-size: 15px; line-height: 1.53; letter-spacing: -.2px; color: #686f7a; padding-top: 10px;\"><i class=\"fa fa-check\" aria-hidden=\"true\" style=\"color: #828282; padding-right: 10px; font-size: 14px; font-weight: 100;\"></i>" + subject_points + "</li> </ul> <h5 style='display:"+buy_now_btn_style+"'><b style=\"height: unset;\"><strike>Price "+rupee_symbol+" "+discounted_price+"</strike><span style='color:#00aeef'> Free(upto "+getCookie("days_left")+" Days)</span></b></h5></div><div class=\"popover-btns\" style=\"padding-right: 0px;\"><span class='coming_soon_text' style='color:#eb8a2f'>" + coming_soon_text + "</span><button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\"  tabindex=\"0\" style=\"color: #fff; background-color: #f6892a; border-color: #f6892a; padding: 11px 12px; font-size: 15px;border-radius: 2px;width:47%;margin:2px; line-height: 1.35135; font-weight: 600;display: none\" id =\"" + button_id_buynow + "\" onclick=\"userBasket('" + subject_id + "','" + subject_name + "','" + price + "','" + discounted_price + "','" + subject_photo + "','" + university_id + "','" + university_name + "','" + regulation + "','" + branch_id + "','" + semester_id + "',4,this)\"> Buy Now </button><a href=\"" + link + "\" style='display:"+buy_now_btn_style+"'><button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\"  tabindex=\"0\" style=\"color: #fff;width:90%;margin:2px; background-color: #f6892a; border-color: #f6892a; padding: 11px 12px; font-size: 15px;border-radius: 2px; line-height: 1.35135; font-weight: 600;\"> Watch Full Video For Free </button></a><br><br><button type=\"button\" class=\"btn add-to-cart-btn big-cart-button-21\" id=\"semester_button\"  tabindex=\"0\" style=\"color: #fff; background-color: #00aeef; border-color: #00aeef; padding: 11px 12px; font-size: 15px; border-radius: 2px; line-height: 1.35135; font-weight: 600;display: none;\" onclick=\"userBasket('" + subject_id + "','" + subject_name + "','" + price + "','" + discounted_price + "','" + subject_photo + "','" + university_id + "','" + university_name + "','" + regulation + "','" + branch_id + "','" + semester_id + "'," + flag_to_send + ",this)\"> Buy Complete Semester "+rupee_symbol+" 5000 </button></div></div></aside></div></div></div>";
+                }
+                if(flag == 2){
+
+                    link = "?url=mobile_video_view&subject_id="+subject_id+"&semester_id="+$subsem;
+
+                }
+                
+                var top_text = "";
+                var body_text = "<style>.loading{display:none!important;}"+"#"+cart_id+"{display: "+display_cart+"}#"+button_id_buynow+"{display:"+buy_now_btn_style+"}.coming_soon_text{font-weight:bold;text-align: center;margin: auto}</style><li class=\"item123\" style=\"list-style-type: none;\"> <div class=\"col-md-6\"> <div class=\"row\"> <a href=\""+link+"\" style=\"text-decoration: none;\"> <div class=\"col-md-4 col-xs-4 col-sm-4\" style=\"top: -14px;padding-left: 10px;padding-right: 10px;\"><img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/"+subject_photo+"\" style=\"height: 61px;\"></div> <div class=\"col-md-8 col-xs-8 col-sm-8\" style=\"text-align:left;padding-left: 0px; padding-right: 0px;\" > <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\" style=\"font-size: 14px; line-height: 18px;padding-top: 6px;min-height:0px;\">"+subject_name+"</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\" style=\"line-height: 1;font-size: 1.2rem;\">"+subject_description+"</div><div class=\"course-card--row--1OMjg\" style=\"line-height: 3px;display: "+buy_now_btn_style+"\"> <span class=\"star-rating--star-wrapper--2eczq\"> <span class=\"udlite-sr-only\">Rating: 4.5 out of 5</span><span class=\"udlite-heading-sm star-rating--rating-number--3lVe8\" aria-hidden=\"true\" data-purpose=\"rating-number\">4.5</span> <span class=\"checked_star fa fa-star\" style=\"font-size: 13px;\"></span> <span class=\"checked_star fa fa-star\" style=\"font-size: 13px;\"></span><span class=\"checked_star fa fa-star\" style=\"font-size: 13px;\"></span> <span class=\"checked_star fa fa-star\" style=\"font-size: 13px;\"></span> <span class=\"checked_star fa fa-star\" style=\"font-size: 13px;\"></span> <span class=\"checked_star fa fa-star-0\" style=\"font-size: 13px;\"></span> <span aria-label=\"139919 reviews\" class=\"udlite-text-xs course-card--reviews-text--12UpL\">(455)</span> </span></div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> <div class=\" price-text--price-part--Tu6MH course-card--discount-price--3TaBk udlite-heading-md\" data-purpose=\"course-price-text\" style=\"height:26px; \"><span class=\"udlite-sr-only\">Current price</span><span>"+price_content+"</span></a> <span style=\"position: absolute;right: 20px;\"><button style=\"border: none;background: none;display: none;\" type=\"button\" class=\"wishlist-btn \" title=\"Add to Cart\" id=\"21\" tabindex=\"0\"><i class=\"fa fa-shopping-cart\" id=\""+cart_id+"\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',1,this)\"></i></button> <button style=\"border: none;padding-left:10px;background: none;display: none\" type=\"button\" class=\"wishlist-btn \" title=\"Add to wishlist\" id=\"21\" tabindex=\"0\"><i class=\"fa fa-heart\" id=\""+wishlist_id+"\" onclick=\"userBasket('"+subject_id+"','"+subject_name+"','"+price+"','"+discounted_price+"','"+subject_photo+"','"+university_id+"','"+university_name+"','"+regulation+"','"+branch_id+"','"+semester_id+"',2,this)\"></i></button></span> </div> </div> <div class=\"udlite-badge udlite-heading-xs udlite-badge-bestseller \" style=\"font-size: 13px;display:"+buy_now_btn_style+"\">Bestseller</div> </div> </div> </div> <hr style=\" padding:0px; \"> </li>";
+
+                var bottom_text = "";
+                if(i%3 == 0){
+                    top_text = "<div class=\"item mobile_userDataview mobile_view\" style=\"padding-bottom: 40px;width: 241.2px!important;\"><div class=\"col-md-12 col-xs-12 col-sm-12\" style=\"padding-left: 0px; padding-right: 0px;\">";
+                }else if(i%3 == 2){
+                    bottom_text = "</div> </div>";
+                }
+                total_mobile_content += top_text+body_text+bottom_text;
+                console.log($cmdFrom+"--"+i+"--"+(subject.length-1));
+                if($cmdFrom == 1 && i == subject.length-1){
+                    addSubject(2,0,0);
+                }
+                if(i == subject.length-1){
+                    if(screen.width<699){
+                        div_to_append.innerHTML += total_mobile_content;
+                    }
+                }
+
+            }
+
+    	        if($subsem == 5 || $subsem == 6){
+                    var checkout_total_product = document.getElementById('checkout_total_product');
+                    var checkout_total_price_to_show = document.getElementById('checkout_total_price_to_show');
+                    var checkout_promo_value = document.getElementById('checkout_promo_value');
+                    var checkout_grandtotal = document.getElementById('checkout_grandtotal');
+                    var promo_value_to_display = "";
+                    // if(sub_sem_url == 5 || sub_sem_url == 6){
+                        total_amount_to_display = "5000";
+                        promo_value_to_display = parseInt(total_amount_to_display)-5000;
+                    //     alert(sub_sem_url + "sss");
+                    // }else{
+                    //     alert(sub_sem_url);
+                    // }
+
+
+                    checkout_total_product.innerHTML = num_sub;
+                    checkout_total_price_to_show.innerHTML = '&#8377;'+total_amount_to_display;
+                    checkout_promo_value.innerHTML = '&#8377;' + promo_value_to_display;
+                    checkout_grandtotal.innerHTML = '&#8377;'+total_amount_to_display;
+                }else if($cmdFrom == 10){
+                        // alert(dataForSearch);
+                    }
+        }
+
+
+        if($subject_id != 0){
+            }else if($cmdFrom == 10){
+            }else if($subsem == 1){
+            }else{
+            ResCarouselSize();
+            addUserBasketStyle(1);
+        }
+    }
+
+    function addUserBasketStyle($flag) {
+        let tx = db.transaction(['user_basket'], 'readonly');
+        let store = tx.objectStore('user_basket');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+
+        let req = store.openCursor();
+        let cart_count = 0;
+        let allsub = [];
+        let allwish = [];
+
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                var key = "'"+cursor.key+"'";
+                console.log(key+" -- key");
+                if($flag == 1){
+                    var cart_style_div = document.getElementById(cursor.key);
+                    cart_style_div.classList.add("active123");
+                }
+                if((cursor.key).slice(-1) == "1"){
+                    console.log(cursor.key.slice(-1)+"sliceeee1111");
+                    allsub.push(cursor.key);
+                }else if((cursor.key).slice(-1) == "2"){
+                    console.log(cursor.key.slice(-1)+"sliceeee");
+                    allwish.push(cursor.key);
+                }
+                cursor.continue();
+            } else {
+                console.log(allsub.length+"sliceeee222222222");
+                var cart_count_div = document.getElementById('cart_number');
+                cart_count_div.innerHTML = allsub.length;
+                if(allsub.length == 0){
+                    cart_count_div.style.display = 'none';
+                }
+                var wishlist_count_div = document.getElementById('wishlist_number');
+                wishlist_count_div.innerHTML = allwish.length;
+                if(allwish.length == 0){
+                    wishlist_count_div.style.display = 'none';
+                }
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function insertVideo($result){
+        console.log($result);
+        var result = $result;
+        var notes = [];
+        var subject_id = "";
+        var data = result.data;
+        var key = data[0].subject_id;
+        let tx = db.transaction(['video'], 'readwrite');
+        let store = tx.objectStore('video');
+        var each_subject = JSON.stringify(data);
+        console.log('stored note!'+key+each_subject);
+        store.put(each_subject,key);
+        tx.oncomplete = function() {
+            addVideos();
+        }
+
+        tx.onerror = function(event) {
+            alert('error storing note ' + event.target.errorCode);
+        }
+
+
+        // Put the sticky note into the object store
+
+        // data = result.data
+        // var data_length = data.length
+        // for (i=0;i<data_length;i++) {
+        //     var datentime = data[i].datentime;//decode json
+        //     var full_video = data[i].full_video;//decode json
+        //     var part_num = data[i].part_num;//decode json
+        //     subject_id = data[i].subject_id;//decode json
+        //     var tags = data[i].tags;//decode json
+        //     var trail_video = data[i].trail_video;//decode json
+        //     var unit_num = data[i].unit_num;//decode json
+        //     var video_active = data[i].video_active;//decode json
+        //     var video_description = data[i].video_description;//decode json
+        //     var video_file = data[i].video_file;//decode json
+        //     var video_id = data[i].video_id;//decode json
+        //     var video_name = data[i].video_name;//decode json
+        //     var video_photo = data[i].video_photo;//decode json
+        //     var view_count = data[i].view_count;//decode json
+        //
+        //     let tx = db.transaction(['video'], 'readwrite');
+        //     let store = tx.objectStore('video');
+        //     let note = {datentime:datentime, full_video:full_video, part_num:part_num, subject_id:subject_id, tags:tags, trail_video:trail_video, unit_num:unit_num, video_active:video_active, video_description:video_description,video_file:video_file,video_id:video_id, video_name:video_name, video_photo:video_photo, view_count:view_count};
+        //     notes.push(note);
+        //
+        //     // Wait for the database transaction to complete
+        //     tx.oncomplete = function() {
+        //         let key = subject_id;
+        //
+        //
+        //         // if ($subCmd == 1) {
+        //         //     addSubject(1,0,0);
+        //         //     fetchSubject(2);
+        //         // } else if($subCmd == 2) {
+        //         //     // insert_version(result);
+        //         //     // console.log("adding in else condition");
+        //         //     addSubject(2,0,0);
+        //         //     // deleteSubjects();
+        //         // }
+        //         var each_subject = JSON.stringify(result);
+        //         console.log('stored note!'+subject_id+each_subject);
+        //         store.put(each_subject,key);
+        //         // addFirstVideo();
+        //     }
+        //
+        //     tx.onerror = function(event) {
+        //         alert('error storing note ' + event.target.errorCode);
+        //     }
+        //
+        // }
+    }
+
+    function addVideos(){
+        let url_str = window.location.href;
+        let window_url = new URL(url_str);
+        let search_params = window_url.searchParams;
+        let subject_id = search_params.get('subject_id');
+        let video_id = search_params.get('video_id');
+        let unit_id = search_params.get('unit_id');
+        console.log("add video topics");
+        var div_to_append = document.getElementById("unit_wise_videos");
+
+        let tx = db.transaction(['video'], 'readonly');
+        let store = tx.objectStore('video');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+        var keyRangeValue = IDBKeyRange.only(subject_id);
+
+        let req = store.openCursor(keyRangeValue);
+        let allvideos = [];
+
+        req.onsuccess = function(event) {
+            // The result of req.onsuccess is an IDBCursor
+            let cursor = event.target.result;
+            if (cursor != null) {
+              // If the cursor isn't null, we got an IndexedDB item.
+              // Add it to the note array and have the cursor continue!
+                console.log(cursor.value);
+              allvideos.push(cursor.value);
+              cursor.continue();
+            } else {
+              // If we have a null cursor, it means we've gotten
+              // all the items in the store, so display the subject we got
+              // displaysubject(allsubject);
+                displayVideos(allvideos);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayVideos(videos){
+        let url_str = window.location.href;
+        let window_url = new URL(url_str);
+        let search_params = window_url.searchParams;
+        let subject_id_url = search_params.get('subject_id');
+        let video_id_url = search_params.get('video_id');
+        let unit_id_url = search_params.get('unit_id');
+        let semester_id = search_params.get('semester_id');
+
+        if(videos.length == 0){
+            fetchVideos(subject_id_url)
+            return;
+        }
+
+
+        var each_videos = videos[0];
+        var videoJsonObj = JSON.parse(each_videos);
+
+        var video_main_details = document.getElementById("video_main_details");
+        var iframe_video = document.getElementById("iframe_video");
+
+        var div_to_append = document.getElementById("unit_wise_videos");
+        // var purchase_status = getCookie("purchase_status");
+        var purchase_status = "true";
+        console.log("purchase status:"+purchase_status);
+
+        for (let i = 0; i < videoJsonObj.length; i++) {
+            var row = videoJsonObj[i];
+            console.log("what we got"+videoJsonObj.length);
+            console.log(row);
+
+            var div_to_append_mobile = "";
+
+            var datentime = row['datentime'];//decode json
+            var part_num = row['part_num'];//decode json
+            var subject_id = row['subject_id'];//decode json
+            var tags = row['tags'];//decode json
+
+            var unit_num = row['unit_num'];//decode json
+            var video_active = row['video_active'];//decode json
+            var video_description = row['video_description'];//decode json
+            var video_file = row['video_file'];//decode json
+            var video_id = row['video_id'];//decode json
+            var video_name = row['video_name'];//decode json
+            var video_photo = row['video_photo'];//decode json
+            var view_count = row['video_priority'];//decode json
+            var trail_video_raw = row['trail_video'];//decode json
+            var trail_video = trail_video_raw.substr(trail_video_raw.length-9);
+            var full_video_raw = row['full_video'];//decode json
+            var full_video = full_video_raw.substr(full_video_raw.length-9);
+
+            if((part_num == 1 && unit_num == 1 && (typeof video_id_url === "undefined" || video_id_url == null || video_id_url == "" || video_id_url == "null")) || video_id_url == video_id || (unit_id_url == unit_num && (typeof video_id_url === "undefined" || video_id_url == null || video_id_url == "" || video_id_url == "null"))){
+                var video_url
+                if(purchase_status == "false"){
+                    video_url = trail_video;
+                }else{
+                    video_url = full_video;
+                }
+
+
+                if(url_page == "mobile_video_view"){
+                    video_main_details.innerHTML = "<h1 class=\"text_style1\">"+video_name+"</h1> <p dir=\"auto\" itemprop=\"description\" style=\"font-size: 10px;font-weight: bold;\" id=\"subject_details_title_down\"> </p> <div class=\"col-md-12\" id=\"top_buynow_button\"> </div>";
+                    iframe_video.innerHTML = "<div class=\"embed-container\" > <iframe src=\"https://player.vimeo.com/video/"+video_url+"?autoplay=1&muted=1&quality=360p\" frameborder=\"0\" webkitallowfullscreen=\"\" mozallowfullscreen=\"\" allowfullscreen=\"\" width=\"100%\"></iframe> </div>";
+                }else{
+                    video_main_details.innerHTML = "<div class=\"video-title pt_video_info\"> <input type=\"hidden\" value=\"35943\" id=\"video-id\"> <div class=\"video-big-title\"> <h1 itemprop=\"title\" style=\"text-transform:capitalize;\">"+video_name+" </h1> </div>  <div class=\"video-published\"> Published on "+datentime+" </div> <div class=\"watch-video-description\" id=\"subject_details_title_down\"> <!--<span class=\"post-views-label\">Rating</span>--> </div> <div> <style> .checked_star { color: orange; } </style> <h7 style=\"color: #be5a0e;font-weight:600;font-size: 17px;\">5</h7>&nbsp;<span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> <span class=\"checked_star fa fa-star\"></span> &nbsp;  </div> <div class=\"watch-video-show-more desc pt_mn_wtch_rdmre\">Note: For Better view of the pdf file Adjust it With Below Options & if you see a blank pdf file please click on auto adjust or adjust height/width</div> <hr> <span id=\"pdf_file\"></span> <hr> <div class=\"player-video\" style=\"margin: auto !important; float:unset;text-align:center;\"> <div style=\"padding-top: 28px;\" id=\"notes_pdf\"> </div> </div> </div>";
+                    iframe_video.innerHTML = "<div class=\"video-player pt_video_player \" id=\"post_live_video_35943\"><div class='embed-container' ><iframe src=\"https://player.vimeo.com/video/"+video_url+"?autoplay=1&muted=1&quality=360p\" frameborder=\"0\" webkitallowfullscreen=\"\" mozallowfullscreen=\"\" allowfullscreen=\"\" width=\"100%\"></iframe></div></div>";
+                }
+
+
+
+                addSubject(0,0,semester_id+subject_id);
+                if(purchase_status == "true"){
+                    var pdf_file = document.getElementById("pdf_file");
+                    pdf_file.innerHTML = "<iframe src=\"https://docs.google.com/viewer?url=https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/video_file/"+video_file+"&embedded=true\" frameborder=\"0\" height=\"1000px\" width=\"100%\"></iframe>";
+
+                    // pdf_file.innerHTML = "<div class=\"pdf-container\" data-href=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/video_file/"+video_file+"\"></div>";
+                    // if(url_page != "mobile_video_view") {
+                    //     pdfDisplay();
+                    // }
+                }
+            }
+            console.log("unit_id_url="+unit_id_url+"unit_num="+unit_num+"semester_id="+semester_id);
+            if(typeof unit_id_url === "undefined" || unit_id_url == null || unit_id_url == 0 || unit_id_url == "null"){
+                if(url_page == "mobile_video_view"){
+                    var link = "?url=mobile_video_view&video_id="+video_id+"&semester_id="+semester_id+"&subject_id="+subject_id;
+                    div_to_append.innerHTML += "<div class=\"col-md-12\" style=\"padding: 0px;margin: 5px;margin-top: 17px;box-shadow:4px -5px 9px 4px rgba(35,35,35,0.1), 2px 0 2px 0px rgba(10,31,68,.08);\"> <div class=\"row\"> <div style=\"width:35%\"> <a href=\""+link+"\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\" alt=\"\" style=\"width: 100%; border-radius: 3px 0 0 3px;\"> </a> </div> <div style=\"width:55%\"> <a href=\""+link+"\" style=\"text-decoration:none;\"> <p style=\"padding: 10px;color: #232323;font-family: Retina,Arial,Helvetica,sans-serif;font-size: 13px;font-weight: 800;line-height: 1.29; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;\">"+video_name+"</p> </a> </div> </div> </div>";
+                }else{
+                   var link = "?url=video_view&video_id="+video_id+"&unit_id="+unit_id_url+"&semester_id="+semester_id+"&subject_id="+subject_id;
+                    div_to_append.innerHTML += "<div class=\"video-wrapper top-video-wrapper pt_video_side_vids pt_pt_mn_wtch_rltvids\" data-sidebar-video=\"4\"> <div class=\"video-thumb\"> <a href=\""+link+"\" data-load=\"?link1=watch&id=loMH8tyCJFJpt3O\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\" alt=\""+video_name+"\"> <div class=\"play_hover_btn\" > <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-play-circle\"> <circle cx=\"12\" cy=\"12\" r=\"10\"></circle> <polygon points=\"10 8 16 12 10 16 10 8\"></polygon> </svg> </div></a> </div> <div class=\"video-title\" style=\"text-align:center;\"> <a style=\"font-size:13px;\" href=\""+link+"\" data-load=\"?link1=watch&id=loMH8tyCJFJpt3O\" >"+video_name+"</a> </div> <div class=\"vid_pub_info\" style=\"display:none;\"> <a href=\""+link+"\" data-load=\"?link1=timeline&id=deendoughouz\"><span class=\"video-publisher\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\"alt=\""+video_name+"\">..</span></a></div>";
+                }
+
+            }else if(unit_id_url == unit_num){
+                if(url_page == "mobile_video_view"){
+                    var link = "?url=mobile_video_view&video_id="+video_id+"&unit_id="+unit_id_url+"&semester_id="+semester_id+"&subject_id="+subject_id;
+                    div_to_append.innerHTML += "<div class=\"col-md-12\" style=\"padding: 0px;margin: 5px;margin-top: 17px;box-shadow:4px -5px 9px 4px rgba(35,35,35,0.1), 2px 0 2px 0px rgba(10,31,68,.08);\"> <div class=\"row\"> <div style=\"width:35%\"> <a href=\""+link+"\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\" alt=\"\" style=\"width: 100%; border-radius: 3px 0 0 3px;\"> </a> </div> <div style=\"width:55%\"> <a href=\""+link+"\" style=\"text-decoration:none;\"> <p style=\"padding: 10px;color: #232323;font-family: Retina,Arial,Helvetica,sans-serif;font-size: 13px;font-weight: 800;line-height: 1.29; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;\">"+video_name+"</p> </a> </div> </div> </div>";
+                }else{
+                    var link = "?url=video_view&video_id="+video_id+"&semester_id="+semester_id+"&subject_id="+subject_id+"&unit_id="+unit_id_url;
+                    div_to_append.innerHTML += "<div class=\"video-wrapper top-video-wrapper pt_video_side_vids pt_pt_mn_wtch_rltvids\" data-sidebar-video=\"4\"> <div class=\"video-thumb\"> <a href=\""+link+"\" data-load=\"?link1=watch&id=loMH8tyCJFJpt3O\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\" alt=\""+video_name+"\"> <div class=\"play_hover_btn\" > <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-play-circle\"> <circle cx=\"12\" cy=\"12\" r=\"10\"></circle> <polygon points=\"10 8 16 12 10 16 10 8\"></polygon> </svg> </div></a> </div> <div class=\"video-title\" style=\"text-align:center;\"> <a style=\"font-size:13px;\" href=\""+link+"\" data-load=\"?link1=watch&id=loMH8tyCJFJpt3O\" >"+video_name+"</a> </div> <div class=\"vid_pub_info\" style=\"display:none;\"> <a href=\""+link+"\" data-load=\"?link1=timeline&id=deendoughouz\"><span class=\"video-publisher\"> <img src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/"+video_photo+"\"alt=\""+video_name+"\">..</span></a> </div>";
+                }
+
+            }
+        }
+    }
+
+    function fetchVideos($subject_id){
+        console.log($subject_id+"subject_id");//undefined
+        var data = {
+            cmd:105,
+            subject_id:$subject_id,
+        }
+        // console.log($subject_id);
+        sendRequest(data,105,0,0)
+    }
+
+    function logout1() {
+        // var cookies = document.cookie.split(";");
+        //
+        // for (var i = 0; i < cookies.length; i++) {
+        //     var cookie = cookies[i];
+        //     var eqPos = cookie.indexOf("=");
+        //     var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        //     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        // }
+        // sessionStorage.clear();
+        // localStorage.clear();
+        // indexedDB.databases().then(dbs => {
+        //   dbs.forEach(db => indexedDB.deleteDatabase(db.name))
+        // });
+        //
+        // // Cookies.remove("branch_id");
+        // // Cookies.remove("semester_id");
+        // // Cookies.remove("version");
+        // document.cookie = "branch_id='';expires=Thu, 01-Jan-1970 00 :00:01 GMT;path=/";
+        // document.cookie = "semester_id='';expires=Thu, 01-Jan-1970 00 :00:01 GMT;path=/";
+        // document.cookie = "version='';expires=Thu, 01-Jan-1970 00 :00:01 GMT;path=/";
+        // window.location.href = '?url=index';
+    }
+
+    function userData(){
+    	// console.log("userData-222222222222222222");
+        //
+        // let tx = db.transaction(['users'], 'readonly');
+        // let store = tx.objectStore('users');
+        // // Create a cursor request to get all items in the store, which
+        // // we collect in the allsubject array
+        // let req = store.openCursor();
+        // let allusers = [];
+        // var countRequest = store.count();
+        // countRequest.onsuccess = function() {
+        //   console.log(countRequest.result);
+        //   if(countRequest.result>0){
+        //         actionForUserData(true);
+        //     }else{
+        //         actionForUserData(false);
+        //     }
+        // }
+        //
+        // req.onsuccess = function(event) {
+        //     // // The result of req.onsuccess is an IDBCursor
+        //     // let cursor = event.target.result;
+        //     // if (cursor != null) {
+        //     //   // If the cursor isn't null, we got an IndexedDB item.
+        //     //   // Add it to the note array and have the cursor continue!
+        //     //   allusers.push(cursor.value);
+        //     //   cursor.continue();
+        //     // } else {
+        //     //   // If we have a null cursor, it means we've gotten
+        //     //   // all the items in the store, so display the subject we got
+        //     //   displaysubject(allsubject);
+        //     // }
+        //
+        // }
+        // req.onerror = function(event) {
+        //     // alert('error in cursor request ' + event.target.errorCode);
+        //     actionForUserData(false);
+        // }
+    }
+
+    function actionForUserData($isLoggedIn){
+    	console.log("actionForUserData-333333333333333333333--");
+
+    	// if(!$isLoggedIn){//not logged in
+    	// 	document.getElementById('usernotloggedin').style.display = 'block';
+    	// 	document.getElementById('userloggedin').style.display = 'none';
+        //
+    	// }else{
+    	// 	document.getElementById('userloggedin').style.display = 'block';
+    	// 	document.getElementById('usernotloggedin').style.display = 'none';
+    	// }
+    }
+
+    function createVersion(result){
+    	// console.log("createVersion-911111111111111111111111");
+        var version = result;
+        document.cookie = "version" + "=" + version + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+        // console.log(getCookie("version")+"###############")
+
+        fetchSubject(1);
+    }
+
+    function getVersion(){
+        console.log("getVersion-8888888888888888888888");
+
+        try {
+            let tx = db.transaction(['users'], 'readonly');
+            let store = tx.objectStore('users');
+            // Create a cursor request to get all items in the store, which
+            // we collect in the allsubject array
+            let req = store.openCursor();
+            // let dbversion = [];
+
+            req.onsuccess = function(event) {
+                var dbversionn;
+                // The result of req.onsuccess is an IDBCursor
+                let cursor = event.target.result;
+                if (cursor != null) {
+                  // If the cursor isn't null, we got an IndexedDB item.
+                  // Add it to the note array and have the cursor continue!
+                  // allusers.push(cursor.value);
+                    console.log("cursor value-"+cursor.value);
+                  dbversionn = cursor.value;
+                  cursor.continue();
+                } else {
+                  // If we have a null cursor, it means we've gotten
+                  // all the items in the store, so display the subject we got
+                    console.log("cursor value11111-");
+                    dbversionn = -3;
+                    console.log("db version-"+dbversionn);
+                    return dbversionn;
+                }
+                if(store.count()==0){
+                    console.log("cursor value22222222-");
+                    dbversionn = 0;
+                    console.log("db version-"+dbversionn);
+                    return dbversion;
+                }
+            }
+            req.onerror = function(event) {
+                var dbversionn;
+                // alert('error in cursor request ' + event.target.errorCode);
+                dbversionn = -2;
+                console.log("cursor value333333333-");
+                console.log("db version-"+dbversionn);
+                    return dbversionn;
+            }
+        }catch (e) {
+            console.log("db version-"+window.dbversion);
+            return 0;
+        }
+
+        console.log("db version-"+window.dbversion);
+        return 0;
+    }
+
+    function insertUserDetails(user_id,email,user_name,profile_pic,phone){
+
+        // Start a database transaction and get the subject object store
+        let tx = db.transaction(['users'], 'readwrite');
+        let store = tx.objectStore('users');
+        // Put the sticky note into the object store
+        let note = {user_id: user_id,email:email, user_name: user_name,profile_pic:profile_pic,phone:phone,branch_id:getCookie("branch_id"),year_id:getCookie("semester_id")};
+        store.add(note);
+        // Wait for the database transaction to complete
+        tx.oncomplete = function() {
+            redirectToIndexFromHomepage();
+        }
+        tx.onerror = function(event) {
+            alert('error storing note ' + event.target.errorCode);
+        }
+    }
+
+    function redirectToIndexFromHomepage() {
+        console.log('stored note!');
+        // userData();
+        if(getCookie("sid") == "BTECH"){
+            if(url_page != "index"){
+                window.location = "?url=index";
+            }
+        }else{
+            window.location = "?url=coming_soon";
+        }
+    }
+
+
+    function onSignIn(googleUser) {
+        console.log("*****************2");
+        // alert("ds2");
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        // console.log('Full Name: ' + profile.getName());
+        // console.log('Given Name: ' + profile.getGivenName());
+        // console.log('Family Name: ' + profile.getFamilyName());
+        // console.log("Image URL: " + profile.getImageUrl());
+        // console.log("Email: " + profile.getEmail());
+        // alert("ID: " + profile.getId())
+        // alert('Full Name: ' + profile.getName())
+        // alert('Given Name: ' + profile.getGivenName())
+        // alert("Image URL: " + profile.getImageUrl())
+        // closeLogin();
+        // document.getElementById('myLoginpage').style.display='none';
+
+
+        // document.getElementById('modalOverlay').style.display='none';
+
+        document.cookie = "user_name=" + profile.getName() + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+        document.cookie = "user_email=" + profile.getEmail() + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+        document.cookie = "user_phone=" + "" + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+        document.cookie = "user_referral=" + "" + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+
+
+
+
+        try {
+            let tx = db.transaction(['users'], 'readonly');
+            let store = tx.objectStore('users');
+            // Create a cursor request to get all items in the store, which
+            // we collect in the allsubject array
+            let req = store.openCursor();
+            let allusers = [];
+            var countRequest = store.count();
+
+            countRequest.onsuccess = function() {
+              console.log(countRequest.result);
+              if(countRequest.result==0){
+                  data = {
+                    cmd:101,
+                    email:profile.getEmail(),
+                    fcm_token:"",
+                    phone:"",
+                    name:profile.getName()
+                }
+                send_data = [];
+                send_data[0] = profile.getEmail();
+                send_data[1] = profile.getName();
+                send_data[2] = profile.getImageUrl();
+                console.log(data+send_data);
+                sendRequest(data,101,send_data,0);
+              }else{
+                  updateCookieWithUserId();
+                   // updateUserId();
+              }
+            }
+        }catch (e) {
+            // updateUserId();
+             updateCookieWithUserId();
+        }
+
+
+
+    }
+
+    function updateCookieWithUserId() {
+        let tx = db.transaction(['users'], 'readonly');
+        let store = tx.objectStore('users');
+        var keyRangeValue;
+        keyRangeValue = IDBKeyRange.only(parseInt(1));
+
+        let req = store.openCursor(keyRangeValue);
+        let allsubject = [];
+
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                console.log(cursor.value);
+              allsubject.push(cursor.value);
+              cursor.continue();
+            } else {
+                if(allsubject.length != 0){
+                    var each_subject = JSON.stringify(allsubject[0]);
+                    var subjectJsonObj = JSON.parse(each_subject);
+                    var row = subjectJsonObj;
+                    var user_id = row['user_id'];
+                    document.cookie = "user_id=" + user_id + "; expires=Thu, 18 Dec 2029 12:00:00 UTC;path=/";
+                    updateUserId();
+                }else{
+                    updateUserId();
+                }
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+
+
+    function addModelVideos($video_id){
+        let tx = db.transaction(['model_papers'], 'readonly');
+        let store = tx.objectStore('model_papers');
+        var keyRangeValue;
+        keyRangeValue = IDBKeyRange.only(parseInt($video_id));
+
+        let req = store.openCursor(keyRangeValue);
+        let allsubject = [];
+
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                console.log(cursor.value);
+              allsubject.push(cursor.value);
+              cursor.continue();
+            } else {
+              // displaysubject(allsubject);
+                displayModelVideos(allsubject);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayModelVideos(allsubject) {
+        var each_subject = JSON.stringify(allsubject[0]);
+        var subjectJsonObj = JSON.parse(each_subject);
+        var row = subjectJsonObj;
+
+        console.log("what we got"+subjectJsonObj.length);
+        console.log(row);
+        var university = row['university'];//decode json
+        var regulation = row['regulation'];//decode json
+        var branch = row['branch'];//decode json
+        var year = row['year'];//decode json
+        var title = row['title'];//decode json
+        var video_link = row['video_link'];//decode json
+        var thumbnail = row['thumbnail'];//decode json
+        var video_file = row['video_file'];//decode json
+        var datentime = row['datentime'];//decode json
+        // var full_video = video_file.substr(video_file.length-9);
+
+
+        // var top_buynow_button = document.getElementById("top_buynow_button");
+        // top_buynow_button.innerHTML = "<style>.next-video,#syllabus_div{display:none;}.nav-trigger.burger.pull-right, .top_icons{display: none!important;}</style><div style=\"background: #4593e3;\" class=\"col-md-12\"><form method=\"POST\" action=\"\" style=\"margin:;text-align:right; ;\" ><input type=\"hidden\" class=\"form-control\" name=\"university_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"semester_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"branch_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"subject_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"regulation\" value=\" \" ><h2 style=\" padding: 0px; text-transform: capitalize; font-size: 15px; line-height: 28px; color: #545454; font-weight: bold;\">Login With Google To get 3 Months Premium Content For Free</h2><div class=\"g-signin2\" data-onsuccess=\"onSignIn\" data-theme=\"dark\"></div> </form> </div>";
+
+        var iframe_video = document.getElementById("iframe_video");
+        iframe_video.innerHTML = "<div class=\"video-player pt_video_player \" id=\"post_live_video_35943\"><div class='embed-container' ><iframe src=\"https://player.vimeo.com/video/"+video_link+"?autoplay=1&muted=1&quality=360p\" frameborder=\"0\" webkitallowfullscreen=\"\" mozallowfullscreen=\"\" allowfullscreen=\"\" width=\"100%\"></iframe></div></div>";
+
+
+        var div_to_append = document.getElementById("unit_wise_videos");
+        div_to_append.innerHTML += "<style>@media (max-width: 760px){#main-container{padding-top: 0px !important;}}.next-video,#syllabus_div,#topic_div{display:none;}.nav-trigger.burger.pull-right, .top_icons{display: none!important;}</style><div style=\"min-height:200px;background:none\"><h2 style=\" padding: 0px; text-transform: capitalize; font-size: 15px; line-height: 28px; color: #545454; font-weight: bold;max-width:80%;margin:auto;color:#216fbd;margin-top:70px;\">Login With Google To get 3 Months Premium Content For Free</h2><button class=\"btn btn-success\" type=\"submit\" style=\"margin: 21px; background: #216fbd; box-shadow: none; font-family: 'Inconsolata', monospace; font-weight: 900;\" onclick='modalStreams(\"BTECH\");openLogin()'>Login</button></div>";
+
+
+        var video_main_details = document.getElementById("video_main_details");
+        video_main_details.innerHTML = "<div class=\"video-title pt_video_info\"> <input type=\"hidden\" value=\"35943\" id=\"video-id\"> <div class=\"video-big-title\"> <h1 itemprop=\"title\" style=\"text-transform:capitalize;\">"+title+" </h1> </div>  <div class=\"video-published\"> Published on "+datentime+" </div><div class=\"watch-video-show-more desc pt_mn_wtch_rdmre\">Note: For Better view of the pdf file Adjust it With Below Options & if you see a blank pdf file please click on auto adjust or adjust height/width</div> <hr> <span id=\"pdf_file_homepage\"></span> <hr> <div class=\"player-video\" style=\"margin: auto !important; float:unset;text-align:center;\"> <div style=\"padding-top: 28px;\" id=\"notes_pdf\"> </div> </div> </div>";
+
+
+         var pdf_file = document.getElementById("pdf_file_homepage");
+        pdf_file.innerHTML = "<iframe src=\"https://docs.google.com/viewer?url=https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/files/"+video_file+"&embedded=true\" frameborder=\"0\" height=\"1000px\" width=\"100%\"></iframe>";
+
+    }
+
+
+
+
+    function addModelPapers(){
+
+        let tx = db.transaction(['model_papers'], 'readonly');
+        let store = tx.objectStore('model_papers');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+
+        let req = store.openCursor();
+        let allvideos = [];
+        let allkeys = [];
+
+        req.onsuccess = function(event) {
+            // The result of req.onsuccess is an IDBCursor
+            let cursor = event.target.result;
+            if (cursor != null) {
+              // If the cursor isn't null, we got an IndexedDB item.
+              // Add it to the note array and have the cursor continue!
+                console.log(cursor.value);
+              allvideos.push(cursor.value);
+              allkeys.push(cursor.key);
+              cursor.continue();
+            } else {
+              // If we have a null cursor, it means we've gotten
+              // all the items in the store, so display the subject we got
+              // displaysubject(allsubject);
+                console.log("model_paper_diuspalyyyyy");
+                displayModelPapers(allvideos,1,allkeys);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayModelPapers(allvideos,cmd,allkeys){
+        console.log("model_paper_diuspaly visitteeeddd");
+        if(allvideos.length == 0){
+            console.log("model_paper_diuspaly videooooooo lenghth");
+            loadModelPapers();
+            return;
+        }else{
+            console.log("model_paper_diuspaly visitteeeddd lengthg"+allvideos.length);
+        }
+
+        var videoJsonObj = allvideos;
+
+        var model_paper_div = document.getElementById("model_paper_div");
+        console.log("model_paper_diuspaly divvvvvvvvv");
+        for (let i = 0; i < videoJsonObj.length; i++) {
+            console.log("model_paper_diuspaly inserttttttttttt");
+            var row = videoJsonObj[i];
+            console.log("what we got"+videoJsonObj.length);
+            console.log(row);
+            var university = row['university'];//decode json
+            var regulation = row['regulation'];//decode json
+            var branch = row['branch'];//decode json
+            var year = row['year'];//decode json
+            var title = row['title'];//decode json
+            var video_link = row['video_link'];//decode json
+            var thumbnail = row['thumbnail'];//decode json
+            var video_file = row['video_file'];//decode json
+            var datentime = row['datentime'];//decode json
+            // var full_video = video_file.substr(video_file.length-9);
+
+            if(cmd == 1){
+                var video_id = allkeys[i];
+                console.log("model_paper_diuspalyyyyy 1111111111");
+                model_paper_div.innerHTML += "<div class=\"item hover-container \" style=\"padding-bottom: 40px;max-width: 280.2px!important;\"> <div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"> <a href=\"?url=video_view&video_id="+video_id+"&category=model_paper\"><div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div> <div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"> <div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"> <img alt=\"\" width=\"240\" height=\"135\" class=\"course-card--course-image--2sjYP browse-course-card--image--35hYN\" src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/images/" + thumbnail + "\"> </div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\"> <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">" + title + "</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">" + university + " - " + regulation + " - " + branch + "</div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> </div> </div> </div> </div> </div> </div> </div></a></div></div>";
+
+            }
+        }
+        ResCarouselSize();
+        addTopLessons();
+    }
+
+    function insertModelPapers($result){
+        console.log("insertSubjects-44444444444444444--"+$result);
+        var result = $result;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+
+        let tx = db.transaction(['model_papers'], 'readwrite');
+        let store = tx.objectStore('model_papers');
+        // Put the sticky note into the object store
+
+        data = result
+        var data_length = data.length
+        for (i=0;i<data_length;i++) {
+            var university = data[i].university;//decode json
+            var regulation = data[i].regulation;//decode json
+            var branch = data[i].branch;//decode json
+            var year = data[i].year;//decode json
+            var title = data[i].title;//decode json
+            var video_link = data[i].video_link;//decode json
+            video_link = video_link.substr(video_link.length-9)
+            var video_file = data[i].video_file;//decode json
+            var datentime = data[i].datentime;//decode json
+            var thumbnail = data[i].thumbnail;//decode json
+
+            let note = {university:university,regulation:regulation,branch:branch,year:year,title:title,video_link:video_link,video_file:video_file,thumbnail:thumbnail,datentime:datentime};
+            store.add(note);
+
+            // Wait for the database transaction to complete
+            tx.oncomplete = function() {
+                addModelPapers();
+            }
+
+            tx.onerror = function(event) {
+                alert('error storing note ' + event.target.errorCode);
+            }
+
+        }
+
+    }
+
+    async function loadModelPapers() {
+        let url = 'https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/model_papers.json';
+        let obj = null;
+
+        try {
+            obj = await (await fetch(url)).json();
+            insertModelPapers(obj[2]['data']);
+
+
+        } catch(e) {
+            console.log('error');
+        }
+
+        // console.log(obj);
+    }
+
+
+
+    function addTopLessonsVideos($video_id){
+        let tx = db.transaction(['top_lessons'], 'readonly');
+        let store = tx.objectStore('top_lessons');
+        var keyRangeValue;
+        keyRangeValue = IDBKeyRange.only(parseInt($video_id));
+
+        let req = store.openCursor(keyRangeValue);
+        let allsubject = [];
+
+        req.onsuccess = function(event) {
+            let cursor = event.target.result;
+            if (cursor != null) {
+                console.log(cursor.value);
+              allsubject.push(cursor.value);
+              cursor.continue();
+            } else {
+              // displaysubject(allsubject);
+                displayTopLessonsVideos(allsubject);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayTopLessonsVideos(allsubject) {
+        var each_subject = JSON.stringify(allsubject[0]);
+        var subjectJsonObj = JSON.parse(each_subject);
+        var row = subjectJsonObj;
+
+        console.log("what we got"+subjectJsonObj.length);
+        console.log(row);
+        var university = row['university'];//decode json
+        var regulation = row['regulation'];//decode json
+        var branch = row['branch'];//decode json
+        var year = row['year'];//decode json
+        var title = row['title'];//decode json
+        var video_link = row['video_link'];//decode json
+        var thumbnail = row['thumbnail'];//decode json
+        var subject_name = row['subject_name'];//decode json
+        var video_file = row['video_file'];//decode json
+        var datentime = row['datentime'];//decode json
+        // var full_video = video_file.substr(video_file.length-9);
+
+
+        // var top_buynow_button = document.getElementById("top_buynow_button");
+        // top_buynow_button.innerHTML = "<style>.next-video,#syllabus_div{display:none;}.nav-trigger.burger.pull-right, .top_icons{display: none!important;}</style><div style=\"background: #4593e3;\" class=\"col-md-12\"><form method=\"POST\" action=\"\" style=\"margin:;text-align:right; ;\" ><input type=\"hidden\" class=\"form-control\" name=\"university_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"semester_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"branch_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"subject_id\" value=\" \" > <input type=\"hidden\" class=\"form-control\" name=\"regulation\" value=\" \" ><h2 style=\" padding: 0px; text-transform: capitalize; font-size: 15px; line-height: 28px; color: #545454; font-weight: bold;\">Login With Google To get 3 Months Premium Content For Free</h2><div class=\"g-signin2\" data-onsuccess=\"onSignIn\" data-theme=\"dark\"></div> </form> </div>";
+
+        var iframe_video = document.getElementById("iframe_video");
+        iframe_video.innerHTML = "<div class=\"video-player pt_video_player \" id=\"post_live_video_35943\"><div class='embed-container' ><iframe src=\"https://player.vimeo.com/video/"+video_link+"?autoplay=1&muted=1&quality=360p\" frameborder=\"0\" webkitallowfullscreen=\"\" mozallowfullscreen=\"\" allowfullscreen=\"\" width=\"100%\"></iframe></div></div>";
+
+        var div_to_append = document.getElementById("unit_wise_videos");
+        div_to_append.innerHTML += "<div style=\"min-height:200px;background:none\"><h2 style=\" padding: 0px; text-transform: capitalize; font-size: 15px; line-height: 28px; color: #545454; font-weight: bold;max-width:80%;margin:auto;color:#216fbd;margin-top:70px;\">Login With Google To get 3 Months Premium Content For Free</h2><button class=\"btn btn-success\" type=\"submit\" style=\"margin: 21px; background: #216fbd; box-shadow: none; font-family: 'Inconsolata', monospace; font-weight: 900;\">Login</button></div>";
+
+        var video_main_details = document.getElementById("video_main_details");
+        video_main_details.innerHTML = "<style>@media (max-width: 760px){#main-container{padding-top: 0px !important;}}.next-video,#syllabus_div,#topic_div{display:none;}.nav-trigger.burger.pull-right, .top_icons{display: none!important;}</style><div class=\"video-title pt_video_info\"> <input type=\"hidden\" value=\"35943\" id=\"video-id\"> <div class=\"video-big-title\"> <h1 itemprop=\"title\" style=\"text-transform:capitalize;\">"+title+" </h1> </div>  <div class=\"video-published\"> Published on "+datentime+" </div><div class=\"video-published\"> "+subject_name+" </div><div class=\"watch-video-show-more desc pt_mn_wtch_rdmre\">Note: For Better view of the pdf file Adjust it With Below Options & if you see a blank pdf file please click on auto adjust or adjust height/width</div> <hr> <span id=\"pdf_file_homepage\"></span> <hr> <div class=\"player-video\" style=\"margin: auto !important; float:unset;text-align:center;\"> <div style=\"padding-top: 28px;\" id=\"notes_pdf_homepage\"> </div> </div> </div>";
+
+        var pdf_file = document.getElementById("pdf_file_homepage");
+        pdf_file.innerHTML = "<iframe src=\"https://docs.google.com/viewer?url=https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/files/"+video_file+"&embedded=true\" frameborder=\"0\" height=\"1000px\" width=\"100%\"></iframe>";
+
+    }
+
+
+
+    function addTopLessons(){
+        let tx = db.transaction(['top_lessons'], 'readonly');
+        let store = tx.objectStore('top_lessons');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+
+        let req = store.openCursor();
+        let allvideos = [];
+        let allkeys = [];
+
+        req.onsuccess = function(event) {
+            // The result of req.onsuccess is an IDBCursor
+            let cursor = event.target.result;
+            if (cursor != null) {
+              // If the cursor isn't null, we got an IndexedDB item.
+              // Add it to the note array and have the cursor continue!
+                console.log(cursor.value);
+              allvideos.push(cursor.value);
+              allkeys.push(cursor.key)
+              cursor.continue();
+            } else {
+              // If we have a null cursor, it means we've gotten
+              // all the items in the store, so display the subject we got
+              // displaysubject(allsubject);
+                console.log("model_paper_diuspalyyyyy");
+                displayTopLessons(allvideos,1,allkeys);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayTopLessons(allvideos,cmd,allkeys){
+        console.log("model_paper_diuspaly visitteeeddd");
+        if(allvideos.length == 0){
+            console.log("model_paper_diuspaly videooooooo lenghth");
+            loadTopLessons();
+            return;
+        }else{
+            console.log("model_paper_diuspaly visitteeeddd lengthg"+allvideos.length);
+        }
+
+        var videoJsonObj = allvideos;
+
+        var model_paper_div = document.getElementById("top_lessons_div");
+        console.log("model_paper_diuspaly divvvvvvvvv");
+        for (let i = 0; i < videoJsonObj.length; i++) {
+            console.log("model_paper_diuspaly inserttttttttttt");
+            var row = videoJsonObj[i];
+            console.log("what we got"+videoJsonObj.length);
+            console.log(row);
+            var university = row['university'];//decode json
+            var regulation = row['regulation'];//decode json
+            var branch = row['branch'];//decode json
+            var year = row['year'];//decode json
+            var title = row['title'];//decode json
+            var video_link = row['video_link'];//decode json
+            var thumbnail = row['thumbnail'];//decode json
+            var video_file = row['video_file'];//decode json
+            var subject_name = row['subject_name'];//decode json
+            var datentime = row['datentime'];//decode json
+            // var full_video = video_file.substr(video_file.length-9);
+
+            if(cmd == 1){
+                var video_id = allkeys[i];
+                console.log("model_paper_diuspalyyyyy 1111111111");
+                model_paper_div.innerHTML += "<div class=\"item hover-container \" style=\"padding-bottom: 40px;max-width: 280.2px!important;\"> <div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"><a href=\"?url=video_view&video_id="+video_id+"&category=top_lessons\"> <div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div> <div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"> <div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"> <img alt=\"\" width=\"240\" height=\"135\" class=\"course-card--course-image--2sjYP browse-course-card--image--35hYN\" src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/images/" + thumbnail + "\"> </div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\"> <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">" + title + "</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">" + subject_name + "</div><div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">" + university + " - " + regulation + " - " + branch + "- " + year + "</div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> </div> </div> </div> </div> </div> </div> </div> </div> </div>  ";
+
+            }
+        }
+        ResCarouselSize();
+        addMaterials();
+    }
+
+    function insertTopLessons($result){
+        console.log("insertSubjects-44444444444444444--"+$result);
+        var result = $result;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+
+        let tx = db.transaction(['top_lessons'], 'readwrite');
+        let store = tx.objectStore('top_lessons');
+        // Put the sticky note into the object store
+
+        data = result
+        var data_length = data.length
+        for (i=0;i<data_length;i++) {
+            var university = data[i].university;//decode json
+            var regulation = data[i].regulation;//decode json
+            var branch = data[i].branch;//decode json
+            var year = data[i].year;//decode json
+            var title = data[i].title;//decode json
+            var video_link = data[i].video_link;//decode json
+            video_link = video_link.substr(video_link.length-9)
+            var video_file = data[i].video_file;//decode json
+            var thumbnail = data[i].thumbnail;//decode json
+            var subject_name = data[i].subject_name;//decode json
+            var datentime = data[i].datentime;//decode json
+
+            let note = {university:university,regulation:regulation,branch:branch,year:year,title:title,video_link:video_link,video_file:video_file,thumbnail:thumbnail,subject_name:subject_name,datentime:datentime};
+            store.add(note);
+
+            // Wait for the database transaction to complete
+            tx.oncomplete = function() {
+                addTopLessons();
+            }
+
+            tx.onerror = function(event) {
+                alert('error storing note ' + event.target.errorCode);
+            }
+
+        }
+
+    }
+
+    async function loadTopLessons() {
+        let url = 'https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/top_lessions.json';
+        let obj = null;
+
+        try {
+            obj = await (await fetch(url)).json();
+            insertTopLessons(obj[2]['data']);
+        } catch(e) {
+            console.log('error');
+        }
+        // console.log(obj);
+    }
+
+
+
+
+    function addMaterials(){
+        let tx = db.transaction(['materials'], 'readonly');
+        let store = tx.objectStore('materials');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+
+        let req = store.openCursor();
+        let allvideos = [];
+        let allkeys = [];
+
+        req.onsuccess = function(event) {
+            // The result of req.onsuccess is an IDBCursor
+            let cursor = event.target.result;
+            if (cursor != null) {
+              // If the cursor isn't null, we got an IndexedDB item.
+              // Add it to the note array and have the cursor continue!
+                console.log(cursor.value);
+              allvideos.push(cursor.value);
+              allkeys.push(cursor.key);
+              cursor.continue();
+            } else {
+              // If we have a null cursor, it means we've gotten
+              // all the items in the store, so display the subject we got
+              // displaysubject(allsubject);
+                console.log("model_paper_diuspalyyyyy");
+                displayMaterials(allvideos,1,allkeys);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayMaterials(allvideos,cmd,allkeys){
+        console.log("model_paper_diuspaly visitteeeddd");
+        if(allvideos.length == 0){
+            console.log("model_paper_diuspaly videooooooo lenghth");
+            loadMaterials();
+            return;
+        }else{
+            console.log("model_paper_diuspaly visitteeeddd lengthg"+allvideos.length);
+        }
+
+        var videoJsonObj = allvideos;
+
+        var model_paper_div = document.getElementById("materials_div");
+        console.log("model_paper_diuspaly divvvvvvvvv");
+        for (let i = 0; i < videoJsonObj.length; i++) {
+            console.log("model_paper_diuspaly inserttttttttttt");
+            var row = videoJsonObj[i];
+            console.log("what we got"+videoJsonObj.length);
+            console.log(row);
+            var university = row['university'];//decode json
+            var regulation = row['regulation'];//decode json
+            var branch = row['branch'];//decode json
+            var year = row['year'];//decode json
+            var title = row['title'];//decode json
+            var thumbnail = row['thumbnail'];//decode json
+            var video_file = row['video_file'];//decode json
+            var datentime = row['datentime'];//decode json
+            // var full_video = video_file.substr(video_file.length-9);
+
+            var div_to_append_popup = document.getElementById("subject_popup");
+
+            if(cmd == 1){
+                var id = allkeys[i];
+                console.log("model_paper_diuspalyyyyy 1111111111");
+                model_paper_div.innerHTML += "<div class=\"item hover-container \" id=\"subject_popup"+id+"\" onClick=\"subjectPopup(this.id)\" style=\"padding-bottom: 40px;max-width: 280.2px!important;\"> <div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"> <div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div> <div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"> <div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"> <img alt=\"\" width=\"240\" height=\"135\" class=\"course-card--course-image--2sjYP browse-course-card--image--35hYN\" src=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/images/" + thumbnail + "\"> </div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\"> <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">" + title + "</div> <div class=\"udlite-text-xs course-card--instructor-list--lIA4f\" data-purpose=\"safely-set-inner-html:course-card:visible-instructors\">" + university + " - " + regulation + " - " + branch + "- " + year + "</div> <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> </div> </div> </div> </div> </div> </div> </div> </div> </div>";
+                div_to_append_popup.innerHTML +="<div class=\"subject-wrapper \" id=\"_subject_popup"+id+"\" onclick=\"this.classList.remove('open');\"><div class=\"subjectmodal\" ><div class=\"subject-close\" id=\"__subject_popup"+id+"\" onClick=\"subjectPopupClose(this.id)\" ></div><div class=\"clear\"></div><div class=\"content\"><h2 style=\" padding: 0px; text-transform: capitalize; font-size: 15px; line-height: 28px; color: #545454; font-weight: bold;max-width:80%;margin:auto;color:#216fbd;margin-top:70px;\">Login With Google To get 3 Months Premium Content For Free</h2><button class=\"btn btn-success\" type=\"submit\" style=\"margin: 21px; background: #216fbd; box-shadow: none; font-family: 'Inconsolata', monospace; font-weight: 900;\" onclick='modalStreams(\"BTECH\");openLogin()'>Login</button><a href=\"https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/files/"+video_file+"\" class=\"btn btn-success\" style=\"margin: 21px; background: #216fbd; box-shadow: none; font-family: 'Inconsolata', monospace; font-weight: 900;\" target='_blank'>Download</a></div></div></div>";
+            }
+        }
+        ResCarouselSize();
+        addTestimonials();
+    }
+
+    function insertMaterials($result){
+        console.log("insertSubjects-44444444444444444--"+$result);
+        var result = $result;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+
+        let tx = db.transaction(['materials'], 'readwrite');
+        let store = tx.objectStore('materials');
+        // Put the sticky note into the object store
+
+        data = result
+        var data_length = data.length
+        for (i=0;i<data_length;i++) {
+            var university = data[i].university;//decode json
+            var regulation = data[i].regulation;//decode json
+            var branch = data[i].branch;//decode json
+            var year = data[i].year;//decode json
+            var title = data[i].title;//decode json
+            var video_file = data[i].video_file;//decode json
+            var thumbnail = data[i].thumbnail;//decode json
+            var datentime = data[i].datentime;//decode json
+
+            let note = {university:university,regulation:regulation,branch:branch,year:year,title:title,video_file:video_file,thumbnail:thumbnail,datentime:datentime};
+            store.add(note);
+
+            // Wait for the database transaction to complete
+            tx.oncomplete = function() {
+                addMaterials();
+            }
+
+            tx.onerror = function(event) {
+                alert('error storing note ' + event.target.errorCode);
+            }
+
+        }
+
+    }
+
+    async function loadMaterials() {
+        let url = 'https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/materials.json';
+        let obj = null;
+
+        try {
+            obj = await (await fetch(url)).json();
+            insertMaterials(obj[2]['data']);
+        } catch(e) {
+            console.log('error');
+        }
+        // console.log(obj);
+    }
+
+
+
+
+
+
+    function addTestimonials(){
+        let tx = db.transaction(['testimonials'], 'readonly');
+        let store = tx.objectStore('testimonials');
+        // Create a cursor request to get all items in the store, which
+        // we collect in the allsubject array
+
+        let req = store.openCursor();
+        let allvideos = [];
+
+        req.onsuccess = function(event) {
+            // The result of req.onsuccess is an IDBCursor
+            let cursor = event.target.result;
+            if (cursor != null) {
+              // If the cursor isn't null, we got an IndexedDB item.
+              // Add it to the note array and have the cursor continue!
+                console.log(cursor.value);
+              allvideos.push(cursor.value);
+              cursor.continue();
+            } else {
+              // If we have a null cursor, it means we've gotten
+              // all the items in the store, so display the subject we got
+              // displaysubject(allsubject);
+                console.log("model_paper_diuspalyyyyy");
+                displayTestimonials(allvideos,1);
+            }
+        }
+        req.onerror = function(event) {
+            alert('error in cursor request ' + event.target.errorCode);
+        }
+    }
+
+    function displayTestimonials(allvideos,cmd){
+        console.log("model_paper_diuspaly visitteeeddd");
+        if(allvideos.length == 0){
+            console.log("model_paper_diuspaly videooooooo lenghth");
+            loadTestimonials();
+            return;
+        }else{
+            console.log("model_paper_diuspaly visitteeeddd lengthg"+allvideos.length);
+        }
+
+        var videoJsonObj = allvideos;
+
+        var model_paper_div = document.getElementById("testimonials_div");
+        console.log("model_paper_diuspaly divvvvvvvvv");
+        for (let i = 0; i < videoJsonObj.length; i++) {
+            console.log("model_paper_diuspaly inserttttttttttt");
+            var row = videoJsonObj[i];
+            console.log("what we got"+videoJsonObj.length);
+            console.log(row);
+
+            var title = row['title'];//decode json
+            var video_link = row['video_link'];//decode json
+            var thumbnail = row['thumbnail'];//decode json
+            var datentime = row['datentime'];//decode json
+            // var full_video = video_file.substr(video_file.length-9);
+
+            if(cmd == 1){
+                console.log("model_paper_diuspalyyyyy 1111111111");
+                model_paper_div.innerHTML += "<div class=\"item hover-container \" style=\"padding-bottom: 40px;max-width: 280.2px!important;\"> <div class=\"carousel--container--22Ab7 hover-target\"> <div id=\"course-unit-container-Python\" aria-live=\"polite\" class=\"\"> <div data-index=\"1\" class=\"carousel--scroll-item--3Wciz \" > <div> <div class=\"popper--popper--19faV popper--popper-hover--4YJ5J \"> <div data-purpose=\"container\" class=\"\"> <div class=\"course-card--image-wrapper--Sxd90\"><video  controls><source src=\""+video_link+"\" type=\"video/mp4\"></video></div> <div class=\"course-card--main-content--3xEIw course-card--has-price-text--1Ikr0\"> <div class=\"udlite-focus-visible-target udlite-heading-md course-card--course-title--2f7tE\">" + title + "</div>  <div class=\"price-text--container--Ws-fP course-card--price-text-container--2sb8G\" data-purpose=\"price-text-container\"> </div> </div> </div> </div> </div> </div> </div></div></div>";
+            }
+        }
+
+        ResCarouselSize();
+    }
+
+    function insertTestimonials($result){
+        console.log("insertSubjects-44444444444444444--"+$result);
+        var result = $result;
+			// console.log($result);
+        // console.log("00000000000");
+        // console.log(result);
+        var j =0;
+
+
+        let tx = db.transaction(['testimonials'], 'readwrite');
+        let store = tx.objectStore('testimonials');
+        // Put the sticky note into the object store
+
+        data = result
+        var data_length = data.length
+        for (i=0;i<data_length;i++) {
+            var title = data[i].title;//decode json
+            var video_link = data[i].video_file;//decode json
+            video_link = video_link.substr(video_link.length-9)
+            var thumbnail = data[i].thumbnail;//decode json
+            var datentime = data[i].datentime;//decode json
+
+            let note = {title:title,video_link:video_link,thumbnail:thumbnail,datentime:datentime};
+            store.add(note);
+
+            // Wait for the database transaction to complete
+            tx.oncomplete = function() {
+                addTestimonials();
+            }
+
+            tx.onerror = function(event) {
+                alert('error storing note ' + event.target.errorCode);
+            }
+
+        }
+
+
+    }
+
+    async function loadTestimonials() {
+        let url = 'https://veteachwebfiles.s3.ap-south-1.amazonaws.com/homepage/testimonials.json';
+        let obj = null;
+
+        try {
+            obj = await (await fetch(url)).json();
+            insertTestimonials(obj[2]['data']);
+        } catch(e) {
+            console.log('error');
+        }
+        // console.log(obj);
+    }
+
+
+
+
+</script>

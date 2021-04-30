@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "veteachnewwebapi"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1jq93nsof6sal"
+s3_prefix = "veteachnewwebapi"
+region = "ap-south-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"

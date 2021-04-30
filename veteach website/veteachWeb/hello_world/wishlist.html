@@ -1,0 +1,115 @@
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,900;1,700&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+   form {
+   margin: 0 0 0px!important;
+   }
+   body{
+   background: #f2f2f2!important;
+   font-family: 'Lato', sans-serif;
+   }
+   .container {
+   padding-right: 0px;
+   padding-left: 0px;
+   }
+   .switch {
+   position: relative;
+   display: inline-block;
+   width: 48px;
+   height: 22px;
+   }
+   .switch input {
+   opacity: 0;
+   width: 0;
+   height: 0;
+   }
+   .slider {
+   position: absolute;
+   cursor: pointer;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: #ccc;
+   -webkit-transition: .4s;
+   transition: .4s;
+   }
+   .slider:before {
+   position: absolute;
+   content: "";
+   height: 14px;
+   width: 14px;
+   left: 4px;
+   bottom: 4px;
+   background-color: white;
+   -webkit-transition: .4s;
+   transition: .4s;
+   }
+   input:checked + .slider {
+   background-color: #2196F3;
+   }
+   input:focus + .slider {
+   box-shadow: 0 0 1px #2196F3;
+   }
+   input:checked + .slider:before {
+   -webkit-transform: translateX(26px);
+   -ms-transform: translateX(26px);
+   transform: translateX(26px);
+   }
+   /* Rounded sliders */
+   .slider.round {
+   border-radius: 34px;
+   }
+   .slider.round:before {
+   border-radius: 50%;
+   }
+</style>
+<style>
+.checked_star {
+  color: orange;
+}
+</style>
+
+
+
+<style>
+   .container {
+   width: 100%;
+   max-width: 1300px!important;
+
+
+   }
+</style>
+<div class="col-md-12  maindiv_checkout" style="min-height: 60%;min-height: 60vh;">
+   <div class="container">
+      <div class="row">
+         <div class="empty_cart" id="empty_cart" style="display:none;text-align: center">
+                <img style="height: 274px;" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/01.png">
+              <h3 style="font-weight:bold;text-align: center;opacity: 0.7;">Your Wishlist Is Empty</h3>
+
+            </div>
+         <div class="col-md-9  " id="summary_details">
+            <div class="" style="display:inline;">
+               <b><p class="rvw-heading LatoBold">My Wishlist</p></b>
+            </div>
+            <div class="container">
+               <div class="row" id="wishlist_items" style="margin-bottom: 50px">
+
+
+
+
+
+
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+</div>
+

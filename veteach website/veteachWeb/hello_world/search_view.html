@@ -1,0 +1,159 @@
+<?php include"../admin/inc/dbcredentials.php"; ?>
+<?php include("header.php"); ?>
+
+	<div id="main-container" class="container     main-content">
+		<div class="announcement-renderer"> </div>
+		<div id="container_content">
+			<div class="col-md-8 no-padding-right no-padding-left" style="margin-bottom: 20px;">
+				<div class="articles-content">
+					<div class="subscriptions-list author-list articles-container">
+						<h3 class="recent-articles">Search Results<div class="clear"></div>
+							</h3>
+
+
+						<div class="video-wrapper article-wrapper pt_article_list" data-id="9" id="article-9" style="text-align: center;">
+
+
+
+
+
+<?php
+$title_p_name = array();
+$title_p_id = array();
+$title_poster_location = array();
+$title_scat_id = array();
+$error = array();
+
+if(isset($_POST['search_submit'])){
+    $search = $_POST['p_name'];
+
+       $servername = "shareddb-z.hosting.stackcp.net";
+    $conn = new mysqli($servername, $db_user, $db_password, $db_name);
+
+    if ($conn->connect_error){
+    	die("Connection failed: ". $conn->connect_error);
+    }
+
+    $sql = "select * from video where video_name like '%$search%'";
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0){
+        while($row = $result->fetch_assoc() ){
+
+            array_push($title_p_name,$row["video_name"]);
+        	array_push($title_p_id,$row["video_id"]);
+            	array_push($title_poster_location,$row["video_photo"]);
+        	array_push($title_scat_id,$row["trail_video"]);
+        }
+
+        ?>
+
+
+                        <?php for($i=0;$i<count($title_p_name);$i++){ ?>
+
+							<div class="pt_article_h_list">
+								<div class="video-thumb pull-left">
+									<a href="video_view.php?video_id=<?php echo $title_p_id[$i];?>" ><img width="200" height="170" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/<?php echo $title_poster_location[$i];?>" ></a>
+								</div>
+								<div class="video-info">
+									<div class="article-title">
+										<h4><a href="video_view.php?video_id=<?php echo $title_p_id[$i];?>" ><?php echo $title_p_name[$i]; ?></a> </h4> </div>
+									<div class="article-desc">
+										<p><?php //echo $title_scat_id[$i];?></p>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						<?php } ?>
+
+
+							 <?php
+    }
+    else {
+        ?>
+      <h2>No Results Found</h2>
+
+        <?php
+
+    }
+}
+$conn->close();
+
+?>
+
+
+
+
+						</div>
+
+
+
+
+
+
+
+					</div>
+					<!--<div class="watch-video-show-more desc" data-type="articles" onclick="PT_LoadPost('0',this);"> Show more </div>-->
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="article-categories">
+
+					<h4>Categories</h4>
+					<div class="pt_categories">
+						<ul>
+							<li class="active">
+								<a href="#" data-load="?link1=articles&category_id=category__1"> <span>ECE</span> </a>
+							</li>
+								<li class="active">
+								<a href="#" data-load="?link1=articles&category_id=category__1"> <span>CSE</span> </a>
+							</li>
+								<li class="active">
+								<a href="#" data-load="?link1=articles&category_id=category__1"> <span>EEE</span> </a>
+							</li>
+								<li class="active">
+								<a href="#" data-load="?link1=articles&category_id=category__1"> <span>CIVIL</span> </a>
+							</li>
+								<li class="active">
+								<a href="#" data-load="?link1=articles&category_id=category__1"> <span>MECH</span> </a>
+							</li>
+
+
+						</ul>
+						<div class="clear"></div>
+					</div>
+					<br>
+
+					<h4>Most popular</h4>
+					<div>
+					      <?php
+                                             $priority_video_array = fetch_video($con,true,0,0);
+
+                                             for ($i=0; $i < count($priority_video_array[0]); $i++) {
+                                                 ?>
+
+						<div class="video-wrapper popular-articles-wrapper">
+							<div class="video-thumb pull-left">
+								<a href="video_view.php?video_id=<?php echo $priority_video_array[0][$i];?>" ><img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/assets/uploads/<?php echo $priority_video_array[5][$i];?>" alt="<?php echo $priority_video_array[2][$i];?>" width="100%"></a>
+								<div class="clear"></div>
+							</div>
+							<div class="video-info">
+								<div class="popular-article-title"> <a href="video_view.php?video_id=<?php echo $priority_video_array[0][$i];?>" ><?php echo $priority_video_array[2][$i];?></a> </div>
+							</div>
+							<div class="clear"></div>
+						</div>
+					           <?php
+                                             }
+                                             ?>
+
+						<div class="clear"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+
+<div id="fws_5f8fd17a6cc37" class="wpb_row vc_row vc_row-fluid  animate_onoffset row-dynamic-el section-style    normal footermain1"  >
+	<div  style="position: absolute;top: 0;"></div>
+		<div class="container  light">
+			<div class="section_clear">
+				<div class="wpb_column column_container with_padding wpb_column vc_column_container vc_col-sm-12"><div class="vc_column-inner  "  data-animation="none" data-delay="">
+					<div class="wpb_wrapper">
+					    <center style="margin-top: 17px;">
+					    <a href="https://play.google.com/store/apps/details?id=com.vasthi.veteach">
+					        <img src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/website_files/assets/uploads/playstore.png" alt="playstore app" style="height: 70px;">
+
+					    </a>
+					    </center>
+						<h2 class="vc_custom_heading footerheadline1" style="margin: 0;margin-top: 20px;">Learn today </h2>
+						<div class="vc_empty_space"   >
+							<span class="vc_empty_space_inner"></span>
+						</div>
+						<h2 class="vc_custom_heading footerheadline2" >Pay once and get all Veteach Access, free lifetime updates.</h2>
+						<div class="vc_empty_space"   >
+							<span class="vc_empty_space_inner"></span>
+						</div>
+						<div class="" style="
+    padding: 16px;display: none;
+">
+							<a class="btn-bt align-center rounded footbtn" href="?url=coming_soon" style="padding: 15px 20px;
+    font-size: 11px;">
+								<span>VETeach Team</span><i class="steadysets-icon-type"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<center>
+<style>
+.bodrt{
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #9a9a9a;
+    border-right: 2px solid #989898;
+    padding: 0px 10px;
+    margin: 0;
+}
+</style>
+
+		<p><a href="?url=contact" class="bodrt"> Contact-Us</a><a href="?url=privacy-policy" class="bodrt"> Privacy-policy</a><a href="?url=terms" class="bodrt"> Terms & Conditions</a></p></center>
+</div>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+  <script>
+
+
+function myloginFunction() {
+  document.getElementById("myLoginpage").style.display = "block";
+}
+function closeLogin(){
+    document.getElementById('myLoginpage').style.display='none'
+}
+</script>
+  <script>
+
+
+function myRatingFunction() {
+  document.getElementById("myRating").style.display = "block";
+}
+function closeRating(){
+    document.getElementById('myRating').style.display='none'
+}
+</script>
+
+ <script>
+function myUniverpage($branch_id) {
+    if($branch_id != 11 ){
+
+            document.getElementById("branch_popup_select").options.selectedIndex = $branch_id;
+
+    }
+
+
+  document.getElementById("myUniversitypage").style.display = "block";
+}
+function closeUniversity(){
+    document.getElementById('myUniversitypage').style.display='none'
+}
+</script>
+<script>
+function mySyllabus() {
+
+
+  document.getElementById("mySyllabuspage").style.display = "block";
+}
+function closeSyllabus(){
+    document.getElementById('mySyllabuspage').style.display='none'
+}
+</script>
+<script src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/classie.js"></script>
+<script>
+		menuRight = document.getElementById( 'cbp-spmenu-s2' ),
+		showRight = document.getElementById( 'showRight' ),
+		showRightExtra = document.getElementById( 'showRight111' ),
+		showRightExtras = document.getElementById( 'showRight1112' ),
+		showRightExtras1 = document.getElementById( 'showRight1113' ),
+		showRightExtras2 = document.getElementById( 'showRight1114' ),
+		body = document.body;
+
+
+	function disableOther( button ) {
+		if( button !== 'showRight' ) {
+			classie.toggle( showRight, 'disabled' );
+		}
+	}
+
+	function closeNav(){
+	    classie.toggle( menuRight, 'cbp-spmenu-open' );
+		disableOther( 'showRight' );
+	}
+
+
+
+$(".top-cat").on('change',function(){
+			var id=$(this).val();
+			var dataString = 'id='+ id;
+			$.ajax
+			({
+				type: "POST",
+				url: "get-year-category.php",
+				data: dataString,
+				cache: false,
+				success: function(html)
+				{
+					$(".year-cat").html(html);
+				}
+			});
+		});
+		$(".year-cat").on('change',function(){
+			var id=$(this).val();
+			var dataString = 'id='+ id;
+			$.ajax
+			({
+				type: "POST",
+				url: "get-mid-category.php",
+				data: dataString,
+				cache: false,
+				success: function(html)
+				{
+					$(".mid-cat").html(html);
+				}
+			});
+		});
+</script>
+
+
+<script>
+jQuery(function($) {
+    var currentMousePos = { x: -1, y: -1 };
+    $(document).mousemove(function(event) {
+        currentMousePos.x = event.pageX;
+        currentMousePos.y = event.pageY;
+    });
+
+    // ELSEWHERE, your code that needs to know the mouse position without an event
+    if (currentMousePos.x > ($(document).width()-400)) {
+        console.log("mouse position"+currentMousePos.x+" screen width"+ $(document).width()+"--top");
+    }else{
+    	console.log("mouse position"+currentMousePos.x+" screen width"+ $(document).width()+"--bottom");
+	}
+});
+</script>
+
+<script>
+	try {
+          var university_qp_qp = document.getElementById('university_qp');
+            var regulation_qp_qp = document.getElementById('regulation_qp');
+            var branch_qp_qp = document.getElementById('branch_qp');
+            regulation_qp_qp.value = getCookie("regulation");
+            branch_qp_qp.value = getCookie("branch_id");
+            university_qp_qp.value = getCookie("university_id");
+      }catch (e) {
+
+      }
+</script>
+
+
+
+
+
+
+<link rel='stylesheet' id='vc_tta_style-css'  href='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/wp-content/plugins/js_composer/assets/css/js_composer_tta.min7661.css?ver=5.4.2' type='text/css' media='all' />
+
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/photon.minb3d9.js'></script>
+
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/bootstrap.min68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery.easing.1.368b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery.easy-pie-chart68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/waypoints.min68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/odometer.min68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery.appear68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/jquery.plyr68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/modernizr.custom68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/zeroone-animations68b3.js'></script>
+
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/vc-tabs.min7661.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/vc-tta-autoplay.min7661.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/vc-accordion.min7661.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/js_composer_front.min7661.js'></script>
+
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/masonry.min68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/classie68b3.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/imagesloaded.min55a0.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/wp-embed.minca80.js'></script>
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/comment-reply.minca80.js'></script>
+
+
+
+
+<script type='text/javascript' src='https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/e-202043.js' async defer></script>
+<script type="text/javascript" src="https://veteachwebfiles.s3.ap-south-1.amazonaws.com/v2/js/morphext.min.js"></script>
+
+
+</body>
+
+
+</html>

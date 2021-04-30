@@ -1,0 +1,401 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>add cart</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+	<button onclick="addcart('subject3')" id="insert">Insert</button>
+	<input type="text" value="sathis sucks" name="" id="item">
+	<button onclick="addcart('subject3')" id="fetch">fetch</button><br>
+	<button onclick="addcart('subject4')" id="remove">4 Remove</button>
+	<button onclick="addcart('subject4')" id="create">create table</button><br>
+	<button onclick="addcart('subject4')" id="dbdetails">db details table</button><br>
+
+
+	<button onclick="addcart('subject4')" id="create">submit</button><br>
+
+	<button onclick="addcart('subject4')" id="datainsert">datainsert</button><br>
+
+
+	<script type="text/javascript">
+		function addcart($data){
+
+		}
+	</script>
+
+	<script type="text/javascript">
+
+		var db = openDatabase("itemDB","1.0","itemDB",65535);
+
+
+
+
+		$(function(){
+			$("#create").click(function(){
+				db.transaction(function(transaction){
+					var sql = "CREATE TABLE items "+ "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,item VARCHAR(100) NOT NULL)";
+					transaction.executeSql(sql,undefined,function(){
+						alert("db created successfully");
+					},function(){
+						db.transaction(function(transaction){
+							var sql = "SELECT * FROM items";
+							transaction.executeSql(sql,undefined,function(transaction,result){
+								if(result.rows.length){
+									for (var i = 0; i < result.rows.length; i++) {
+										var row = result.rows.item(i);
+										var item = row.item;
+										var id = row.id;
+										alert(item+""+id);
+									}
+								}else{
+									alert("no data found");
+								}
+							},function(transaction,err){
+								alert(err.message);
+							});
+						});
+					});
+				});
+			});
+		});
+
+
+
+		$(function(){
+			$("#remove").click(function(){
+				db.transaction(function(transaction){
+					var sql = "DROP TABLE video";
+					transaction.executeSql(sql,undefined,function(){
+						alert("table deleted successfully");
+					},function(){
+						alert("error");
+					});
+				});
+			});
+		});
+
+		$(function(){
+			$("#insert").click(function(){
+				var item = $('#item').val();
+				db.transaction(function(transaction){
+					var sql = "INSERT INTO items(item) VALUES(?)";
+					transaction.executeSql(sql,[item],function(){
+						alert("success");
+					},function(){
+						alert("error");
+					});
+				});
+			});
+		});
+
+		$(function(){
+			$("#fetch").click(function(){
+				var item = $('#item').val();
+				db.transaction(function(transaction){
+					var sql = "SELECT * FROM items";
+					transaction.executeSql(sql,undefined,function(transaction,result){
+						if(result.rows.length){
+							for (var i = 0; i < result.rows.length; i++) {
+								var row = result.rows.item(i);
+								var item = row.item;
+								var id = row.id;
+								alert(item+""+id);
+							}
+						}else{
+							alert("no data found");
+						}
+					},function(transaction,err){
+						alert(err.message);
+					});
+				});
+			});
+		});
+
+	</script>
+
+	<script>
+		$(function(){
+			// $("#dbdetails").click(function(){
+				db.transaction(function(transaction){
+					var sql = "CREATE TABLE db_version "+ "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,status TEXT NOT NULL,data TEXT NOT NULL,version TEXT NOT NULL,app_version TEXT NOT NULL)";
+					transaction.executeSql(sql,undefined,function(){
+						var data = {
+							cmd: 100,
+						}
+						sendRequest(data,100,0,0);//get version
+					},function(){
+						db.transaction(function(transaction){
+							var sql = "SELECT * FROM db_version";
+							transaction.executeSql(sql,undefined,function(transaction,result){
+
+								var row = result.rows;
+								var status = row.status;
+								var version = row.version;
+								var app_version = row.app_version;
+
+								var data = {
+									cmd: 100,
+								}
+								sendRequest(data,100,version,0);//get version
+							},function(transaction,err){
+								alert(err.message);
+							});
+						});
+					});
+				});
+			// });
+		});
+
+
+
+		function sendRequest($data,$cmd,$extraData1,$extraData2){
+
+				$.ajax({
+					url: 'https://n9yz799guk.execute-api.ap-south-1.amazonaws.com/Prod/hello?url=app_api',
+					type: 'POST',
+					crossDomain: true,
+					dataType: 'json',
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify($data),
+					success: function(result) {
+
+						switch($cmd){
+							case 100:
+								if ($extraData1 != result.version) {
+
+									//delete database
+									var data = {
+										cmd: 103,
+										branch_id:1,//insert branch id
+										year_id:1,//insert year id
+										sub_sem_id:1,//sub sem id = 1 means 1st sem 2 = 2nd sem
+										university_name :"JNTUK"
+									}
+									sendRequest(data,103,1,0);//get subjects
+								}else{
+									createSubjectLayout();
+								}
+							break;
+							case 103:
+								if ($extraData1 == 1) {
+									insertSubjects(result,1);
+								}else{
+									insertSubjects(result,2);
+								}
+							break;
+							case 105:
+								insertVideo(result)
+							break;
+							}
+
+
+					},
+
+					error: function(xhr, textStatus, error) {
+						console.log(xhr.responseText);
+						console.log(xhr.statusText);
+						console.log(textStatus);
+						console.log(error);
+					},
+			// beforeSend: setHeader
+				});
+		}
+
+		function getSubjects(){
+
+		}
+		function createSubjectLayout(){
+
+		}
+
+		function insertSubjects($result,$subCmd){
+
+					var result = $result;
+			// console.log($result);
+				console.log("00000000000");
+						console.log(result);
+
+				db.transaction(function(transaction){
+					var sql = "CREATE TABLE IF NOT EXISTS subject (branch_id VARCHAR(10) NOT NULL,complete_notes TEXT NOT NULL,date TEXT NOT NULL,discounted_price INTEGER NOT NULL,flag INTEGER NOT NULL,num_of_unit INTEGER NOT NULL,price INTEGER NOT NULL,priority INTEGER NOT NULL,regulation INTEGER NOT NULL,semester_id INTEGER NOT NULL,specialization INTEGER NOT NULL,subject_description TEXT NOT NULL,subject_id VARCHAR(255) NOT NULL,subject_name VARCHAR(255) NOT NULL,subject_photo VARCHAR(255) NOT NULL,tags TEXT NOT NULL,avg_rating VARCHAR(100) NOT NULL,rating_count VARCHAR(100) NOT NULL,single_line_content TEXT NOT NULL,subject_points VARCHAR(100) NOT NULL,new_subject_photo TEXT NOT NULL,subject_time VARCHAR(100) NOT NULL,unit1 TEXT NOT NULL,unit1_name TEXT NOT NULL,unit2 TEXT NOT NULL,unit2_name TEXT NOT NULL,unit3 TEXT NOT NULL,unit3_name TEXT NOT NULL,unit4 TEXT NOT NULL,unit4_name TEXT NOT NULL,unit5 TEXT NOT NULL,unit5_name TEXT NOT NULL,unit6 TEXT NOT NULL,unit6_name TEXT NOT NULL,unit7 TEXT NOT NULL,unit7_name TEXT NOT NULL,unit8 TEXT NOT NULL,unit8_name TEXT NOT NULL,unit9 TEXT NOT NULL,unit9_name TEXT NOT NULL,unit10 TEXT NOT NULL,unit10_name TEXT NOT NULL,university_id INT NOT NULL)";
+					transaction.executeSql(sql,undefined,function(){
+
+
+
+						db.transaction(function (transaction) {
+						data = result.data
+
+						var data_length = data.length
+						for (i=0;i<data_length;i++) {
+
+							var branch_id = data[i].branch_id;//decode json
+							console.log("1111111111111111111111");
+							console.log(branch_id);
+							var complete_notes = data[i].complete_notes;//decode json
+							var date = data[i].date;//decode json
+							var discounted_price = data[i].discounted_price;//decode json
+							var flag = data[i].flag;//decode json
+							var num_of_unit = data[i].num_of_unit;//decode json
+							var price = data[i].price;//decode json
+							var priority = data[i].priority;//decode json
+							var regulation = data[i].regulation;//decode json
+							var semester_id = data[i].semester_id;//decode json
+							var specialization = data[i].specialization;//decode json
+							var subject_description = data[i].subject_description;//decode json
+							var subject_id = data[i].subject_id;//decode json
+							var subject_name = data[i].subject_name;//decode json
+							var subject_photo = data[i].subject_photo;//decode json
+							var tags = data[i].tags;//decode json
+							var avg_rating = data[i].avg_rating;//decode json
+							var new_subject_photo = data[i].new_subject_photo;//decode json
+							var rating_count = data[i].rating_count;//decode json
+							var single_line_content = data[i].single_line_content;//decode json
+							var subject_points = data[i].subject_points;//decode json
+							var subject_time = data[i].subject_time;//decode json
+							var unit1 = data[i].unit1;//decode json
+							var unit1_name = data[i].unit1_name;//decode json
+							var unit2 = data[i].unit2;//decode json
+							var unit2_name = data[i].unit2_name;//decode json
+							var unit3 = data[i].unit3;//decode json
+							var unit3_name = data[i].unit3_name;//decode json
+							var unit4 = data[i].unit4;//decode json
+							var unit4_name = data[i].unit4_name;//decode json
+							var unit5 = data[i].unit5;//decode json
+							var unit5_name = data[i].unit5_name;//decode json
+							var unit6 = data[i].unit6;//decode json
+							var unit6_name = data[i].unit6_name;//decode json
+							var unit7 = data[i].unit7;//decode json
+							var unit7_name = data[i].unit7_name;//decode json
+							var unit8 = data[i].unit8;//decode json
+							var unit8_name = data[i].unit8_name;//decode json
+							var unit9 = data[i].unit9;//decode json
+							var unit9_name = data[i].unit9_name;//decode json
+							var unit10 = data[i].unit10;//decode json
+							var unit10_name = data[i].unit10_name;//decode json
+							var university_id = data[i].university_id;//decode json
+
+								var sql = "INSERT INTO subject(branch_id,complete_notes,date,discounted_price,flag,num_of_unit,price,priority,regulation,semester_id,specialization,subject_description,subject_id,subject_name,subject_photo,tags,avg_rating,new_subject_photo,rating_count,single_line_content,subject_points,subject_time,unit1,unit1_name,unit2,unit2_name,unit3,unit3_name,unit4,unit4_name,unit5,unit5_name,unit6,unit6_name,unit7,unit7_name,unit8,unit8_name,unit9,unit9_name,unit10,unit10_name,university_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+								transaction.executeSql(sql, [branch_id, complete_notes, date, discounted_price, flag, num_of_unit, price, priority, regulation, semester_id, specialization, subject_description, subject_id, subject_name, subject_photo, tags, avg_rating, new_subject_photo, rating_count, single_line_content, subject_points, subject_time, unit1, unit1_name, unit2, unit2_name, unit3, unit3_name, unit4, unit4_name, unit5, unit5_name, unit6, unit6_name, unit7, unit7_name, unit8, unit8_name, unit9, unit9_name, unit10, unit10_name, university_id], function () {
+
+
+									if ($subCmd == 1 && i == (data_length-1)) {
+										var data = {
+											cmd: 103,
+											branch_id: 1,//insert branch id
+											year_id: 1,//insert year id
+											sub_sem_id: 1,//sub sem id = 1 means 1st sem 2 = 2nd sem
+											university_name: "JNTUK"
+										}
+										sendRequest(data, 103, 2, 0);//get subjects
+									} else {
+										// insert_version(result);
+									}
+
+
+								}, function () {
+									alert("error");
+								});
+								}
+							});
+
+
+					},function(){
+
+
+
+					});
+				});
+
+
+		}
+
+
+
+
+		 $("#dbdetails").click(function(){
+		 	var data = {
+				cmd: 105,
+				subject_id:"JNTUK-14",
+				user_id:0,
+
+			}
+		 	sendRequest(data,105,0,0);
+		 });
+
+
+		function insertVideo($result){
+			console.log($result);
+			var result = $result;
+			db.transaction(function(transaction){
+				var sql = "CREATE TABLE IF NOT EXISTS video (datentime VARCHAR(200) NOT NULL,full_video TEXT NOT NULL,part_num INTEGER NOT NULL,subject_id VARCHAR(100) NOT NULL,tags TEXT NOT NULL,trail_video TEXT NOT NULL,unit_num INTEGER NOT NULL,video_active INTEGER NOT NULL,video_description TEXT NOT NULL,video_file TEXT NOT NULL,video_id VARCHAR(100) NOT NULL,video_name VARCHAR(255) NOT NULL,video_photo VARCHAR(255) NOT NULL,video_priority INTEGER NULL,view_count INTEGER NOT NULL)";
+				transaction.executeSql(sql,undefined,function(){
+					db.transaction(function (transaction) {
+					data = result.data
+
+						var data_length = data.length
+						for (i=0;i<data_length;i++) {
+							var datentime = data[i].datentime;//decode json
+							var full_video = data[i].full_video;//decode json
+							var part_num = data[i].part_num;//decode json
+							var subject_id = data[i].subject_id;//decode json
+							var tags = data[i].tags;//decode json
+							var trail_video = data[i].trail_video;//decode json
+							var unit_num = data[i].unit_num;//decode json
+							var video_active = data[i].video_active;//decode json
+							var video_description = data[i].video_description;//decode json
+							var video_file = data[i].video_file;//decode json
+							var video_id = data[i].video_id;//decode json
+							var video_name = data[i].video_name;//decode json
+							var video_photo = data[i].video_photo;//decode json
+							var view_count = data[i].view_count;//decode json
+							// var video_priority = data[0].video_priority;//decode json
+
+							var sql = "INSERT INTO video(datentime,full_video,part_num,subject_id,tags,trail_video,unit_num,video_active,video_description,video_file,video_id,video_name,video_photo,view_count) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+							transaction.executeSql(sql, [datentime, full_video, part_num, subject_id, tags, trail_video, unit_num, video_active, video_description, video_file, video_id, video_name, video_photo, view_count], function () {
+								// alert("success");
+							}, function (transaction, err) {
+								console.log(err.message);
+							});
+						}
+					});
+				});
+			});
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+		function insert_version(result){
+			var d_status =result.status;//decode json
+			var d_date = result.data;//decode json
+			var d_version = result.version;//decode json
+			var d_app_version = result.app_version;//decode json
+
+			db.transaction(function(transaction){
+				var sql = "INSERT INTO db_version(status,data,version,app_version) VALUES(?,?,?,?)";
+				transaction.executeSql(sql,[d_status,d_date,d_version,d_app_version],function(){
+					alert("success");
+				},function(transaction,error){
+					alert(error.message);
+				});
+			});
+		}
+</script>
+
+</body>
+</html>
