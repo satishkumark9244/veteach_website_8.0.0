@@ -1657,8 +1657,8 @@ def lambda_handler(event, context):
             response11 = {
                 "status": 1,
                 "data": "",
-                "version": 13,
-                "app_version": "7.0.6"
+                "version": 14,
+                "app_version": "8.0.0"
             }
         elif cmd == 101:  # insert new users / google login - need to add fcm token
 
