@@ -92,6 +92,7 @@
                             var subject_id_url = search_params.get('subject_id');
                             var semester_id_url = search_params.get('semester_id');
                             var sub_sem_url = search_params.get('flag');
+                            var btech_url = search_params.get('index');
                             window.dbversion = -1;
                             var purchased_subjects = [];
 
@@ -156,6 +157,9 @@
         // beforeSend: setHeader
             });
 		}
+
+
+
 
 	function fetchSemesterDetails($cmd,$subsem) {
         let tx = db.transaction(['semester'], 'readonly');
@@ -1920,7 +1924,7 @@
             if(url_page != "index"){
                 window.location = "?url=index";
             }
-        }else{
+        }else if(getCookie("sid") == "GRE" || getCookie("sid") == "TOEFL"){
             window.location = "?url=coming_soon";
         }
     }

@@ -31,7 +31,8 @@
     var search_params = window_url.searchParams;
     var url_page = search_params.get('url');
     if(url_page == "" || url_page === "" || url_page == null || url_page == "none"){
-        url_page = "index";
+        //url_page = "index";
+        url_page = "homepage";
     }
     var logout = search_params.get('logout');
     var subject_id_url = search_params.get('subject_id');

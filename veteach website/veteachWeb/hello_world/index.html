@@ -2159,6 +2159,11 @@ margin-left: 9px;"></i></button>
         }
     </style>
     <script>
+        defaultcookie();
+        function defaultcookie(){
+            document.cookie = "stream=btech; expires=Thu, 18 Dec 2029 12:00:00 UTC; path=/";
+            console.log('Creating Stream cookie');
+        }
         //     $(document).ready(function() {
         //    $('[data-toggle="popover"]').popover({
         //       placement: 'top',

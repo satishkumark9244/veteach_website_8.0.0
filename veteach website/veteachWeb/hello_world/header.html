@@ -473,7 +473,7 @@
      }
      .modal_intro_home{
           background: rgba(255,255,255,255);
-      height: 575px;
+      height: 380px;
       width: 100%;
       border: 0 none;
       border-radius: 9px;
@@ -493,9 +493,12 @@
 
 
   #msform {
-         width: 390px;
-      margin: 50px auto;
-      position: relative;
+            width: 461px;
+    border: 41px solid #5aa1e3;
+    border-radius: 6px;
+    margin: 50px auto;
+    position: relative;
+    background: #5aa1e3;
   }
   #msform fieldset {
     height: 575px;
@@ -1048,6 +1051,14 @@
   <div id="modalStartlearning" style="display: none;">
 
     <div class="modalContent">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4 "></div>
+                <div class="col-md-4 "></div>
+                 <div class="col-md-4 "><i class="fa fa-window-close" aria-hidden="true" onclick="closehomelogin()" style="float: right;
+    padding: 11px;"></i></div>
+            </div>
+        </div>
 
   <!-- multistep form -->
   <form id="msform" action ="" method = "post">
@@ -1097,11 +1108,18 @@
 
    <fieldset style="text-align: center;overflow: hidden;padding: 0!important;" >
     <form class="form-horizontal" action="" method="post" style="top:40px!important;">
-   <div class="box box-info">
+ <div class="box box-info">
       <div class="box-body">
+        <div class="col-md-8">
+          <h2 style="float: right;">Sign In</h2> </div>
+        <div class="col-md-4 "><i class="fa fa-window-close" aria-hidden="true" onclick="closehomelogin()" style="float: right;
+    padding: 11px;"></i></div>
          <div class="container" style="width: 100%!important;padding: 0!important;">
-            <div class="margin10" style="margin-top: 50%"></div>
-            <div class="col-sm-12 " >
+            <div class="margin10" style="margin-top: 6%;margin-bottom: 12%;">
+
+            </div>
+            <div class="col-sm-12 " style="
+    background: #5aa1e3;">
                <h2 style="    padding: 0px;
     text-transform: capitalize;
     font-size: 15px;
@@ -1109,15 +1127,31 @@
 
 
     line-height: 28px;
-    color: #545454;
-    font-weight: bold;">Login With Google To get 3 Months  Premium Content For Free</h2>
-                <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    color: white;
 
-               </a>
+    font-weight: bold;">Sign In with Google to Get<br>
+    <span style="color:white;">Premium Content Free for 3 Months</span></h2>
+
+
+
+
             </div>
+
+          <div class="margin10" style="margin-top: 39%;">
+
+
+            </div>
+
          </div>
+
       </div>
+         <div class="col-sm-12" style="margin-top:15%;">
+                      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+            </div>
    </div>
+
+
+
 </form>
 
    </fieldset>
@@ -1189,6 +1223,9 @@ function openLogin(){
     }else{
      redirectToIndexFromHomepage();
     }
+}
+function closehomelogin(){
+          document.getElementById('modalStreams').style.display = 'none'
 }
 
 
@@ -2180,13 +2217,18 @@ function changeCourse(flag){
     delete_cookie("semester_id");
     delete_cookie("university_id");
     delete_cookie("regulation");
+    delete_cookie("sid");
+    delete_cookie("stream");
+    console.log('Deleteing Stream cookie');
     document.cookie = "version" + "=0"+";path=/";
       indexedDB.databases().then(dbs => {
       dbs.forEach(db => indexedDB.deleteDatabase(db.name))
     });
       // alert("redirecting");
-    if(flag == 1){}else{
-        document.location = "?url=index";
+    if(flag == 1){
+
+    }else{
+        document.location = "?url=homepage";
     }
     // commonFunctions();
 }

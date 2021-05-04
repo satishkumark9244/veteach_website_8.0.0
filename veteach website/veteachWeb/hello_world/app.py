@@ -1397,7 +1397,8 @@ def lambda_handler(event, context):
     try:
         url = event['queryStringParameters']['url']
     except:
-        url = "index"
+        # url = "index"
+        url = "homepage"
         # url = "video_view"
 
     try:
